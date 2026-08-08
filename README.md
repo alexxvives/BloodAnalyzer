@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Blood Analyzer
 
-## Getting Started
+Web platform for visualizing blood test results against sourced reference ranges.
+Educational tooling — **not medical advice**.
 
-First, run the development server:
+See [AGENTS.md](./AGENTS.md) for architecture and non-negotiables.  
+See [AUDIT.md](./AUDIT.md) for the cleanup audit, phased plan, and sign-off queue.
+
+## Stack
+
+- Next.js (App Router) + TypeScript + Tailwind
+- Cloudflare Workers via OpenNext (`@opennextjs/cloudflare`)
+- D1 + R2 with credential sessions (Better Auth–compatible schema; library migration gated — see [`lib/auth/README.md`](./lib/auth/README.md))
+- Dev may use in-memory stores when bindings are unbound; production fails closed unless `ALLOW_MEMORY_STORE=1`
+
+## Try the flow
+
+1. `npm run dev`
+2. Sign up / log in from the home page (`?auth=login`)
+3. Open [/upload](http://localhost:3000/upload) — CSV or text-layer PDF
+4. Confirm/edit values + age/sex → saved report at `/report/{id}`
+5. Component gallery (dev): [/preview/biomarker-cards](http://localhost:3000/preview/biomarker-cards)
+
+## Develop
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm test
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Apply D1 migrations (local):
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npx wrangler d1 migrations apply blood-analyzer --local
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Cloudflare preview (Workers runtime):
 
-## Learn More
+```bash
+npm run preview
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Design reference
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Curated SiPhox UI screenshots live in [`design/reference-screenshots/`](./design/reference-screenshots/) (PNG only).
+Visual language only — do not copy branding or product copy.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Data
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Reference ranges and population stats must be cited. Until then, UI shows
+"range not available" / "benchmark data not yet available". Track citation
+status in [`data/SOURCES.md`](./data/SOURCES.md).

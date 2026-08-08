@@ -1,26 +1,218 @@
 @import "tailwindcss";
 
+/*
+  Design tokens — clinical-warm palette inspired by SiPhox reference screenshots
+  in /design/reference-screenshots. Status colors are defined once here; never
+  inline hex codes in components.
+*/
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f4f7f8;
+  --foreground: #1a2226;
+  --surface: #ffffff;
+  --surface-muted: #eef3f4;
+  --border: #d7e0e3;
+  --muted: #5c6b73;
+  --sidebar: #1c2428;
+  --sidebar-foreground: #e8eef0;
+  --accent: #2a9d9a;
+  --accent-soft: #e6f5f4;
+  --in-range: #3b82f6;
+
+  --status-optimal: #22a06b;
+  --status-good: #3b82f6;
+  --status-fair: #e09b3d;
+  --status-attention: #e24b4a;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-in-range: var(--in-range);
+  --color-status-optimal: var(--status-optimal);
+  --color-status-good: var(--status-good);
+  --color-status-fair: var(--status-fair);
+  --color-status-attention: var(--status-attention);
+  --font-sans: var(--font-dm-sans);
+  --font-display: var(--font-fraunces);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+}
+
+/*
+  Shared form controls — use these instead of one-off border/radius classes.
+  Keep select + input visually identical so review tables stay consistent.
+*/
+@layer components {
+  .ba-field {
+    width: 100%;
+    border-radius: 0.75rem;
+    border: 1px solid var(--border);
+    background-color: var(--surface);
+    padding: 0.625rem 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    color: var(--foreground);
+    outline: none;
+    transition:
+      border-color 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .ba-field:hover {
+    border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+  }
+
+  .ba-field:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
+  }
+
+  .ba-field:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .ba-field-sm {
+    border-radius: 0.625rem;
+    padding: 0.4rem 0.625rem;
+    font-size: 0.8125rem;
+    line-height: 1.15rem;
+  }
+
+  .ba-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' viewBox='0 0 16 16'%3E%3Cpath stroke='%235c6b73' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.7rem center;
+    background-size: 1rem;
+    padding-right: 2.25rem;
+  }
+
+  .ba-select.ba-field-sm {
+    background-position: right 0.5rem center;
+    padding-right: 1.85rem;
+  }
+
+  /*
+    Buttons — one shape scale for the whole app so primary/secondary actions
+    line up across upload, report and auth screens.
+  */
+  .ba-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid transparent;
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      filter 0.15s ease,
+      color 0.15s ease;
+  }
+
+  .ba-btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent);
+  }
+
+  .ba-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .ba-btn-primary {
+    background-color: var(--accent);
+    color: #fff;
+  }
+
+  .ba-btn-primary:hover:not(:disabled) {
+    filter: brightness(1.07);
+  }
+
+  .ba-btn-secondary {
+    border-color: var(--border);
+    background-color: var(--surface);
+    color: var(--foreground);
+  }
+
+  .ba-btn-secondary:hover:not(:disabled) {
+    border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+    background-color: var(--surface-muted);
+  }
+
+  .ba-btn-lg {
+    border-radius: 0.875rem;
+    padding: 0.8125rem 1.25rem;
+    font-size: 0.9375rem;
+  }
+
+  /* Circular icon-only control used by modal/panel close buttons. */
+  .ba-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 2rem;
+    width: 2rem;
+    flex-shrink: 0;
+    border-radius: 9999px;
+    border: 1px solid var(--border);
+    background-color: var(--surface);
+    color: var(--muted);
+    cursor: pointer;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease;
+  }
+
+  .ba-icon-btn:hover {
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+    background-color: var(--surface-muted);
+    color: var(--foreground);
+  }
+
+  .ba-icon-btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent);
+  }
+
+  /* Small caps label above a page or card title. */
+  .ba-eyebrow {
+    font-size: 0.6875rem;
+    line-height: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

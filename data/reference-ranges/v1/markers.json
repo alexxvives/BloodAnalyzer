@@ -1,0 +1,2811 @@
+{
+  "version": "1.2.1",
+  "reviewStatus": "provisional",
+  "notes": "Educational seed. NOT clinician-reviewed. Prefer printed lab intervals when available. Do not treat as diagnosis. v1.2.1: enforced sourced-boundaries-only band policy for reference-interval markers (hematocrit, rbc, creatinine, uric-acid, ggt, hemoglobin, serum-iron) — attention / good / attention at the primary interval endpoints; no invented fair/optimal interiors; serum iron grades on the Mayo interval with an explicit lab-specific caveat. v1.2.0: replaced nine male-derived ranges with sex-specific rows; rebuilt ferritin; removed invented total-cholesterol 180; aligned female HDL; collapsed vitamin D. 27 markers still carry 'NEEDS CLINICIAN REVIEW' citations; see data/SOURCES.md and data/reference-ranges/reference-data.test.ts.",
+  "markers": [
+    {
+      "biomarkerId": "total-cholesterol",
+      "name": "Total Cholesterol",
+      "subtitle": "Overall circulating cholesterol",
+      "sectionId": "lipid",
+      "unit": "mg/dL",
+      "loincCode": "2093-3",
+      "sourced": true,
+      "labLow": null,
+      "labHigh": 200,
+      "bands": [
+        {
+          "status": "optimal",
+          "min": null,
+          "max": 199.999
+        },
+        {
+          "status": "fair",
+          "min": 200,
+          "max": 239.999
+        },
+        {
+          "status": "attention",
+          "min": 240,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "NCEP ATP III Table 2 — total cholesterol <200 Desirable, 200-239 Borderline high, >=240 High",
+          "citation": "National Cholesterol Education Program Adult Treatment Panel III. Executive Summary, Table 2. Circulation. 2002;106:3143-3421. ATP III defines no cutpoint below 200 mg/dL, so no separate 'good' band is claimed here.",
+          "url": "https://www.nhlbi.nih.gov/files/docs/guidelines/atp3xsum.pdf",
+          "verifiedAt": "2026-08-07"
+        }
+      ]
+    },
+    {
+      "biomarkerId": "ldl-cholesterol",
+      "name": "LDL Cholesterol",
+      "subtitle": "'Bad' cholesterol",
+      "sectionId": "lipid",
+      "unit": "mg/dL",
+      "loincCode": "18262-6",
+      "sourced": true,
+      "labLow": null,
+      "labHigh": 100,
+      "bands": [
+        {
+          "status": "optimal",
+          "min": null,
+          "max": 99.999
+        },
+        {
+          "status": "good",
+          "min": 100,
+          "max": 129.999
+        },
+        {
+          "status": "fair",
+          "min": 130,
+          "max": 159.999
+        },
+        {
+          "status": "attention",
+          "min": 160,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "NCEP ATP III LDL categories (provisional mapping)",
+          "citation": "National Cholesterol Education Program Adult Treatment Panel III. Circulation. 2002;106:3143-3421.",
+          "url": "https://www.nhlbi.nih.gov/files/docs/guidelines/atp3xsum.pdf",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "hdl-cholesterol",
+      "name": "HDL Cholesterol",
+      "subtitle": "'Good' cholesterol",
+      "sectionId": "lipid",
+      "unit": "mg/dL",
+      "loincCode": "2085-9",
+      "sourced": true,
+      "demographic": {
+        "sex": "male"
+      },
+      "labLow": 40,
+      "labHigh": null,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 39.999
+        },
+        {
+          "status": "fair",
+          "min": 40,
+          "max": 49.999
+        },
+        {
+          "status": "good",
+          "min": 50,
+          "max": 59.999
+        },
+        {
+          "status": "optimal",
+          "min": 60,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "NCEP ATP III Table 2 + Framingham HDL point strata — <40 Low, 40-49, 50-59, >=60 High",
+          "citation": "National Cholesterol Education Program Adult Treatment Panel III. Executive Summary, Table 2 and Table B1. Circulation. 2002;106:3143-3421.",
+          "url": "https://www.nhlbi.nih.gov/files/docs/guidelines/atp3xsum.pdf",
+          "verifiedAt": "2026-08-07"
+        }
+      ]
+    },
+    {
+      "biomarkerId": "hdl-cholesterol",
+      "name": "HDL Cholesterol",
+      "subtitle": "'Good' cholesterol",
+      "sectionId": "lipid",
+      "unit": "mg/dL",
+      "loincCode": "2085-9",
+      "sourced": true,
+      "demographic": {
+        "sex": "female"
+      },
+      "labLow": 50,
+      "labHigh": null,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 39.999
+        },
+        {
+          "status": "fair",
+          "min": 40,
+          "max": 49.999
+        },
+        {
+          "status": "good",
+          "min": 50,
+          "max": 59.999
+        },
+        {
+          "status": "optimal",
+          "min": 60,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "NCEP ATP III Table 2 + Framingham HDL point strata — <40 Low, 40-49, 50-59, >=60 High (defined identically for both sexes)",
+          "citation": "National Cholesterol Education Program Adult Treatment Panel III. Executive Summary, Table 2 and Tables B1/B2. Circulation. 2002;106:3143-3421. ATP III states low HDL is defined categorically as <40 mg/dL, and the Framingham HDL point strata (>=60, 50-59, 40-49, <40) are identical in the men's and women's tables.",
+          "url": "https://www.nhlbi.nih.gov/files/docs/guidelines/atp3xsum.pdf",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "NCEP ATP III Table 8 — metabolic syndrome HDL criterion, women <50 mg/dL (basis for the lab flag only, not the grade)",
+          "citation": "National Cholesterol Education Program Adult Treatment Panel III. Executive Summary, Table 8 'Clinical Identification of the Metabolic Syndrome': HDL cholesterol Men <40 mg/dL, Women <50 mg/dL. Used here for labLow so the lab flag reflects the sex-specific criterion while the optimization grade follows the sex-neutral HDL classification.",
+          "url": "https://www.nhlbi.nih.gov/files/docs/guidelines/atp3xsum.pdf",
+          "verifiedAt": "2026-08-07"
+        }
+      ]
+    },
+    {
+      "biomarkerId": "glucose-fasting",
+      "name": "Fasting Glucose",
+      "subtitle": "Blood sugar after fasting",
+      "sectionId": "metabolic",
+      "unit": "mg/dL",
+      "loincCode": "1558-6",
+      "sourced": true,
+      "labLow": 70,
+      "labHigh": 99,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 69.999
+        },
+        {
+          "status": "optimal",
+          "min": 70,
+          "max": 89.999
+        },
+        {
+          "status": "good",
+          "min": 90,
+          "max": 99.999
+        },
+        {
+          "status": "fair",
+          "min": 100,
+          "max": 125.999
+        },
+        {
+          "status": "attention",
+          "min": 126,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "ADA fasting plasma glucose categories (provisional mapping)",
+          "citation": "American Diabetes Association. Standards of Care in Diabetes—Classification and Diagnosis. Diabetes Care (annual standards).",
+          "url": "https://diabetesjournals.org/care",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "alt",
+      "name": "ALT",
+      "subtitle": "Liver enzyme",
+      "sectionId": "liver",
+      "unit": "U/L",
+      "loincCode": "1742-6",
+      "sourced": true,
+      "labLow": null,
+      "labHigh": 40,
+      "bands": [
+        {
+          "status": "optimal",
+          "min": null,
+          "max": 29.999
+        },
+        {
+          "status": "good",
+          "min": 30,
+          "max": 40
+        },
+        {
+          "status": "fair",
+          "min": 40.001,
+          "max": 55
+        },
+        {
+          "status": "attention",
+          "min": 55.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Common clinical lab upper reference (~40 U/L) — assay-dependent (provisional)",
+          "citation": "NEEDS CLINICIAN REVIEW: ALT upper limits of normal vary by assay, sex, and lab. This seed uses a commonly quoted adult ULN of ~40 U/L for education only.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "hemoglobin",
+      "name": "Hemoglobin",
+      "subtitle": "Oxygen-carrying protein in blood",
+      "sectionId": "cbc",
+      "unit": "g/dL",
+      "loincCode": "718-7",
+      "sourced": true,
+      "demographic": {
+        "sex": "male"
+      },
+      "labLow": 13,
+      "labHigh": 17,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 12.999
+        },
+        {
+          "status": "good",
+          "min": 13,
+          "max": 17
+        },
+        {
+          "status": "attention",
+          "min": 17.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "WHO anemia cutoffs for adult men (lab low)",
+          "citation": "WHO. Haemoglobin concentrations for the diagnosis of anaemia and assessment of severity. 2011. Adult male anemia cutoff <13.0 g/dL. Upper lab bound 17 g/dL is the common adult male reference high used with that cutoff; interior fair/optimal bands are not claimed because WHO does not define an optimum inside the interval.",
+          "url": "https://www.who.int/publications/i/item/WHO-NMH-NHD-MNM-11.1",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "hemoglobin",
+      "name": "Hemoglobin",
+      "subtitle": "Oxygen-carrying protein in blood",
+      "sectionId": "cbc",
+      "unit": "g/dL",
+      "loincCode": "718-7",
+      "sourced": true,
+      "demographic": {
+        "sex": "female"
+      },
+      "labLow": 12,
+      "labHigh": 15,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 11.999
+        },
+        {
+          "status": "good",
+          "min": 12,
+          "max": 15
+        },
+        {
+          "status": "attention",
+          "min": 15.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "WHO anemia cutoffs for non-pregnant adult women (lab low)",
+          "citation": "WHO. Haemoglobin concentrations for the diagnosis of anaemia and assessment of severity. 2011. Adult non-pregnant female anemia cutoff <12.0 g/dL. Upper lab bound 15 g/dL is the common adult female reference high used with that cutoff; interior fair/optimal bands are not claimed because WHO does not define an optimum inside the interval.",
+          "url": "https://www.who.int/publications/i/item/WHO-NMH-NHD-MNM-11.1",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "unsourced-example",
+      "name": "Unsourced Example Marker",
+      "subtitle": "Fixture for 'range not available' behavior",
+      "sectionId": "other",
+      "unit": "mg/dL",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [
+        {
+          "status": "optimal",
+          "min": 0,
+          "max": 10
+        }
+      ],
+      "sourceRefs": []
+    },
+    {
+      "biomarkerId": "triglycerides",
+      "name": "Triglycerides",
+      "subtitle": "Blood fats after fasting",
+      "sectionId": "lipid",
+      "unit": "mg/dL",
+      "loincCode": "2571-8",
+      "sourced": true,
+      "labLow": null,
+      "labHigh": 150,
+      "bands": [
+        {
+          "status": "optimal",
+          "min": null,
+          "max": 99.999
+        },
+        {
+          "status": "good",
+          "min": 100,
+          "max": 149.999
+        },
+        {
+          "status": "fair",
+          "min": 150,
+          "max": 199.999
+        },
+        {
+          "status": "attention",
+          "min": 200,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "NCEP ATP III triglyceride categories (provisional mapping)",
+          "citation": "National Cholesterol Education Program Adult Treatment Panel III. Circulation. 2002. Normal <150, borderline 150–199, high ≥200 mg/dL.",
+          "url": "https://www.nhlbi.nih.gov/files/docs/guidelines/atp3xsum.pdf",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "lp-a",
+      "name": "Lipoprotein(a)",
+      "subtitle": "Genetically influenced lipoprotein particle",
+      "sectionId": "lipid",
+      "unit": "mg/dL",
+      "sourced": true,
+      "labLow": null,
+      "labHigh": 30,
+      "bands": [
+        {
+          "status": "optimal",
+          "min": null,
+          "max": 29.999
+        },
+        {
+          "status": "fair",
+          "min": 30,
+          "max": 49.999
+        },
+        {
+          "status": "attention",
+          "min": 50,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Common Lp(a) risk thresholds (assay-dependent, provisional)",
+          "citation": "NEEDS CLINICIAN REVIEW: Many labs flag Lp(a) <30 mg/dL; risk rises above ~50 mg/dL. Assays/units vary (mg/dL vs nmol/L).",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "urea",
+      "name": "Urea",
+      "subtitle": "Kidney / protein metabolism marker",
+      "sectionId": "kidney",
+      "unit": "mg/dL",
+      "sourced": true,
+      "labLow": 19,
+      "labHigh": 44,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 18.999
+        },
+        {
+          "status": "optimal",
+          "min": 19,
+          "max": 35
+        },
+        {
+          "status": "good",
+          "min": 35.001,
+          "max": 44
+        },
+        {
+          "status": "fair",
+          "min": 44.001,
+          "max": 55
+        },
+        {
+          "status": "attention",
+          "min": 55.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Common adult urea lab interval (provisional; lab-specific)",
+          "citation": "NEEDS CLINICIAN REVIEW: Adult urea intervals vary by assay/lab. Seed mirrors a common European adult band (~19–44 mg/dL) for education only.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "creatinine",
+      "name": "Creatinine",
+      "subtitle": "Kidney filtration marker",
+      "sectionId": "kidney",
+      "unit": "mg/dL",
+      "sourced": true,
+      "labLow": 0.59,
+      "labHigh": 1.04,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 0.589
+        },
+        {
+          "status": "good",
+          "min": 0.59,
+          "max": 1.04
+        },
+        {
+          "status": "attention",
+          "min": 1.041,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories — adult female creatinine 0.59-1.04 mg/dL (enzymatic, IDMS-traceable)",
+          "citation": "Mayo Clinic Laboratories, test CRTS1 (Creatinine, Serum). Females >=16 years 0.59-1.04 mg/dL. Roche cobas enzymatic assay; calibration traceable to international reference materials with minimal bias versus IDMS.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/48216",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "NORIP enzymatic subgroup — adult female creatinine 0.52-1.04 mg/dL",
+          "citation": "Rustad P, et al. The Nordic Reference Interval Project 2000. Scand J Clin Lab Invest. 2004;64(4):271-284. Enzymatic method subgroup (n=137 women): 46-92 umol/L, converted at 88.4 umol/L per mg/dL. All values corrected to the IDMS value of the project calibrator. Both sources agree on the upper limit of 1.04 mg/dL.",
+          "url": "https://nyenga.net/norip/SJCLI/final/main.pdf",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. Secondary published intervals are cited for corroboration but do not invent a fair or optimal tier. No source defines an optimum inside a reference interval.",
+          "url": null,
+          "verifiedAt": "2026-08-07"
+        }
+      ],
+      "demographic": {
+        "sex": "female"
+      }
+    },
+    {
+      "biomarkerId": "creatinine",
+      "name": "Creatinine",
+      "subtitle": "Kidney filtration marker",
+      "sectionId": "kidney",
+      "unit": "mg/dL",
+      "sourced": true,
+      "labLow": 0.74,
+      "labHigh": 1.35,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 0.739
+        },
+        {
+          "status": "good",
+          "min": 0.74,
+          "max": 1.35
+        },
+        {
+          "status": "attention",
+          "min": 1.351,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories — adult male creatinine 0.74-1.35 mg/dL (enzymatic, IDMS-traceable)",
+          "citation": "Mayo Clinic Laboratories, test CRTS1 (Creatinine, Serum). Males >=15 years 0.74-1.35 mg/dL. Roche cobas enzymatic assay; calibration traceable to international reference materials with minimal bias versus IDMS.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/48216",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "NORIP enzymatic subgroup — adult male creatinine 0.68-1.19 mg/dL",
+          "citation": "Rustad P, et al. The Nordic Reference Interval Project 2000. Scand J Clin Lab Invest. 2004;64(4):271-284. Enzymatic method subgroup (n=113 men): 60-105 umol/L, converted at 88.4 umol/L per mg/dL. The two sources differ most at the upper limit (1.19 vs 1.35), a real assay and population difference reflected here as a 'fair' band rather than resolved arbitrarily.",
+          "url": "https://nyenga.net/norip/SJCLI/final/main.pdf",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. Secondary published intervals are cited for corroboration but do not invent a fair or optimal tier. No source defines an optimum inside a reference interval.",
+          "url": null,
+          "verifiedAt": "2026-08-07"
+        }
+      ],
+      "demographic": {
+        "sex": "male"
+      }
+    },
+    {
+      "biomarkerId": "uric-acid",
+      "name": "Uric Acid",
+      "subtitle": "Purine metabolism marker",
+      "sectionId": "metabolic",
+      "unit": "mg/dL",
+      "sourced": true,
+      "labLow": 2.7,
+      "labHigh": 6.1,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 2.699
+        },
+        {
+          "status": "good",
+          "min": 2.7,
+          "max": 6.1
+        },
+        {
+          "status": "attention",
+          "min": 6.101,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories — adult female uric acid 2.7-6.1 mg/dL",
+          "citation": "Mayo Clinic Laboratories, test URIC (Uric Acid, Serum). Females >=13 years 2.7-6.1 mg/dL. The same page notes hyperuricemia is most commonly defined as >6.1 mg/dL in females.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/8440",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "ELSA-Brasil — female uric acid 2.7-6.2 mg/dL restricted to BMI under 25",
+          "citation": "ELSA-Brasil reference range study, Advances in Rheumatology. 15,100 Brazilian civil servants aged 35-74; reference sample of 10,340 after excluding eGFR <60, excessive alcohol, diuretics, aspirin, estrogen therapy and urate-lowering drugs; 2.5th-97.5th percentiles stratified by sex per CLSI. The whole-cohort upper limit is 6.9 mg/dL, but 31.9% of that cohort met the classic hyperuricemia definition, so the BMI<25 subgroup limit of 6.2 is used here. A population percentile describes what is common, not what is benign.",
+          "url": "https://www.scielo.br/j/adr/a/HTHNj6pnzmDJWMHSnd8PBnv/",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. Secondary published intervals are cited for corroboration but do not invent a fair or optimal tier. No source defines an optimum inside a reference interval.",
+          "url": null,
+          "verifiedAt": "2026-08-07"
+        }
+      ],
+      "demographic": {
+        "sex": "female"
+      }
+    },
+    {
+      "biomarkerId": "uric-acid",
+      "name": "Uric Acid",
+      "subtitle": "Purine metabolism marker",
+      "sectionId": "metabolic",
+      "unit": "mg/dL",
+      "sourced": true,
+      "labLow": 3.7,
+      "labHigh": 8,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 3.699
+        },
+        {
+          "status": "good",
+          "min": 3.7,
+          "max": 8
+        },
+        {
+          "status": "attention",
+          "min": 8.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories — adult male uric acid 3.7-8.0 mg/dL",
+          "citation": "Mayo Clinic Laboratories, test URIC (Uric Acid, Serum). Males >=16 years 3.7-8.0 mg/dL. The same page notes hyperuricemia is most commonly defined as >8.0 mg/dL in males.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/8440",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "ELSA-Brasil — male uric acid 3.7-8.5 mg/dL restricted to BMI under 25",
+          "citation": "ELSA-Brasil reference range study, Advances in Rheumatology. The whole-cohort male upper limit is 9.2 mg/dL, which describes a contemporary heavier population rather than a benign ceiling; the BMI<25 subgroup limit of 8.5 is used here instead. Gout risk is graded rather than threshold-based.",
+          "url": "https://www.scielo.br/j/adr/a/HTHNj6pnzmDJWMHSnd8PBnv/",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. Secondary published intervals are cited for corroboration but do not invent a fair or optimal tier. No source defines an optimum inside a reference interval.",
+          "url": null,
+          "verifiedAt": "2026-08-07"
+        }
+      ],
+      "demographic": {
+        "sex": "male"
+      }
+    },
+    {
+      "biomarkerId": "ast",
+      "name": "AST",
+      "subtitle": "Liver enzyme",
+      "sectionId": "liver",
+      "unit": "U/L",
+      "sourced": true,
+      "labLow": null,
+      "labHigh": 40,
+      "bands": [
+        {
+          "status": "optimal",
+          "min": null,
+          "max": 29.999
+        },
+        {
+          "status": "good",
+          "min": 30,
+          "max": 40
+        },
+        {
+          "status": "fair",
+          "min": 40.001,
+          "max": 55
+        },
+        {
+          "status": "attention",
+          "min": 55.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Common clinical AST ULN ~40 U/L (assay-dependent, provisional)",
+          "citation": "NEEDS CLINICIAN REVIEW: AST upper limits vary by assay and sex. Educational seed only.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "ggt",
+      "name": "GGT",
+      "subtitle": "Liver / bile duct enzyme",
+      "sectionId": "liver",
+      "unit": "U/L",
+      "sourced": true,
+      "labLow": 5,
+      "labHigh": 36,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 4.999
+        },
+        {
+          "status": "good",
+          "min": 5,
+          "max": 36
+        },
+        {
+          "status": "attention",
+          "min": 36.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories — adult female GGT 5-36 U/L",
+          "citation": "Mayo Clinic Laboratories, test GGT (Gamma-Glutamyltransferase, Serum). Females >=18 years 5-36 U/L.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/8677",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "NORIP enzymes — female GGT 10-42 U/L under age 40",
+          "citation": "Strømme JH, et al. Reference intervals for eight enzymes in blood of adult females and males measured in accordance with the IFCC reference system at 37 degrees C. Scand J Clin Lab Invest. 2004;64(4):371-384. 1,381 usable GGT results from recruited healthy Nordic adults; IFCC-traceable systems only; partitioning positive for both sex and age with a breakpoint at 40 years (females <40y 10-42 U/L, >=40y 11-77 U/L). CAVEAT: the authors note their upper limits are markedly higher than IFCC expert-panel values, and a follow-up study attributes roughly a 40% inflation to including moderate drinkers in the reference population, so the tighter Mayo limit is used for 'good'.",
+          "url": "http://www.nyenga.net/norip/SJCLI/final/Johan%20S.pdf",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. Secondary published intervals are cited for corroboration but do not invent a fair or optimal tier. No source defines an optimum inside a reference interval.",
+          "url": null,
+          "verifiedAt": "2026-08-07"
+        }
+      ],
+      "demographic": {
+        "sex": "female"
+      }
+    },
+    {
+      "biomarkerId": "ggt",
+      "name": "GGT",
+      "subtitle": "Liver / bile duct enzyme",
+      "sectionId": "liver",
+      "unit": "U/L",
+      "sourced": true,
+      "labLow": 8,
+      "labHigh": 61,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 7.999
+        },
+        {
+          "status": "good",
+          "min": 8,
+          "max": 61
+        },
+        {
+          "status": "attention",
+          "min": 61.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories — adult male GGT 8-61 U/L",
+          "citation": "Mayo Clinic Laboratories, test GGT (Gamma-Glutamyltransferase, Serum). Males >=18 years 8-61 U/L.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/8677",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "NORIP enzymes — male GGT 12-78 U/L under age 40",
+          "citation": "Strømme JH, et al. Scand J Clin Lab Invest. 2004;64(4):371-384. Males <40y 12-78 U/L, >=40y 15-114 U/L. CAVEAT: the authors note their upper limits are markedly higher than IFCC expert-panel values, with roughly a 40% inflation attributed to moderate drinkers in the reference population, so the tighter Mayo limit is used for 'good' and the age-40 breakpoint is recorded here rather than applied.",
+          "url": "http://www.nyenga.net/norip/SJCLI/final/Johan%20S.pdf",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. Secondary published intervals are cited for corroboration but do not invent a fair or optimal tier. No source defines an optimum inside a reference interval.",
+          "url": null,
+          "verifiedAt": "2026-08-07"
+        }
+      ],
+      "demographic": {
+        "sex": "male"
+      }
+    },
+    {
+      "biomarkerId": "hematocrit",
+      "name": "Hematocrit",
+      "subtitle": "Red cell volume fraction",
+      "sectionId": "cbc",
+      "unit": "%",
+      "sourced": true,
+      "labLow": 35.5,
+      "labHigh": 44.9,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 35.499
+        },
+        {
+          "status": "good",
+          "min": 35.5,
+          "max": 44.9
+        },
+        {
+          "status": "attention",
+          "min": 44.901,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories — adult female hematocrit 35.5-44.9%",
+          "citation": "Mayo Clinic Laboratories, test 9109 (Complete Blood Cell Count with Differential). Females >=18 years 35.5-44.9%.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/9109",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "NORIP — adult female hematocrit 34.8-45.9%",
+          "citation": "Nordin G, et al. A multicentre study of reference intervals for haemoglobin, basic blood cell counts and erythrocyte indices in the adult population of the Nordic countries. Scand J Clin Lab Invest. 2004;64(4):385-398. 1,826 subjectively healthy adults aged 18-90 from five Nordic countries; non-parametric 2.5-97.5 percentiles; sex partitioning was formally tested and found to be required for this analyte. Females 0.348-0.459 L/L, reported here as 34.8-45.9%.",
+          "url": "https://doi.org/10.1080/00365510410002797",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. Secondary published intervals are cited for corroboration but do not invent a fair or optimal tier. No source defines an optimum inside a reference interval.",
+          "url": null,
+          "verifiedAt": "2026-08-07"
+        }
+      ],
+      "demographic": {
+        "sex": "female"
+      }
+    },
+    {
+      "biomarkerId": "hematocrit",
+      "name": "Hematocrit",
+      "subtitle": "Red cell volume fraction",
+      "sectionId": "cbc",
+      "unit": "%",
+      "sourced": true,
+      "labLow": 38.3,
+      "labHigh": 48.6,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 38.299
+        },
+        {
+          "status": "good",
+          "min": 38.3,
+          "max": 48.6
+        },
+        {
+          "status": "attention",
+          "min": 48.601,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories — adult male hematocrit 38.3-48.6%",
+          "citation": "Mayo Clinic Laboratories, test 9109 (Complete Blood Cell Count with Differential). Males >=18 years 38.3-48.6%.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/9109",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "NORIP — adult male hematocrit 39.5-50.0%",
+          "citation": "Nordin G, et al. A multicentre study of reference intervals for haemoglobin, basic blood cell counts and erythrocyte indices in the adult population of the Nordic countries. Scand J Clin Lab Invest. 2004;64(4):385-398. 1,826 subjectively healthy adults aged 18-90 from five Nordic countries; non-parametric 2.5-97.5 percentiles; sex partitioning was formally tested and found to be required for this analyte. Males 0.395-0.500 L/L, reported here as 39.5-50.0%.",
+          "url": "https://doi.org/10.1080/00365510410002797",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. Secondary published intervals are cited for corroboration but do not invent a fair or optimal tier. No source defines an optimum inside a reference interval.",
+          "url": null,
+          "verifiedAt": "2026-08-07"
+        }
+      ],
+      "demographic": {
+        "sex": "male"
+      }
+    },
+    {
+      "biomarkerId": "rbc",
+      "name": "Red Blood Cells",
+      "subtitle": "Erythrocyte count",
+      "sectionId": "cbc",
+      "unit": "/uL",
+      "sourced": true,
+      "labLow": 3920000,
+      "labHigh": 5130000,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 3919999.999
+        },
+        {
+          "status": "good",
+          "min": 3920000,
+          "max": 5130000
+        },
+        {
+          "status": "attention",
+          "min": 5130000.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories — adult female RBC 3.92-5.13 x10^6/uL",
+          "citation": "Mayo Clinic Laboratories, test 9109 (Complete Blood Cell Count with Differential). Females >=18 years 3.92-5.13 x10^6/uL.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/9109",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "NORIP — adult female RBC 3.94-5.16 x10^6/uL",
+          "citation": "Nordin G, et al. A multicentre study of reference intervals for haemoglobin, basic blood cell counts and erythrocyte indices in the adult population of the Nordic countries. Scand J Clin Lab Invest. 2004;64(4):385-398. 1,826 subjectively healthy adults aged 18-90 from five Nordic countries; non-parametric 2.5-97.5 percentiles; sex partitioning was formally tested and found to be required for this analyte. Females 3.94-5.16 x10^12/L, numerically identical to x10^6/uL.",
+          "url": "https://doi.org/10.1080/00365510410002797",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. Secondary published intervals are cited for corroboration but do not invent a fair or optimal tier. No source defines an optimum inside a reference interval.",
+          "url": null,
+          "verifiedAt": "2026-08-07"
+        }
+      ],
+      "demographic": {
+        "sex": "female"
+      }
+    },
+    {
+      "biomarkerId": "rbc",
+      "name": "Red Blood Cells",
+      "subtitle": "Erythrocyte count",
+      "sectionId": "cbc",
+      "unit": "/uL",
+      "sourced": true,
+      "labLow": 4350000,
+      "labHigh": 5650000,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 4349999.999
+        },
+        {
+          "status": "good",
+          "min": 4350000,
+          "max": 5650000
+        },
+        {
+          "status": "attention",
+          "min": 5650000.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories — adult male RBC 4.35-5.65 x10^6/uL",
+          "citation": "Mayo Clinic Laboratories, test 9109 (Complete Blood Cell Count with Differential). Males >=18 years 4.35-5.65 x10^6/uL.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/9109",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "NORIP — adult male RBC 4.25-5.71 x10^6/uL",
+          "citation": "Nordin G, et al. A multicentre study of reference intervals for haemoglobin, basic blood cell counts and erythrocyte indices in the adult population of the Nordic countries. Scand J Clin Lab Invest. 2004;64(4):385-398. 1,826 subjectively healthy adults aged 18-90 from five Nordic countries; non-parametric 2.5-97.5 percentiles; sex partitioning was formally tested and found to be required for this analyte. Males 4.25-5.71 x10^12/L, numerically identical to x10^6/uL.",
+          "url": "https://doi.org/10.1080/00365510410002797",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. Secondary published intervals are cited for corroboration but do not invent a fair or optimal tier. No source defines an optimum inside a reference interval.",
+          "url": null,
+          "verifiedAt": "2026-08-07"
+        }
+      ],
+      "demographic": {
+        "sex": "male"
+      }
+    },
+    {
+      "biomarkerId": "wbc",
+      "name": "White Blood Cells",
+      "subtitle": "Leukocyte count",
+      "sectionId": "cbc",
+      "unit": "/uL",
+      "sourced": true,
+      "labLow": 4000,
+      "labHigh": 11000,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 3999.999
+        },
+        {
+          "status": "optimal",
+          "min": 4000,
+          "max": 9000.999
+        },
+        {
+          "status": "good",
+          "min": 9001,
+          "max": 11000.999
+        },
+        {
+          "status": "fair",
+          "min": 11001,
+          "max": 15000.999
+        },
+        {
+          "status": "attention",
+          "min": 15001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Common adult WBC interval (provisional)",
+          "citation": "NEEDS CLINICIAN REVIEW: Typical adult WBC ~4–11 ×10³/µL; infection/stress shift counts.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "platelets",
+      "name": "Platelets",
+      "subtitle": "Clotting cell count",
+      "sectionId": "cbc",
+      "unit": "/uL",
+      "sourced": true,
+      "labLow": 150000,
+      "labHigh": 400000,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 149999.999
+        },
+        {
+          "status": "optimal",
+          "min": 150000,
+          "max": 350000.999
+        },
+        {
+          "status": "good",
+          "min": 350001,
+          "max": 400000.999
+        },
+        {
+          "status": "fair",
+          "min": 400001,
+          "max": 450000.999
+        },
+        {
+          "status": "attention",
+          "min": 450001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Common adult platelet interval (provisional)",
+          "citation": "NEEDS CLINICIAN REVIEW: Typical adult platelets ~150–400 ×10³/µL.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "mcv",
+      "name": "MCV",
+      "subtitle": "Mean corpuscular volume",
+      "sectionId": "cbc",
+      "unit": "fL",
+      "sourced": true,
+      "labLow": 80,
+      "labHigh": 100,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 79.999
+        },
+        {
+          "status": "optimal",
+          "min": 80,
+          "max": 95
+        },
+        {
+          "status": "good",
+          "min": 95.001,
+          "max": 100
+        },
+        {
+          "status": "attention",
+          "min": 100.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Common adult MCV interval (provisional)",
+          "citation": "NEEDS CLINICIAN REVIEW: Typical adult MCV ~80–100 fL.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "mch",
+      "name": "MCH",
+      "subtitle": "Mean corpuscular hemoglobin",
+      "sectionId": "cbc",
+      "unit": "pg",
+      "sourced": true,
+      "labLow": 27,
+      "labHigh": 33,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 26.999
+        },
+        {
+          "status": "fair",
+          "min": 27,
+          "max": 27.999
+        },
+        {
+          "status": "good",
+          "min": 28,
+          "max": 28.999
+        },
+        {
+          "status": "optimal",
+          "min": 29,
+          "max": 31.5
+        },
+        {
+          "status": "good",
+          "min": 31.501,
+          "max": 32.5
+        },
+        {
+          "status": "fair",
+          "min": 32.501,
+          "max": 33
+        },
+        {
+          "status": "attention",
+          "min": 33.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Common adult MCH interval (provisional)",
+          "citation": "NEEDS CLINICIAN REVIEW: Typical adult MCH ~27–33 pg. Optimization bands are educational mid-range splits within the lab interval.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "mchc",
+      "name": "MCHC",
+      "subtitle": "Mean corpuscular hemoglobin concentration",
+      "sectionId": "cbc",
+      "unit": "g/dL",
+      "sourced": true,
+      "labLow": 32,
+      "labHigh": 36,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 31.999
+        },
+        {
+          "status": "fair",
+          "min": 32,
+          "max": 32.499
+        },
+        {
+          "status": "good",
+          "min": 32.5,
+          "max": 33.499
+        },
+        {
+          "status": "optimal",
+          "min": 33.5,
+          "max": 35
+        },
+        {
+          "status": "good",
+          "min": 35.001,
+          "max": 35.5
+        },
+        {
+          "status": "fair",
+          "min": 35.501,
+          "max": 36
+        },
+        {
+          "status": "attention",
+          "min": 36.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Common adult MCHC interval (provisional)",
+          "citation": "NEEDS CLINICIAN REVIEW: Typical adult MCHC ~32–36 g/dL. Optimization bands are educational mid-range splits within the lab interval.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "rdw",
+      "name": "RDW",
+      "subtitle": "Red cell distribution width",
+      "sectionId": "cbc",
+      "unit": "%",
+      "sourced": true,
+      "labLow": null,
+      "labHigh": 14.5,
+      "bands": [
+        {
+          "status": "optimal",
+          "min": null,
+          "max": 13.5
+        },
+        {
+          "status": "good",
+          "min": 13.501,
+          "max": 14.5
+        },
+        {
+          "status": "fair",
+          "min": 14.501,
+          "max": 16
+        },
+        {
+          "status": "attention",
+          "min": 16.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Common adult RDW upper bound (provisional)",
+          "citation": "NEEDS CLINICIAN REVIEW: RDW ULN often ~14–15%; assay-specific.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "pdw",
+      "name": "PDW",
+      "subtitle": "Platelet distribution width",
+      "sectionId": "cbc",
+      "unit": "fL",
+      "sourced": true,
+      "labLow": 9,
+      "labHigh": 17,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 8.999
+        },
+        {
+          "status": "good",
+          "min": 9,
+          "max": 17
+        },
+        {
+          "status": "attention",
+          "min": 17.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Common adult PDW interval (provisional)",
+          "citation": "NEEDS CLINICIAN REVIEW: PDW ranges are analyzer-specific.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "esr",
+      "name": "ESR",
+      "subtitle": "Erythrocyte sedimentation rate (1st hour)",
+      "sectionId": "inflammation",
+      "unit": "mm",
+      "sourced": true,
+      "labLow": null,
+      "labHigh": 20,
+      "bands": [
+        {
+          "status": "good",
+          "min": null,
+          "max": 20
+        },
+        {
+          "status": "attention",
+          "min": 20.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Westergren ESR upper limit for females under 50 — 20 mm/h",
+          "citation": "Erythrocyte Sedimentation Rate. StatPearls, NIH Bookshelf. Conventional Westergren upper limits: males <50y 15 mm/h, males >=50y 20 mm/h, females <50y 20 mm/h, females >=50y 30 mm/h. StatPearls itself notes the reference range should be established by the performing laboratory. A low ESR is not clinically concerning, so no lower bound is graded.",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK557485/",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "Context — ESR has no true 95% reference interval",
+          "citation": "The widely quoted Miller formula (Miller A, Green M, Robinson D. Simple rule for calculating normal erythrocyte sedimentation rate. BMJ. 1983;286(6361):266) gives the maximum normal ESR as age/2 in men and (age+10)/2 in women, but the authors defined it as the value above which fewer than 2% of a normal population lies — a 98th percentile, not the 95% interval used for the other markers in this panel — and describe it as an approximation. Wetteland et al. (J Intern Med. 1996; 2,145 men and 1,765 women aged 20-90) found substantially lower limits in the elderly than Miller predicts (age 90: 19 mm/h men, 23 mm/h women, versus Miller's 45 and 50). This marker cannot be graded on the same statistical footing as the others.",
+          "url": "https://doi.org/10.1136/bmj.286.6361.266",
+          "verifiedAt": "2026-08-07"
+        }
+      ],
+      "demographic": {
+        "sex": "female",
+        "ageMax": 49
+      }
+    },
+    {
+      "biomarkerId": "esr",
+      "name": "ESR",
+      "subtitle": "Erythrocyte sedimentation rate (1st hour)",
+      "sectionId": "inflammation",
+      "unit": "mm",
+      "sourced": true,
+      "labLow": null,
+      "labHigh": 30,
+      "bands": [
+        {
+          "status": "good",
+          "min": null,
+          "max": 30
+        },
+        {
+          "status": "attention",
+          "min": 30.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Westergren ESR upper limit for females aged 50 and over — 30 mm/h",
+          "citation": "Erythrocyte Sedimentation Rate. StatPearls, NIH Bookshelf. Conventional Westergren upper limits: males <50y 15 mm/h, males >=50y 20 mm/h, females <50y 20 mm/h, females >=50y 30 mm/h. StatPearls itself notes the reference range should be established by the performing laboratory. A low ESR is not clinically concerning, so no lower bound is graded.",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK557485/",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "Context — ESR has no true 95% reference interval",
+          "citation": "The widely quoted Miller formula (Miller A, Green M, Robinson D. Simple rule for calculating normal erythrocyte sedimentation rate. BMJ. 1983;286(6361):266) gives the maximum normal ESR as age/2 in men and (age+10)/2 in women, but the authors defined it as the value above which fewer than 2% of a normal population lies — a 98th percentile, not the 95% interval used for the other markers in this panel — and describe it as an approximation. Wetteland et al. (J Intern Med. 1996; 2,145 men and 1,765 women aged 20-90) found substantially lower limits in the elderly than Miller predicts (age 90: 19 mm/h men, 23 mm/h women, versus Miller's 45 and 50). This marker cannot be graded on the same statistical footing as the others.",
+          "url": "https://doi.org/10.1136/bmj.286.6361.266",
+          "verifiedAt": "2026-08-07"
+        }
+      ],
+      "demographic": {
+        "sex": "female",
+        "ageMin": 50
+      }
+    },
+    {
+      "biomarkerId": "esr",
+      "name": "ESR",
+      "subtitle": "Erythrocyte sedimentation rate (1st hour)",
+      "sectionId": "inflammation",
+      "unit": "mm",
+      "sourced": true,
+      "labLow": null,
+      "labHigh": 15,
+      "bands": [
+        {
+          "status": "good",
+          "min": null,
+          "max": 15
+        },
+        {
+          "status": "attention",
+          "min": 15.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Westergren ESR upper limit for males under 50 — 15 mm/h",
+          "citation": "Erythrocyte Sedimentation Rate. StatPearls, NIH Bookshelf. Conventional Westergren upper limits: males <50y 15 mm/h, males >=50y 20 mm/h, females <50y 20 mm/h, females >=50y 30 mm/h. StatPearls itself notes the reference range should be established by the performing laboratory. A low ESR is not clinically concerning, so no lower bound is graded.",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK557485/",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "Context — ESR has no true 95% reference interval",
+          "citation": "The widely quoted Miller formula (Miller A, Green M, Robinson D. Simple rule for calculating normal erythrocyte sedimentation rate. BMJ. 1983;286(6361):266) gives the maximum normal ESR as age/2 in men and (age+10)/2 in women, but the authors defined it as the value above which fewer than 2% of a normal population lies — a 98th percentile, not the 95% interval used for the other markers in this panel — and describe it as an approximation. Wetteland et al. (J Intern Med. 1996; 2,145 men and 1,765 women aged 20-90) found substantially lower limits in the elderly than Miller predicts (age 90: 19 mm/h men, 23 mm/h women, versus Miller's 45 and 50). This marker cannot be graded on the same statistical footing as the others.",
+          "url": "https://doi.org/10.1136/bmj.286.6361.266",
+          "verifiedAt": "2026-08-07"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMax": 49
+      }
+    },
+    {
+      "biomarkerId": "esr",
+      "name": "ESR",
+      "subtitle": "Erythrocyte sedimentation rate (1st hour)",
+      "sectionId": "inflammation",
+      "unit": "mm",
+      "sourced": true,
+      "labLow": null,
+      "labHigh": 20,
+      "bands": [
+        {
+          "status": "good",
+          "min": null,
+          "max": 20
+        },
+        {
+          "status": "attention",
+          "min": 20.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Westergren ESR upper limit for males aged 50 and over — 20 mm/h",
+          "citation": "Erythrocyte Sedimentation Rate. StatPearls, NIH Bookshelf. Conventional Westergren upper limits: males <50y 15 mm/h, males >=50y 20 mm/h, females <50y 20 mm/h, females >=50y 30 mm/h. StatPearls itself notes the reference range should be established by the performing laboratory. A low ESR is not clinically concerning, so no lower bound is graded.",
+          "url": "https://www.ncbi.nlm.nih.gov/books/NBK557485/",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "Context — ESR has no true 95% reference interval",
+          "citation": "The widely quoted Miller formula (Miller A, Green M, Robinson D. Simple rule for calculating normal erythrocyte sedimentation rate. BMJ. 1983;286(6361):266) gives the maximum normal ESR as age/2 in men and (age+10)/2 in women, but the authors defined it as the value above which fewer than 2% of a normal population lies — a 98th percentile, not the 95% interval used for the other markers in this panel — and describe it as an approximation. Wetteland et al. (J Intern Med. 1996; 2,145 men and 1,765 women aged 20-90) found substantially lower limits in the elderly than Miller predicts (age 90: 19 mm/h men, 23 mm/h women, versus Miller's 45 and 50). This marker cannot be graded on the same statistical footing as the others.",
+          "url": "https://doi.org/10.1136/bmj.286.6361.266",
+          "verifiedAt": "2026-08-07"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 50
+      }
+    },
+    {
+      "biomarkerId": "esr-2h",
+      "name": "ESR (2nd hour)",
+      "subtitle": "Erythrocyte sedimentation rate (2nd hour)",
+      "sectionId": "inflammation",
+      "unit": "mm",
+      "sourced": true,
+      "labLow": 1,
+      "labHigh": 34,
+      "bands": [
+        {
+          "status": "good",
+          "min": null,
+          "max": 34
+        },
+        {
+          "status": "attention",
+          "min": 34.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "2nd-hour ESR (less commonly used; provisional)",
+          "citation": "NEEDS CLINICIAN REVIEW: 2nd-hour ESR is used in some European labs; interpret with 1st-hour ESR.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "basophils",
+      "name": "Basophils",
+      "subtitle": "White cell differential",
+      "sectionId": "cbc",
+      "unit": "%",
+      "sourced": true,
+      "labLow": 0,
+      "labHigh": 2,
+      "bands": [
+        {
+          "status": "good",
+          "min": null,
+          "max": 2
+        },
+        {
+          "status": "attention",
+          "min": 2.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Common basophil % differential (provisional)",
+          "citation": "NEEDS CLINICIAN REVIEW: Differential percentages are lab-specific.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "eosinophils",
+      "name": "Eosinophils",
+      "subtitle": "White cell differential",
+      "sectionId": "cbc",
+      "unit": "%",
+      "sourced": true,
+      "labLow": 0,
+      "labHigh": 5,
+      "bands": [
+        {
+          "status": "good",
+          "min": null,
+          "max": 5
+        },
+        {
+          "status": "fair",
+          "min": 5.001,
+          "max": 10
+        },
+        {
+          "status": "attention",
+          "min": 10.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Common eosinophil % differential (provisional)",
+          "citation": "NEEDS CLINICIAN REVIEW: Differential percentages are lab-specific.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "neutrophils",
+      "name": "Neutrophils",
+      "subtitle": "White cell differential",
+      "sectionId": "cbc",
+      "unit": "%",
+      "sourced": true,
+      "labLow": 40,
+      "labHigh": 70,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 39.999
+        },
+        {
+          "status": "good",
+          "min": 40,
+          "max": 70
+        },
+        {
+          "status": "attention",
+          "min": 70.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Common neutrophil % differential (provisional)",
+          "citation": "NEEDS CLINICIAN REVIEW: Differential percentages are lab-specific.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "lymphocytes",
+      "name": "Lymphocytes",
+      "subtitle": "White cell differential",
+      "sectionId": "cbc",
+      "unit": "%",
+      "sourced": true,
+      "labLow": 20,
+      "labHigh": 45,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 19.999
+        },
+        {
+          "status": "good",
+          "min": 20,
+          "max": 45
+        },
+        {
+          "status": "attention",
+          "min": 45.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Common lymphocyte % differential (provisional)",
+          "citation": "NEEDS CLINICIAN REVIEW: Differential percentages are lab-specific.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "monocytes",
+      "name": "Monocytes",
+      "subtitle": "White cell differential",
+      "sectionId": "cbc",
+      "unit": "%",
+      "sourced": true,
+      "labLow": 2,
+      "labHigh": 10,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 1.999
+        },
+        {
+          "status": "good",
+          "min": 2,
+          "max": 10
+        },
+        {
+          "status": "attention",
+          "min": 10.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Common monocyte % differential (provisional)",
+          "citation": "NEEDS CLINICIAN REVIEW: Differential percentages are lab-specific.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "bands",
+      "name": "Band Neutrophils",
+      "subtitle": "White cell differential",
+      "sectionId": "cbc",
+      "unit": "%",
+      "sourced": true,
+      "labLow": 0,
+      "labHigh": 5,
+      "bands": [
+        {
+          "status": "good",
+          "min": null,
+          "max": 5
+        },
+        {
+          "status": "attention",
+          "min": 5.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Common band neutrophil % (provisional)",
+          "citation": "NEEDS CLINICIAN REVIEW: Band reporting varies by lab method.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "myelocytes",
+      "name": "Myelocytes",
+      "subtitle": "Immature white cells",
+      "sectionId": "cbc",
+      "unit": "%",
+      "sourced": true,
+      "labLow": 0,
+      "labHigh": 0,
+      "bands": [
+        {
+          "status": "good",
+          "min": null,
+          "max": 0
+        },
+        {
+          "status": "attention",
+          "min": 0.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Immature myeloid cells normally absent (provisional)",
+          "citation": "NEEDS CLINICIAN REVIEW: Circulating myelocytes are typically not expected in healthy adults.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "metamyelocytes",
+      "name": "Metamyelocytes",
+      "subtitle": "Immature white cells",
+      "sectionId": "cbc",
+      "unit": "%",
+      "sourced": true,
+      "labLow": 0,
+      "labHigh": 0,
+      "bands": [
+        {
+          "status": "good",
+          "min": null,
+          "max": 0
+        },
+        {
+          "status": "attention",
+          "min": 0.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Immature myeloid cells normally absent (provisional)",
+          "citation": "NEEDS CLINICIAN REVIEW: Circulating metamyelocytes are typically not expected in healthy adults.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "atypical-lymphs",
+      "name": "Atypical Lymphocytes",
+      "subtitle": "White cell morphology flag",
+      "sectionId": "cbc",
+      "unit": "%",
+      "sourced": true,
+      "labLow": 0,
+      "labHigh": 0,
+      "bands": [
+        {
+          "status": "good",
+          "min": null,
+          "max": 0
+        },
+        {
+          "status": "fair",
+          "min": 0.001,
+          "max": 5
+        },
+        {
+          "status": "attention",
+          "min": 5.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Atypical lymphocytes normally absent/rare (provisional)",
+          "citation": "NEEDS CLINICIAN REVIEW: Small atypical-lymph percentages can appear with viral illness.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "serum-iron",
+      "name": "Serum Iron",
+      "subtitle": "Circulating iron",
+      "sectionId": "vitamins",
+      "unit": "ug/dL",
+      "sourced": true,
+      "labLow": 35,
+      "labHigh": 145,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 34.999
+        },
+        {
+          "status": "good",
+          "min": 35,
+          "max": 145
+        },
+        {
+          "status": "attention",
+          "min": 145.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories — adult female iron 35-145 ug/dL (assay used for grading)",
+          "citation": "Mayo Clinic Laboratories, test IRON / SFEC (Iron, Serum). Adult females 35-145 ug/dL. Colorimetric assay. This lab- and assay-specific interval is what Blood Analyzer uses for the grade.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/621385",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "Labcorp — adult female iron 27-159 ug/dL (ages 18-60) — cited for disagreement only",
+          "citation": "Labcorp test 001339 (Iron). Females 18-60 years 27-159 ug/dL, >60 years 27-139 ug/dL. Colorimetric/ferrozine. Not used for band boundaries; shown to document how far lab catalogs diverge.",
+          "url": "https://www.labcorp.com/tests/001339/iron",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "IMPORTANT — this interval is lab-specific, not population-derived",
+          "citation": "No large reference-interval study using CLSI methodology with sex stratification could be verified for serum iron. The available lab catalogs disagree substantially: the female lower limit ranges from 27 to 40 ug/dL and the upper limit from 139 to 190 ug/dL across Mayo, Labcorp and Quest — a spread wider than the sex difference itself. Serum iron also has large diurnal and day-to-day variation and shifts across the menstrual cycle. Ferritin and transferrin saturation carry substantially more signal about iron status.",
+          "url": null,
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Ship the Mayo Clinic Laboratories interval as the grade. Lab catalogs disagree substantially and no CLSI-methodology sex-stratified study could be verified, so this is lab-specific rather than population-derived. Bands are attention / good / attention at the Mayo endpoints; Labcorp is cited for context only.",
+          "url": null,
+          "verifiedAt": "2026-08-07"
+        }
+      ],
+      "demographic": {
+        "sex": "female"
+      }
+    },
+    {
+      "biomarkerId": "serum-iron",
+      "name": "Serum Iron",
+      "subtitle": "Circulating iron",
+      "sectionId": "vitamins",
+      "unit": "ug/dL",
+      "sourced": true,
+      "labLow": 50,
+      "labHigh": 150,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 49.999
+        },
+        {
+          "status": "good",
+          "min": 50,
+          "max": 150
+        },
+        {
+          "status": "attention",
+          "min": 150.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories — adult male iron 50-150 ug/dL (assay used for grading)",
+          "citation": "Mayo Clinic Laboratories, test IRON / SFEC (Iron, Serum). Adult males 50-150 ug/dL. Colorimetric assay. This lab- and assay-specific interval is what Blood Analyzer uses for the grade.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/621385",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "Labcorp — adult male iron 38-169 ug/dL — cited for disagreement only",
+          "citation": "Labcorp test 001339 (Iron). Males >17 years 38-169 ug/dL. Colorimetric/ferrozine. Not used for band boundaries; shown to document how far lab catalogs diverge.",
+          "url": "https://www.labcorp.com/tests/001339/iron",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "IMPORTANT — this interval is lab-specific, not population-derived",
+          "citation": "No large reference-interval study using CLSI methodology with sex stratification could be verified for serum iron; the available lab catalogs disagree substantially. Serum iron also has large diurnal and day-to-day variation. Ferritin and transferrin saturation carry substantially more signal about iron status.",
+          "url": null,
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Ship the Mayo Clinic Laboratories interval as the grade. Lab catalogs disagree substantially and no CLSI-methodology sex-stratified study could be verified, so this is lab-specific rather than population-derived. Bands are attention / good / attention at the Mayo endpoints; Labcorp is cited for context only.",
+          "url": null,
+          "verifiedAt": "2026-08-07"
+        }
+      ],
+      "demographic": {
+        "sex": "male"
+      }
+    },
+    {
+      "biomarkerId": "transferrin",
+      "name": "Transferrin",
+      "subtitle": "Iron transport protein",
+      "sectionId": "vitamins",
+      "unit": "mg/dL",
+      "sourced": true,
+      "labLow": 200,
+      "labHigh": 360,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 199.999
+        },
+        {
+          "status": "good",
+          "min": 200,
+          "max": 360
+        },
+        {
+          "status": "attention",
+          "min": 360.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Common adult transferrin interval (provisional)",
+          "citation": "NEEDS CLINICIAN REVIEW: Transferrin ranges are lab-specific.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "ferritin",
+      "name": "Ferritin",
+      "subtitle": "Iron stores",
+      "sectionId": "vitamins",
+      "unit": "ng/mL",
+      "sourced": true,
+      "demographic": {
+        "sex": "male"
+      },
+      "labLow": 30,
+      "labHigh": 400,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 14.999
+        },
+        {
+          "status": "fair",
+          "min": 15,
+          "max": 29.999
+        },
+        {
+          "status": "good",
+          "min": 30,
+          "max": 49.999
+        },
+        {
+          "status": "optimal",
+          "min": 50,
+          "max": 99.999
+        },
+        {
+          "status": "good",
+          "min": 100,
+          "max": 199.999
+        },
+        {
+          "status": "fair",
+          "min": 200,
+          "max": 299.999
+        },
+        {
+          "status": "attention",
+          "min": 300,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "WHO 2020 — iron deficiency at ferritin <15 ug/L; risk of iron overload above 200 ug/L in men",
+          "citation": "WHO guideline on use of ferritin concentrations to assess iron status in individuals and populations. Geneva: World Health Organization; 2020. Table 1 gives <15 ug/L for adults, and <70 ug/L where infection or inflammation is present. Recommendation 1.3: 'A ferritin concentration exceeding 150 ug/L in menstruating women and 200 ug/L in men and non-menstruating women who are otherwise healthy may indicate a risk of iron overload (conditional recommendation).' WHO states these cut-offs are based on expert opinion rather than a systematic appraisal of the literature.",
+          "url": "https://www.who.int/publications/i/item/9789240000124",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "EASL 2022 — male iron-overload evaluation threshold ferritin >300 ug/L",
+          "citation": "EASL Clinical Practice Guidelines on haemochromatosis. J Hepatol. 2022;77(2):479-502. 'Provisional iron overload based on serum iron parameters (TSAT >45% and ferritin >200 ug/L in females and TSAT >50% and ferritin >300 ug/L in males and postmenopausal women)'. IMPORTANT: the guideline threshold also requires transferrin saturation, which this panel does not measure, so a high result here is a prompt to test further, not evidence of iron overload.",
+          "url": "https://doi.org/10.1016/j.jhep.2022.03.033",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "ARUP Laboratories — adult male reference interval 30-400 ng/mL (ages 20-59)",
+          "citation": "ARUP Laboratories test 0070065, Ferritin, LOINC 20567-4, effective 2022-02-22. Males 20-59 years 30-400 ng/mL. Used for the lab in/out-of-range flag only. A population 97.5th percentile is not a health target, which is why the upper lab limit sits above the guideline evaluation threshold.",
+          "url": "https://ltd.aruplab.com/Tests/Pub/0070065",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "Caveat — the 50-100 ng/mL band is a treatment target borrowed as a proxy, not a validated optimum",
+          "citation": "No guideline defines an optimal ferritin for healthy adults. The 50-100 ng/mL band is the phlebotomy maintenance target for treated haemochromatosis, endorsed concordantly by EASL 2022 ('serum ferritin can be maintained with some flexibility in the range of 50-100 ug/L'), AASLD 2011 recommendation 9, and ACG 2019. It is used here because it is the only range a guideline explicitly endorses as a good place for iron stores to sit. Ferritin is also a positive acute-phase reactant and rises with inflammation, liver disease, infection, alcohol excess and malignancy, so a mid-range value can mask true deficiency. WHO recommendation 1.4: ferritin concentration should not be used alone to identify risk of iron overload.",
+          "url": "https://doi.org/10.1016/j.jhep.2022.03.033",
+          "verifiedAt": "2026-08-07"
+        }
+      ]
+    },
+    {
+      "biomarkerId": "ferritin",
+      "name": "Ferritin",
+      "subtitle": "Iron stores",
+      "sectionId": "vitamins",
+      "unit": "ng/mL",
+      "sourced": true,
+      "demographic": {
+        "sex": "female"
+      },
+      "labLow": 13,
+      "labHigh": 150,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 14.999
+        },
+        {
+          "status": "fair",
+          "min": 15,
+          "max": 29.999
+        },
+        {
+          "status": "good",
+          "min": 30,
+          "max": 49.999
+        },
+        {
+          "status": "optimal",
+          "min": 50,
+          "max": 99.999
+        },
+        {
+          "status": "good",
+          "min": 100,
+          "max": 149.999
+        },
+        {
+          "status": "fair",
+          "min": 150,
+          "max": 199.999
+        },
+        {
+          "status": "attention",
+          "min": 200,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "WHO 2020 — iron deficiency at ferritin <15 ug/L; risk of iron overload above 150 ug/L in menstruating women",
+          "citation": "WHO guideline on use of ferritin concentrations to assess iron status in individuals and populations. Geneva: World Health Organization; 2020. Table 1 gives <15 ug/L for adults, and <70 ug/L where infection or inflammation is present. Recommendation 1.3: 'A ferritin concentration exceeding 150 ug/L in menstruating women and 200 ug/L in men and non-menstruating women who are otherwise healthy may indicate a risk of iron overload (conditional recommendation).' The deficiency cut-off is shared with men; only the upper thresholds differ by sex. This row applies the menstruating-women threshold, which is conservative for women past menopause.",
+          "url": "https://www.who.int/publications/i/item/9789240000124",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "EASL 2022 — female iron-overload evaluation threshold ferritin >200 ug/L",
+          "citation": "EASL Clinical Practice Guidelines on haemochromatosis. J Hepatol. 2022;77(2):479-502. 'TSAT >45% and ferritin >200 ug/L in females'. ACG 2019 (Kowdley et al., Am J Gastroenterol 114:1202-1218) uses the same >200 ng/mL figure for women. Note both guidelines group postmenopausal women with men at >300 ug/L, so this row is conservative for women past menopause. IMPORTANT: the guideline threshold also requires transferrin saturation, which this panel does not measure.",
+          "url": "https://doi.org/10.1016/j.jhep.2022.03.033",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "ARUP Laboratories — adult female reference interval 13-150 ng/mL (ages 17-59)",
+          "citation": "ARUP Laboratories test 0070065, Ferritin, LOINC 20567-4, effective 2022-02-22. Females 17-59 years 13-150 ng/mL. Used for the lab in/out-of-range flag only. Note the lab lower limit (13) sits below the clinical deficiency cut-off (15), so a woman can be within the lab reference interval and still iron deficient - 'in range' and 'iron replete' are different claims.",
+          "url": "https://ltd.aruplab.com/Tests/Pub/0070065",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "Caveat — the 50-100 ng/mL band is a treatment target borrowed as a proxy, not a validated optimum",
+          "citation": "No guideline defines an optimal ferritin for healthy adults. The 50-100 ng/mL band is the phlebotomy maintenance target for treated haemochromatosis, endorsed concordantly by EASL 2022, AASLD 2011 recommendation 9, and ACG 2019. Ferritin is also a positive acute-phase reactant and rises with inflammation, liver disease, infection, alcohol excess and malignancy, so a mid-range value can mask true deficiency. WHO recommendation 1.4: ferritin concentration should not be used alone to identify risk of iron overload.",
+          "url": "https://doi.org/10.1016/j.jhep.2022.03.033",
+          "verifiedAt": "2026-08-07"
+        }
+      ]
+    },
+    {
+      "biomarkerId": "folate",
+      "name": "Folate",
+      "subtitle": "Vitamin B9",
+      "sectionId": "vitamins",
+      "unit": "ng/mL",
+      "sourced": true,
+      "labLow": 3.1,
+      "labHigh": null,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 3.099
+        },
+        {
+          "status": "fair",
+          "min": 3.1,
+          "max": 5.999
+        },
+        {
+          "status": "good",
+          "min": 6,
+          "max": 20
+        },
+        {
+          "status": "optimal",
+          "min": 20.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Common serum folate sufficiency thresholds (provisional)",
+          "citation": "NEEDS CLINICIAN REVIEW: Folate cutoffs vary; many labs use ~3 ng/mL as deficiency threshold.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "vitamin-b12",
+      "name": "Vitamin B12",
+      "subtitle": "Cobalamin",
+      "sectionId": "vitamins",
+      "unit": "pg/mL",
+      "sourced": true,
+      "labLow": 200,
+      "labHigh": null,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 199.999
+        },
+        {
+          "status": "fair",
+          "min": 200,
+          "max": 299.999
+        },
+        {
+          "status": "good",
+          "min": 300,
+          "max": 900
+        },
+        {
+          "status": "optimal",
+          "min": 900.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Common serum B12 sufficiency thresholds (provisional)",
+          "citation": "NEEDS CLINICIAN REVIEW: B12 deficiency cutoffs vary (~200–300 pg/mL); neurologic risk may occur higher.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "vitamin-d",
+      "name": "Vitamin D",
+      "subtitle": "25-hydroxyvitamin D",
+      "sectionId": "vitamins",
+      "unit": "ng/mL",
+      "sourced": true,
+      "labLow": 20,
+      "labHigh": null,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 19.999
+        },
+        {
+          "status": "fair",
+          "min": 20,
+          "max": 29.999
+        },
+        {
+          "status": "optimal",
+          "min": 30,
+          "max": 100
+        },
+        {
+          "status": "fair",
+          "min": 100.001,
+          "max": 150
+        },
+        {
+          "status": "attention",
+          "min": 150.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Endocrine Society 2011 25(OH)D categories — deficiency <20, insufficiency 21-29, sufficiency 30-100 ng/mL",
+          "citation": "Holick MF, et al. Evaluation, treatment, and prevention of vitamin D deficiency: an Endocrine Society Clinical Practice Guideline. J Clin Endocrinol Metab. 2011;96(7):1911-1930. The guideline defines a single sufficiency band of 30-100 ng/mL and notes toxicity is generally associated with levels above 150 ng/mL; it designates no sub-band of 30-100 as superior, so none is claimed here.",
+          "url": "https://academic.oup.com/jcem/article/96/7/1911/2833671",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "Caveat — the Endocrine Society withdrew the 30 ng/mL sufficiency threshold in 2024",
+          "citation": "Demay MB, et al. Vitamin D for the Prevention of Disease: an Endocrine Society Clinical Practice Guideline. J Clin Endocrinol Metab. 2024. The Society no longer endorses its previously proposed definition of vitamin D 'sufficiency' (at least 30 ng/mL) and does not recommend routine 25(OH)D screening in healthy adults. The 2011 thresholds are retained here because the 2024 guideline proposes no replacement cutpoints, and are shown with this caveat rather than presented as current consensus.",
+          "url": "https://doi.org/10.1210/clinem/dgae322",
+          "verifiedAt": "2026-08-07"
+        }
+      ]
+    },
+    {
+      "biomarkerId": "crp",
+      "name": "CRP",
+      "subtitle": "C-reactive protein",
+      "sectionId": "inflammation",
+      "unit": "mg/L",
+      "sourced": true,
+      "labLow": null,
+      "labHigh": 5,
+      "bands": [
+        {
+          "status": "optimal",
+          "min": null,
+          "max": 1
+        },
+        {
+          "status": "good",
+          "min": 1.001,
+          "max": 3
+        },
+        {
+          "status": "fair",
+          "min": 3.001,
+          "max": 5
+        },
+        {
+          "status": "attention",
+          "min": 5.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "hs-CRP / CRP risk-style bands (provisional; assay-dependent)",
+          "citation": "NEEDS CLINICIAN REVIEW: Standard CRP vs hs-CRP differ. Seed treats <5 mg/L as common lab ULN with tighter lifestyle bands below.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "tsh",
+      "name": "TSH",
+      "subtitle": "Thyroid-stimulating hormone",
+      "sectionId": "thyroid",
+      "unit": "uU/mL",
+      "sourced": true,
+      "labLow": 0.4,
+      "labHigh": 4.5,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 0.399
+        },
+        {
+          "status": "optimal",
+          "min": 0.4,
+          "max": 2.5
+        },
+        {
+          "status": "good",
+          "min": 2.501,
+          "max": 4.5
+        },
+        {
+          "status": "fair",
+          "min": 4.501,
+          "max": 10
+        },
+        {
+          "status": "attention",
+          "min": 10.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Common adult TSH interval with tighter optimal band (provisional)",
+          "citation": "NEEDS CLINICIAN REVIEW: Typical adult TSH ~0.4–4.5 mIU/L; pregnancy and age alter targets.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "cortisol",
+      "name": "Cortisol",
+      "subtitle": "Adrenal hormone",
+      "sectionId": "hormones",
+      "unit": "ug/dL",
+      "sourced": true,
+      "labLow": 5,
+      "labHigh": 25,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 4.999
+        },
+        {
+          "status": "good",
+          "min": 5,
+          "max": 25
+        },
+        {
+          "status": "attention",
+          "min": 25.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Common morning cortisol interval (provisional; timing-critical)",
+          "citation": "NEEDS CLINICIAN REVIEW: Cortisol is time-of-day dependent. Seed assumes morning sample context only.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "homocysteine",
+      "name": "Homocysteine",
+      "subtitle": "Amino acid linked to B-vitamin status",
+      "sectionId": "metabolic",
+      "unit": "umol/L",
+      "sourced": true,
+      "labLow": null,
+      "labHigh": 15,
+      "bands": [
+        {
+          "status": "good",
+          "min": null,
+          "max": 12
+        },
+        {
+          "status": "fair",
+          "min": 12.001,
+          "max": 15
+        },
+        {
+          "status": "attention",
+          "min": 15.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Refsum et al. expert opinion — upper reference limit 12 umol/L folate-replete, 15 umol/L unsupplemented (adults 15-65)",
+          "citation": "Refsum H, Smith AD, Ueland PM, et al. Facts and Recommendations about Total Homocysteine Determinations: An Expert Opinion. Clin Chem. 2004;50(1):3-32. Table 6 partitions upper reference limits by age and folate-fortification status: adults 15-65 years 12 umol/L supplemented / 15 umol/L not supplemented; elderly >65 years 16 / 20 umol/L. Vitamin status moves the limit far more than sex does. A low homocysteine is not clinically concerning, so no lower bound is graded.",
+          "url": "https://doi.org/10.1373/clinchem.2003.021634",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "Why this marker is NOT split by sex",
+          "citation": "Refsum et al. acknowledge a real biological sex difference and then explain why it does not drive separate limits: 'After puberty, males have higher mean tHcy concentrations than females. The gender difference in mean tHcy is ~2 umol/L, but it becomes less with increasing age, and the proportion with tHcy above a given upper reference limit is similar in adult men and women.' Their formal recommendations list separate limits for children, adults, the elderly and pregnant women — sex is absent. ARUP likewise publishes a single interval of 0-15 umol/L stated as applying to both sexes. Presenting a sex-specific homocysteine interval as consensus would misrepresent the evidence.",
+          "url": "https://ltd.aruplab.com/Tests/Pub/0099869",
+          "verifiedAt": "2026-08-07"
+        }
+      ],
+      "demographic": {
+        "ageMax": 65
+      }
+    },
+    {
+      "biomarkerId": "homocysteine",
+      "name": "Homocysteine",
+      "subtitle": "Amino acid linked to B-vitamin status",
+      "sectionId": "metabolic",
+      "unit": "umol/L",
+      "sourced": true,
+      "labLow": null,
+      "labHigh": 20,
+      "bands": [
+        {
+          "status": "good",
+          "min": null,
+          "max": 16
+        },
+        {
+          "status": "fair",
+          "min": 16.001,
+          "max": 20
+        },
+        {
+          "status": "attention",
+          "min": 20.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Refsum et al. expert opinion — upper reference limit 16 umol/L folate-replete, 20 umol/L unsupplemented (over 65)",
+          "citation": "Refsum H, Smith AD, Ueland PM, et al. Facts and Recommendations about Total Homocysteine Determinations: An Expert Opinion. Clin Chem. 2004;50(1):3-32. Table 6 partitions upper reference limits by age and folate-fortification status: adults 15-65 years 12 umol/L supplemented / 15 umol/L not supplemented; elderly >65 years 16 / 20 umol/L. Vitamin status moves the limit far more than sex does. A low homocysteine is not clinically concerning, so no lower bound is graded.",
+          "url": "https://doi.org/10.1373/clinchem.2003.021634",
+          "verifiedAt": "2026-08-07"
+        },
+        {
+          "label": "Why this marker is NOT split by sex",
+          "citation": "Refsum et al. acknowledge a real biological sex difference and then explain why it does not drive separate limits: 'After puberty, males have higher mean tHcy concentrations than females. The gender difference in mean tHcy is ~2 umol/L, but it becomes less with increasing age, and the proportion with tHcy above a given upper reference limit is similar in adult men and women.' Their formal recommendations list separate limits for children, adults, the elderly and pregnant women — sex is absent. ARUP likewise publishes a single interval of 0-15 umol/L stated as applying to both sexes. Presenting a sex-specific homocysteine interval as consensus would misrepresent the evidence.",
+          "url": "https://ltd.aruplab.com/Tests/Pub/0099869",
+          "verifiedAt": "2026-08-07"
+        }
+      ],
+      "demographic": {
+        "ageMin": 66
+      }
+    },
+    {
+      "biomarkerId": "apo-b",
+      "name": "ApoB",
+      "subtitle": "Apolipoprotein B — atherogenic particle count",
+      "sectionId": "lipid",
+      "unit": "mg/dL",
+      "loincCode": "1884-6",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "hba1c",
+      "name": "HbA1c",
+      "subtitle": "Average blood sugar over ~3 months",
+      "sectionId": "metabolic",
+      "unit": "%",
+      "loincCode": "4548-4",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "insulin",
+      "name": "Insulin",
+      "subtitle": "Fasting insulin",
+      "sectionId": "metabolic",
+      "unit": "uIU/mL",
+      "loincCode": "20448-7",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "egfr",
+      "name": "eGFR",
+      "subtitle": "Estimated glomerular filtration rate",
+      "sectionId": "kidney",
+      "unit": "mL/min/1.73m²",
+      "loincCode": "98979-8",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "alp",
+      "name": "Alkaline Phosphatase",
+      "subtitle": "Liver and bone enzyme",
+      "sectionId": "liver",
+      "unit": "U/L",
+      "loincCode": "6768-6",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "bilirubin-total",
+      "name": "Total Bilirubin",
+      "subtitle": "Liver pigment from heme breakdown",
+      "sectionId": "liver",
+      "unit": "mg/dL",
+      "loincCode": "1975-2",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "albumin",
+      "name": "Albumin",
+      "subtitle": "Major blood protein",
+      "sectionId": "liver",
+      "unit": "g/dL",
+      "loincCode": "1751-7",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "free-t3",
+      "name": "Free T3",
+      "subtitle": "Unbound triiodothyronine",
+      "sectionId": "thyroid",
+      "unit": "pg/mL",
+      "loincCode": "3051-0",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "free-t4",
+      "name": "Free T4",
+      "subtitle": "Unbound thyroxine",
+      "sectionId": "thyroid",
+      "unit": "ng/dL",
+      "loincCode": "3024-7",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "testosterone",
+      "name": "Testosterone",
+      "subtitle": "Total testosterone",
+      "sectionId": "hormones",
+      "unit": "ng/dL",
+      "loincCode": "2986-8",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "free-testosterone",
+      "name": "Free Testosterone",
+      "subtitle": "Unbound testosterone",
+      "sectionId": "hormones",
+      "unit": "pg/mL",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "shbg",
+      "name": "SHBG",
+      "subtitle": "Sex hormone-binding globulin",
+      "sectionId": "hormones",
+      "unit": "nmol/L",
+      "loincCode": "13967-5",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "estradiol",
+      "name": "Estradiol",
+      "subtitle": "Primary estrogen",
+      "sectionId": "hormones",
+      "unit": "pg/mL",
+      "loincCode": "2243-4",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "dhea-s",
+      "name": "DHEA-S",
+      "subtitle": "Dehydroepiandrosterone sulfate",
+      "sectionId": "hormones",
+      "unit": "ug/dL",
+      "loincCode": "2191-5",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "fsh",
+      "name": "FSH",
+      "subtitle": "Follicle-stimulating hormone",
+      "sectionId": "hormones",
+      "unit": "mIU/mL",
+      "loincCode": "15067-2",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "lh",
+      "name": "LH",
+      "subtitle": "Luteinizing hormone",
+      "sectionId": "hormones",
+      "unit": "mIU/mL",
+      "loincCode": "10501-5",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "prolactin",
+      "name": "Prolactin",
+      "subtitle": "Pituitary hormone",
+      "sectionId": "hormones",
+      "unit": "ng/mL",
+      "loincCode": "2842-3",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "psa",
+      "name": "PSA",
+      "subtitle": "Prostate-specific antigen",
+      "sectionId": "prostate",
+      "unit": "ng/mL",
+      "loincCode": "2857-1",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "tibc",
+      "name": "TIBC",
+      "subtitle": "Total iron-binding capacity",
+      "sectionId": "vitamins",
+      "unit": "ug/dL",
+      "loincCode": "2500-7",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "omega-3-index",
+      "name": "Omega-3 Index",
+      "subtitle": "EPA + DHA in red blood cells",
+      "sectionId": "vitamins",
+      "unit": "%",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    }
+  ]
+}

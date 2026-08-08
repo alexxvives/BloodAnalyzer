@@ -1,7 +1,11 @@
 import type { NextConfig } from "next";
+import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
+
+initOpenNextCloudflareForDev();
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Keep unpdf out of the bundler — Turbopack has choked on its ESM before.
+  serverExternalPackages: ["unpdf"],
 };
 
 export default nextConfig;

@@ -1,0 +1,35 @@
+/**
+ * Cloudflare bindings for Blood Analyzer.
+ *
+ * D1: blood-analyzer (uuid 8b31781b-c190-4379-a835-0ab5017a9449)
+ * R2: blood-analyzer-uploads
+ *
+ * Migrations:
+ *   npx wrangler d1 migrations apply blood-analyzer --local
+ *   npx wrangler d1 migrations apply blood-analyzer --remote
+ */
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "blood-analyzer",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-08-06",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "blood-analyzer",
+      "database_id": "8b31781b-c190-4379-a835-0ab5017a9449",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "UPLOADS",
+      "bucket_name": "blood-analyzer-uploads"
+    }
+  ]
+}

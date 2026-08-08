@@ -17,12 +17,30 @@
 /.next/
 /out/
 
+# cloudflare / opennext
+/.open-next/
+/.wrangler/
+/cloudflare-env.d.ts
+
+# local tooling
+/.firecrawl/
+/.cursor/
+
+# Competitor site dumps (keep curated PNGs only under design/reference-screenshots/)
+/design/reference-screenshots/SiPhox Health.html
+/design/reference-screenshots/SiPhox Health.pdf
+/design/reference-screenshots/SiPhox Health_files/
+
 # production
 /build
 
 # misc
 .DS_Store
 *.pem
+
+# Local lab PDFs / extracted text may contain PII + health data
+/Analitica*.pdf
+/lib/extraction/fixtures/analitica*.txt
 
 # debug
 npm-debug.log*

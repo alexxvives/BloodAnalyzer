@@ -1,0 +1,37 @@
+%PDF-1.4
+1 0 obj<< /Type /Catalog /Pages 2 0 R >>endobj
+2 0 obj<< /Type /Pages /Kids [3 0 R] /Count 1 >>endobj
+3 0 obj<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>endobj
+4 0 obj<< /Length 278 >>stream
+BT
+/F1 11 Tf
+50 740 Td
+(Patient Example Lab Report) Tj
+0 -18 Td
+(Total Cholesterol 134 mg/dL) Tj
+0 -18 Td
+(LDL Cholesterol 67.6 mg/dL) Tj
+0 -18 Td
+(HDL Cholesterol 56 mg/dL) Tj
+0 -18 Td
+(Fasting Glucose 92 mg/dL) Tj
+0 -18 Td
+(ALT 28 U/L) Tj
+0 -18 Td
+(Hemoglobin 15.2 g/dL) Tj
+ET
+endstream
+endobj
+5 0 obj<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000056 00000 n 
+0000000111 00000 n 
+0000000235 00000 n 
+0000000562 00000 n 
+trailer<< /Size 6 /Root 1 0 R >>
+startxref
+630
+%%EOF
