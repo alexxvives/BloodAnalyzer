@@ -60,7 +60,7 @@ export function BiomarkerCard({ biomarker, onSelect }: BiomarkerCardProps) {
 
   return (
     <article
-      className={`group relative z-0 flex w-full flex-col overflow-visible rounded-2xl border p-5 text-left transition duration-200 ease-out ${
+      className={`group relative z-0 flex w-full overflow-visible rounded-2xl border px-5 py-4 text-left transition duration-200 ease-out ${
         notTested && suggestedTest
           ? "border-dashed border-status-attention/50 bg-status-attention/5 text-muted shadow-none"
           : notTested
@@ -79,10 +79,10 @@ export function BiomarkerCard({ biomarker, onSelect }: BiomarkerCardProps) {
         />
       ) : null}
 
-      <div className="relative z-[2] flex items-start justify-between gap-4 pointer-events-none">
-        <div className="min-w-0 flex-1 text-left">
+      <div className="relative z-[2] flex min-h-[5.5rem] w-full items-stretch gap-5 pointer-events-none">
+        <div className="flex min-w-0 flex-1 flex-col">
           <h3
-            className={`text-base font-semibold tracking-tight ${
+            className={`text-[13px] font-semibold leading-snug tracking-tight ${
               notTested
                 ? "text-muted"
                 : interactive
@@ -93,71 +93,76 @@ export function BiomarkerCard({ biomarker, onSelect }: BiomarkerCardProps) {
             {name}
           </h3>
           {subtitle ? (
-            <p className="mt-0.5 text-sm italic text-muted">{subtitle}</p>
+            <p className="mt-0.5 text-[12px] italic leading-snug text-muted">
+              {subtitle}
+            </p>
           ) : null}
+
+          <div className="mt-auto flex flex-col gap-2 pt-3">
+            <div className="flex flex-wrap items-center gap-1.5">
+              {notTested ? (
+                suggestedTest ? (
+                  <span className="inline-flex items-center rounded-full border border-status-attention/40 bg-status-attention/10 px-2 py-0.5 text-[11px] font-medium text-status-attention">
+                    Worth asking about
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center rounded-full border border-border bg-surface/60 px-2 py-0.5 text-[11px] font-medium text-muted">
+                    Not tested
+                  </span>
+                )
+              ) : (
+                <>
+                  <LabBadge status={labStatus} />
+                  <GradeBadge status={rangeAvailable ? status : null} />
+                </>
+              )}
+            </div>
+
+            {showAction ? (
+              <p className="flex items-center gap-1.5 text-[11px] text-muted">
+                <ActionIcon />
+                {recommendedAction ?? "Action available"}
+              </p>
+            ) : null}
+
+            {notTested && suggestedTest ? (
+              <p className="text-[11px] leading-snug text-muted">
+                {suggestedTestReason ??
+                  "Often discussed with markers that need attention on this report."}
+              </p>
+            ) : !notTested && !rangeAvailable ? (
+              <p className="text-[11px] leading-snug text-muted">
+                Range not available — see data sources.
+              </p>
+            ) : null}
+          </div>
         </div>
 
-        <div className="flex shrink-0 items-center gap-3">
+        <div className="flex shrink-0 items-center gap-2.5">
           {rangeAvailable ? (
             <RangeBar
               bands={range.bands}
               value={value}
               orientation="vertical"
               label={name}
-              size={64}
+              size={76}
+              thickness={3}
             />
           ) : notTested ? null : (
-            <span className="text-xs text-muted">Range not available</span>
+            <span className="w-3" aria-hidden />
           )}
-          <div className="min-w-[4.5rem] text-right">
+          <div className="min-w-[3.25rem] text-right">
             <p
-              className={`font-[family-name:var(--font-fraunces)] text-3xl leading-none tracking-tight ${
+              className={`text-[1.625rem] font-medium leading-none tracking-tight tabular-nums ${
                 notTested ? "text-muted/70" : "text-foreground"
               }`}
             >
               {displayValue}
             </p>
-            <p className="mt-1 text-xs text-muted">{displayUnit}</p>
+            <p className="mt-1 text-[11px] text-muted">{displayUnit}</p>
           </div>
         </div>
       </div>
-
-      <div className="relative z-[2] mt-4 flex flex-wrap items-center gap-2 pointer-events-none">
-        {notTested ? (
-          suggestedTest ? (
-            <span className="inline-flex items-center rounded-full border border-status-attention/40 bg-status-attention/10 px-2.5 py-1 text-xs font-medium text-status-attention">
-              Worth asking about
-            </span>
-          ) : (
-            <span className="inline-flex items-center rounded-full border border-border bg-surface/60 px-2.5 py-1 text-xs font-medium text-muted">
-              Not tested
-            </span>
-          )
-        ) : (
-          <>
-            <LabBadge status={labStatus} />
-            <GradeBadge status={rangeAvailable ? status : null} />
-          </>
-        )}
-      </div>
-
-      {showAction ? (
-        <p className="relative z-[2] mt-3 flex items-center gap-1.5 text-xs text-muted pointer-events-none">
-          <ActionIcon />
-          {recommendedAction ?? "Action available"}
-        </p>
-      ) : null}
-
-      {notTested && suggestedTest ? (
-        <p className="relative z-[2] mt-3 text-xs text-muted pointer-events-none">
-          {suggestedTestReason ??
-            "Often discussed with markers that need attention on this report."}
-        </p>
-      ) : !notTested && !rangeAvailable ? (
-        <p className="relative z-[2] mt-3 text-xs text-muted pointer-events-none">
-          Range not available — see data sources.
-        </p>
-      ) : null}
     </article>
   );
 }
@@ -165,8 +170,8 @@ export function BiomarkerCard({ biomarker, onSelect }: BiomarkerCardProps) {
 function ActionIcon() {
   return (
     <svg
-      width="14"
-      height="14"
+      width="12"
+      height="12"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"

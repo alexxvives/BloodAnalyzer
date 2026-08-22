@@ -13,7 +13,7 @@ export function LabBadge({ status }: { status: LabRangeStatus }) {
 
   return (
     <span
-      className={`inline-flex items-center rounded-full border bg-surface px-2.5 py-1 text-xs font-medium ${emphasis}`}
+      className={`inline-flex items-center rounded-full border bg-surface px-2 py-0.5 text-[11px] font-medium ${emphasis}`}
     >
       {LAB_STATUS_LABEL[status]}
     </span>
@@ -23,7 +23,7 @@ export function LabBadge({ status }: { status: LabRangeStatus }) {
 export function GradeBadge({ status }: { status: BiomarkerStatus | null }) {
   if (status == null) {
     return (
-      <span className="inline-flex items-center rounded-full border border-border bg-surface-muted px-2.5 py-1 text-xs font-medium text-muted">
+      <span className="inline-flex items-center rounded-full border border-border bg-surface-muted px-2 py-0.5 text-[11px] font-medium text-muted">
         Grade: range not available
       </span>
     );
@@ -31,7 +31,7 @@ export function GradeBadge({ status }: { status: BiomarkerStatus | null }) {
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium text-white ${statusTailwindBg(status)}`}
+      className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[11px] font-medium text-white ${statusTailwindBg(status)}`}
     >
       <span className="size-1.5 rounded-full bg-white/90" aria-hidden />
       Grade: {STATUS_LABEL[status]}

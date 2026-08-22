@@ -92,7 +92,7 @@ export function HeroPreview() {
                   {range.subtitle}
                 </p>
               ) : null}
-              <p className="mt-3 font-[family-name:var(--font-fraunces)] text-4xl leading-none tracking-tight tabular-nums">
+              <p className="mt-3 text-4xl font-medium leading-none tracking-tight tabular-nums">
                 {slide.value}
                 <span className="ml-1.5 text-base font-normal text-muted">
                   {range.unit}
@@ -113,6 +113,7 @@ export function HeroPreview() {
               value={slide.value}
               label={range.name ?? slide.biomarkerId}
               size={112}
+              thickness={3}
               className="shrink-0"
             />
           </div>

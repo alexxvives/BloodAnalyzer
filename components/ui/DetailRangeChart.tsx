@@ -61,7 +61,7 @@ export function DetailRangeChart({
       <div className="rounded-2xl border border-border bg-surface-muted/40 p-4">
         <div className="flex items-baseline justify-between gap-3">
           <p className="text-sm font-medium text-foreground">{name}</p>
-          <p className="font-[family-name:var(--font-fraunces)] text-2xl tracking-tight">
+          <p className="text-2xl font-medium tracking-tight tabular-nums">
             {displayValue}
             <span className="ml-1.5 text-sm text-muted">{displayUnit}</span>
           </p>
@@ -83,7 +83,7 @@ export function DetailRangeChart({
   const padY = 14;
   const chartHeight = 220;
   const innerHeight = chartHeight - padY * 2;
-  const barWidth = 16;
+  const barWidth = 6;
   const labelWidth = scale.factor > 1 ? 56 : 52;
   const rightPad = 12;
   const plotPad = 200;
@@ -100,7 +100,7 @@ export function DetailRangeChart({
         <p className="min-w-0 truncate text-sm font-medium text-foreground">
           {name}
         </p>
-        <p className="shrink-0 font-[family-name:var(--font-fraunces)] text-2xl tracking-tight">
+        <p className="shrink-0 text-2xl font-medium tracking-tight tabular-nums">
           {displayValue}
           <span className="ml-1.5 text-sm font-sans text-muted">
             {displayUnit}
@@ -176,7 +176,7 @@ export function DetailRangeChart({
             <circle
               cx={labelWidth + barWidth + 28}
               cy={padY + innerHeight - markerRatio * innerHeight}
-              r={8}
+              r={6}
               fill="var(--surface)"
               stroke={
                 markerStatus

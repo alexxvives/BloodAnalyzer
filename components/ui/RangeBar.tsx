@@ -17,6 +17,8 @@ export type RangeBarProps = {
   className?: string;
   /** Vertical height or horizontal width basis in px */
   size?: number;
+  /** Vertical bar thickness in px — keep thin on cards */
+  thickness?: number;
 };
 
 /**
@@ -29,7 +31,8 @@ export function RangeBar({
   orientation = "vertical",
   label,
   className = "",
-  size = 56,
+  size = 72,
+  thickness = 4,
 }: RangeBarProps) {
   const clipId = useId();
 
@@ -76,6 +79,7 @@ export function RangeBar({
       label={label}
       className={className}
       height={size}
+      thickness={thickness}
       clipId={clipId}
     />
   );
@@ -99,16 +103,20 @@ function VerticalRangeBar({
   label,
   className,
   height,
+  thickness,
   clipId,
-}: InnerProps & { height: number }) {
-  const width = 10;
+}: InnerProps & { height: number; thickness: number }) {
+  const barWidth = thickness;
+  const markerR = 4;
+  const padX = markerR + 1;
+  const svgWidth = padX * 2 + barWidth;
   const span = spanMax - spanMin;
 
   return (
     <svg
-      width={width + 8}
+      width={svgWidth}
       height={height}
-      viewBox={`0 0 ${width + 8} ${height}`}
+      viewBox={`0 0 ${svgWidth} ${height}`}
       className={className}
       role="img"
       aria-label={
@@ -119,7 +127,13 @@ function VerticalRangeBar({
     >
       <defs>
         <clipPath id={clipId}>
-          <rect x={4} y={0} width={width} height={height} rx={width / 2} />
+          <rect
+            x={padX}
+            y={0}
+            width={barWidth}
+            height={height}
+            rx={barWidth / 2}
+          />
         </clipPath>
       </defs>
       <g clipPath={`url(#${clipId})`}>
@@ -129,9 +143,9 @@ function VerticalRangeBar({
           return (
             <rect
               key={`${band.status}-${band.min}-${band.max}`}
-              x={4}
+              x={padX}
               y={yTop}
-              width={width}
+              width={barWidth}
               height={Math.max(yBottom - yTop, 0.5)}
               fill={STATUS_CSS_VAR[band.status]}
             />
@@ -140,12 +154,12 @@ function VerticalRangeBar({
       </g>
       {markerRatio != null && (
         <circle
-          cx={4 + width / 2}
+          cx={padX + barWidth / 2}
           cy={height - markerRatio * height}
-          r={5}
+          r={markerR}
           fill="white"
           stroke="var(--foreground)"
-          strokeWidth={1.5}
+          strokeWidth={1.25}
         />
       )}
     </svg>
