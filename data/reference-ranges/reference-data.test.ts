@@ -49,7 +49,6 @@ const AWAITING_CLINICIAN_REVIEW = new Set([
   "rdw",
   "transferrin",
   "tsh",
-  "urea",
   "vitamin-b12",
   "wbc",
 ]);
@@ -212,6 +211,7 @@ describe("reference-range data integrity", () => {
     "iron-saturation",
     "rbc",
     "serum-iron",
+    "urea",
     "uric-acid",
   ]);
 

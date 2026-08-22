@@ -1,7 +1,7 @@
 {
-  "version": "1.2.2",
+  "version": "1.2.3",
   "reviewStatus": "provisional",
-  "notes": "Educational seed. NOT clinician-reviewed. Prefer printed lab intervals when available. Do not treat as diagnosis. v1.2.2: added EasyDraw coverage markers (ApoA1, iron saturation, C-peptide sourced from Mayo; remaining calculated ratios as unsourced placeholders). v1.2.1: enforced sourced-boundaries-only band policy for reference-interval markers (hematocrit, rbc, creatinine, uric-acid, ggt, hemoglobin, serum-iron) — attention / good / attention at the primary interval endpoints; no invented fair/optimal interiors; serum iron grades on the Mayo interval with an explicit lab-specific caveat. v1.2.0: replaced nine male-derived ranges with sex-specific rows; rebuilt ferritin; removed invented total-cholesterol 180; aligned female HDL; collapsed vitamin D. 27 markers still carry 'NEEDS CLINICIAN REVIEW' citations; see data/SOURCES.md and data/reference-ranges/reference-data.test.ts.",
+  "notes": "Educational seed. NOT clinician-reviewed. Prefer printed lab intervals when available. Do not treat as diagnosis. v1.2.3: replaced the European urea 19–44 seed with Mayo sex-specific BUN intervals (male 8–24 / female 6–21 mg/dL) so US BUN uploads are not graded as low urea. v1.2.2: added EasyDraw coverage markers (ApoA1, iron saturation, and C-peptide sourced from Mayo; remaining calculated ratios as unsourced placeholders). v1.2.1: enforced sourced-boundaries-only band policy for reference-interval markers (hematocrit, rbc, creatinine, uric-acid, ggt, hemoglobin, serum-iron) — attention / good / attention at the primary interval endpoints; no invented fair/optimal interiors; serum iron grades on the Mayo interval with an explicit lab-specific caveat. v1.2.0: replaced nine male-derived ranges with sex-specific rows; rebuilt ferritin; removed invented total-cholesterol 180; aligned female HDL; collapsed vitamin D. 26 markers still carry 'NEEDS CLINICIAN REVIEW' citations; see data/SOURCES.md and data/reference-ranges/reference-data.test.ts.",
   "markers": [
     {
       "biomarkerId": "total-cholesterol",
@@ -433,47 +433,93 @@
     },
     {
       "biomarkerId": "urea",
-      "name": "Urea",
-      "subtitle": "Kidney / protein metabolism marker",
+      "name": "BUN",
+      "subtitle": "Blood urea nitrogen",
       "sectionId": "kidney",
       "unit": "mg/dL",
+      "loincCode": "3094-0",
       "sourced": true,
-      "labLow": 19,
-      "labHigh": 44,
+      "labLow": 8,
+      "labHigh": 24,
       "bands": [
         {
           "status": "attention",
           "min": null,
-          "max": 18.999
-        },
-        {
-          "status": "optimal",
-          "min": 19,
-          "max": 35
+          "max": 7.999
         },
         {
           "status": "good",
-          "min": 35.001,
-          "max": 44
-        },
-        {
-          "status": "fair",
-          "min": 44.001,
-          "max": 55
+          "min": 8,
+          "max": 24
         },
         {
           "status": "attention",
-          "min": 55.001,
+          "min": 24.001,
           "max": null
         }
       ],
       "sourceRefs": [
         {
-          "label": "Common adult urea lab interval (provisional; lab-specific)",
-          "citation": "NEEDS CLINICIAN REVIEW: Adult urea intervals vary by assay/lab. Seed mirrors a common European adult band (~19–44 mg/dL) for education only.",
-          "verifiedAt": null
+          "label": "Mayo Clinic Laboratories BUN — adult male 8-24 mg/dL",
+          "citation": "Mayo Clinic Laboratories, test BUN (Blood Urea Nitrogen, Serum). Males >=18 years: 8-24 mg/dL. US labs report BUN, not European urea (urea mg/dL ≈ BUN × 2.14). Bands are attention / good / attention at those endpoints; Mayo does not define an optimum inside the interval.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/81793/blood-urea-nitrogen-bun-serum",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside a BUN reference interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
         }
-      ]
+      ],
+      "demographic": {
+        "sex": "male"
+      }
+    },
+    {
+      "biomarkerId": "urea",
+      "name": "BUN",
+      "subtitle": "Blood urea nitrogen",
+      "sectionId": "kidney",
+      "unit": "mg/dL",
+      "loincCode": "3094-0",
+      "sourced": true,
+      "labLow": 6,
+      "labHigh": 21,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 5.999
+        },
+        {
+          "status": "good",
+          "min": 6,
+          "max": 21
+        },
+        {
+          "status": "attention",
+          "min": 21.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories BUN — adult female 6-21 mg/dL",
+          "citation": "Mayo Clinic Laboratories, test BUN (Blood Urea Nitrogen, Serum). Females >=18 years: 6-21 mg/dL. US labs report BUN, not European urea (urea mg/dL ≈ BUN × 2.14). Bands are attention / good / attention at those endpoints; Mayo does not define an optimum inside the interval.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/81793/blood-urea-nitrogen-bun-serum",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside a BUN reference interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "female"
+      }
     },
     {
       "biomarkerId": "creatinine",

@@ -57,21 +57,20 @@ const provisional = {
   },
   urea: {
     sourced: true,
-    labLow: 19,
-    labHigh: 44,
+    labLow: 8,
+    labHigh: 24,
     bands: [
-      { status: "attention", min: null, max: 18.999 },
-      { status: "optimal", min: 19, max: 35 },
-      { status: "good", min: 35.001, max: 44 },
-      { status: "fair", min: 44.001, max: 55 },
-      { status: "attention", min: 55.001, max: null },
+      { status: "attention", min: null, max: 7.999 },
+      { status: "good", min: 8, max: 24 },
+      { status: "attention", min: 24.001, max: null },
     ],
     sourceRefs: [
       {
-        label: "Common adult urea lab interval (provisional; lab-specific)",
+        label: "Mayo Clinic Laboratories BUN — adult male 8-24 mg/dL",
         citation:
-          "NEEDS CLINICIAN REVIEW: Adult urea intervals vary by assay/lab. Seed mirrors a common European adult band (~19–44 mg/dL) for education only.",
-        verifiedAt: null,
+          "Mayo Clinic Laboratories, test BUN (Blood Urea Nitrogen, Serum). Males >=18 years: 8-24 mg/dL.",
+        url: "https://www.mayocliniclabs.com/test-catalog/overview/81793/blood-urea-nitrogen-bun-serum",
+        verifiedAt: "2026-08-23",
       },
     ],
   },

@@ -7,8 +7,8 @@ versioned and cited. **Do not ship invented numbers to real users.**
 
 | Dataset | Location | Citation status |
 |---|---|---|
-| Reference ranges v1.2.2 | `/data/reference-ranges/v1/markers.json` | **Mixed** — Mayo-cited ApoA1, iron saturation, and C-peptide added; 27 rows still awaiting clinician review; calculated ratios remain unsourced placeholders |
-| Population stats v1.8.0 | `/data/population-stats/v1/stats.json` | **Partial NHANES load** — see below |
+| Reference ranges v1.2.3 | `/data/reference-ranges/v1/markers.json` | **Mixed** — Mayo-cited BUN (urea), ApoA1, iron saturation, and C-peptide; 26 rows still awaiting clinician review; calculated ratios remain unsourced placeholders |
+| Population stats v1.8.1 | `/data/population-stats/v1/stats.json` | **Partial NHANES load** — see below |
 
 Until an entry is marked `sourced: true` **and** reviewed for production, treat
 the product as educational/beta. Scoring returns `rangeAvailable: false` (UI:
@@ -54,6 +54,7 @@ graded `attention` or `fair` for hematocrit in all six age slices.
 | `ferritin` | sex | [WHO 2020](https://www.who.int/publications/i/item/9789240000124) + [EASL 2022](https://doi.org/10.1016/j.jhep.2022.03.033) | [ARUP 0070065](https://ltd.aruplab.com/Tests/Pub/0070065) |
 | `homocysteine` | age only — **not sex** | [Refsum 2004 expert opinion, Table 6](https://doi.org/10.1373/clinchem.2003.021634) | — |
 | `hemoglobin` | sex | [WHO 2011 anemia cutoffs](https://www.who.int/publications/i/item/WHO-NMH-NHD-MNM-11.1) + common lab highs | — |
+| `urea` (BUN) | sex | [Mayo BUN 81793](https://www.mayocliniclabs.com/test-catalog/overview/81793/blood-urea-nitrogen-bun-serum) | — |
 
 Notes on the ones that are not straightforward:
 
@@ -121,7 +122,7 @@ Three markers cited a guideline that did not contain the numbers attached to it:
 ## Population benchmarks
 
 Prefer a named public dataset (e.g. NHANES for US demographics) sliced by
-age + sex. Current load (v1.8.0):
+age + sex. Current load (v1.8.1):
 
 **Adult means (broad 20–79 / 15–79 bands)**
 
@@ -153,7 +154,7 @@ laboratory microdata, as redistributed by LabNorms percentile tables:
 - Vitamin D 25(OH)D from NHANES 2017–2018
 - Vitamin B12 from NHANES 2013–2014
 - TSH from NHANES 2009–2012 (mIU/L ≡ uU/mL)
-- Urea from NHANES BUN medians × 2.14 (European urea mg/dL)
+- BUN from NHANES 2017–March 2020 medians (via LabNorms; same unit as Mayo BUN)
 - Lp(a): Brandt et al., *J Clin Lipidol* 2020 (NHANES III 1991–1994)
   sex-stratified medians — men 13 / women 14 mg/dL
   https://pmc.ncbi.nlm.nih.gov/articles/PMC7641964/

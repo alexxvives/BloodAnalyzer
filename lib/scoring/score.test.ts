@@ -205,4 +205,34 @@ describe("scoreBiomarker", () => {
       scoreBiomarker({ biomarkerId: "tc-hdl-ratio", value: 2.4 }).rangeAvailable,
     ).toBe(false);
   });
+
+  it("scores US BUN (urea id) on Mayo intervals, not European urea", () => {
+    const male = scoreBiomarker({
+      biomarkerId: "urea",
+      value: 16,
+      demographic: { sex: "male", ageYears: 27 },
+    });
+    expect(male.rangeAvailable).toBe(true);
+    expect(male.status).toBe("good");
+    expect(male.labStatus).toBe("in_range");
+    expect(male.range?.labLow).toBe(8);
+    expect(male.range?.labHigh).toBe(24);
+
+    const female = scoreBiomarker({
+      biomarkerId: "urea",
+      value: 16,
+      demographic: { sex: "female", ageYears: 27 },
+    });
+    expect(female.status).toBe("good");
+    expect(female.range?.labLow).toBe(6);
+    expect(female.range?.labHigh).toBe(21);
+
+    expect(
+      scoreBiomarker({
+        biomarkerId: "urea",
+        value: 5,
+        demographic: { sex: "male", ageYears: 27 },
+      }).status,
+    ).toBe("attention");
+  });
 });

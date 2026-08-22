@@ -437,7 +437,7 @@ export const CANONICAL_MARKER_NAMES: Record<string, string> = {
   eag: "Estimated Average Glucose",
   "c-peptide": "C-Peptide",
   insulin: "Insulin",
-  urea: "Urea",
+  urea: "BUN",
   "bun-creatinine-ratio": "BUN:Creatinine Ratio",
   creatinine: "Creatinine",
   egfr: "eGFR",

@@ -227,13 +227,13 @@ export const BIOMARKER_EXPLANATIONS: Record<string, BiomarkerExplanation> = {
 
   urea: base({
     summary:
-      "Urea (often reported as blood urea nitrogen / BUN in US labs) is a waste product from protein metabolism filtered by the kidneys.",
+      "BUN (blood urea nitrogen) is a waste product from protein metabolism filtered by the kidneys. US labs report BUN; some European labs report urea instead (urea mg/dL ≈ BUN × 2.14).",
     whatItMeasures:
-      "How much urea nitrogen/urea is in blood. Units and naming differ by country (BUN vs urea); always match the unit on your report.",
+      "How much urea nitrogen is in blood, as BUN in mg/dL. This app grades the US BUN scale used by Mayo and by typical at-home US panels.",
     whyItMatters:
-      "Urea rises when kidney filtration falls, when protein intake is high, or when you are dehydrated. It is interpreted with creatinine, eGFR, and clinical context — not alone.",
+      "BUN rises when kidney filtration falls, when protein intake is high, or when you are dehydrated. It is interpreted with creatinine, eGFR, and clinical context — not alone.",
     understandingLevels:
-      "Mildly high urea with normal creatinine can reflect dehydration or a high-protein meal pattern. Rising urea with rising creatinine more often prompts kidney-function review.",
+      "A value inside the lab interval is common. Mildly high BUN with normal creatinine can reflect dehydration or a high-protein meal pattern. Rising BUN with rising creatinine more often prompts kidney-function review.",
     ifHigher: [
       "Ensure adequate hydration unless fluid-restricted by a clinician",
       "Review recent high-protein intake, intense exercise, or illness",
@@ -245,6 +245,10 @@ export const BIOMARKER_EXPLANATIONS: Record<string, BiomarkerExplanation> = {
       "Gastrointestinal bleeding or catabolic illness (clinical contexts)",
     ],
     learnMore: [
+      {
+        label: "Mayo Clinic Laboratories — BUN",
+        url: "https://www.mayocliniclabs.com/test-catalog/overview/81793/blood-urea-nitrogen-bun-serum",
+      },
       {
         label: "MedlinePlus — BUN",
         url: "https://medlineplus.gov/lab-tests/bun-blood-urea-nitrogen/",

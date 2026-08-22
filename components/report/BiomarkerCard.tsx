@@ -130,10 +130,6 @@ export function BiomarkerCard({ biomarker, onSelect }: BiomarkerCardProps) {
                 {suggestedTestReason ??
                   "Often discussed with markers that need attention on this report."}
               </p>
-            ) : !notTested && !rangeAvailable ? (
-              <p className="text-[11px] leading-snug text-muted">
-                Range not available — see data sources.
-              </p>
             ) : null}
           </div>
         </div>

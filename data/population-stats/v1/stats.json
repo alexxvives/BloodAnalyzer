@@ -1,7 +1,7 @@
 {
-  "version": "1.8.0",
+  "version": "1.8.1",
   "reviewStatus": "provisional",
-  "notes": "Lipid means from Gao et al. JAHA 2023 (NHANES 2017–2018). Hemoglobin means from Le PLOS One 2016 (NHANES 2003–2012). Lp(a) sex-stratified medians from Brandt et al. J Clin Lipidol 2020 (NHANES III 1991–1994). Morning cortisol medians from WVU C8 Health Project adult AM tables. ESR medians from Alende et al. Medicine 2019 (Spanish population sample). Age-/sex-stratified medians for glucose, liver enzymes, creatinine, uric acid, CBC indices (MCV/MCH/MCHC/RDW/RBC), CRP, ferritin, vitamin D, folate, serum iron, vitamin B12, TSH, urea (from BUN×2.14), TIBC, and WBC differential percentages (neutrophils/lymphocytes/monocytes/eosinophils) from CDC NHANES public microdata as redistributed by LabNorms. Serum transferrin mg/dL derived from NHANES TIBC × 0.70 (StatPearls conversion) — NHANES does not publish transferrin concentration directly. Still absent (no cited matching unit/slice): PDW in fL (published large-sample PDW is typically % CV on Sysmex; analyzer fL scales differ), basophil % (NHANES LBXBAPCT exists but no LabNorms age/sex median table or peer-reviewed age/sex median tables with extractable numbers yet).",
+  "notes": "Lipid means from Gao et al. JAHA 2023 (NHANES 2017–2018). Hemoglobin means from Le PLOS One 2016 (NHANES 2003–2012). Lp(a) sex-stratified medians from Brandt et al. J Clin Lipidol 2020 (NHANES III 1991–1994). Morning cortisol medians from WVU C8 Health Project adult AM tables. ESR medians from Alende et al. Medicine 2019 (Spanish population sample). Age-/sex-stratified medians for glucose, liver enzymes, creatinine, uric acid, CBC indices (MCV/MCH/MCHC/RDW/RBC), CRP, ferritin, vitamin D, folate, serum iron, vitamin B12, TSH, BUN, TIBC, and WBC differential percentages (neutrophils/lymphocytes/monocytes/eosinophils) from CDC NHANES public microdata as redistributed by LabNorms. Serum transferrin mg/dL derived from NHANES TIBC × 0.70 (StatPearls conversion) — NHANES does not publish transferrin concentration directly. Still absent (no cited matching unit/slice): PDW in fL (published large-sample PDW is typically % CV on Sysmex; analyzer fL scales differ), basophil % (NHANES LBXBAPCT exists but no LabNorms age/sex median table or peer-reviewed age/sex median tables with extractable numbers yet).",
   "stats": [
     {
       "biomarkerId": "total-cholesterol",
@@ -5130,14 +5130,14 @@
         "ageMin": 20,
         "ageMax": 29
       },
-      "median": 27.8,
+      "median": 13,
       "unit": "mg/dL",
-      "dataset": "NHANES 2017–March 2020 BUN medians converted to urea mg/dL (×2.14)",
+      "dataset": "NHANES 2017–March 2020 BUN medians (US adults, age-/sex-stratified)",
       "sourced": true,
       "sourceRefs": [
         {
-          "label": "NHANES 2017–2020 BUN→urea medians (via LabNorms; ×2.14)",
-          "citation": "Age band 20–29, male: median 27.8 mg/dL. Computed from CDC NHANES public laboratory microdata (weighted adult sample); values redistributed by LabNorms.",
+          "label": "NHANES 2017–2020 BUN medians (via LabNorms)",
+          "citation": "Age band 20–29, male: median 13 mg/dL. Computed from CDC NHANES public laboratory microdata (weighted adult sample); values redistributed by LabNorms.",
           "url": "https://labnorms.com/analytes/bun/",
           "verifiedAt": "2026-08-06"
         },
@@ -5156,14 +5156,14 @@
         "ageMin": 20,
         "ageMax": 29
       },
-      "median": 23.5,
+      "median": 11,
       "unit": "mg/dL",
-      "dataset": "NHANES 2017–March 2020 BUN medians converted to urea mg/dL (×2.14)",
+      "dataset": "NHANES 2017–March 2020 BUN medians (US adults, age-/sex-stratified)",
       "sourced": true,
       "sourceRefs": [
         {
-          "label": "NHANES 2017–2020 BUN→urea medians (via LabNorms; ×2.14)",
-          "citation": "Age band 20–29, female: median 23.5 mg/dL. Computed from CDC NHANES public laboratory microdata (weighted adult sample); values redistributed by LabNorms.",
+          "label": "NHANES 2017–2020 BUN medians (via LabNorms)",
+          "citation": "Age band 20–29, female: median 11 mg/dL. Computed from CDC NHANES public laboratory microdata (weighted adult sample); values redistributed by LabNorms.",
           "url": "https://labnorms.com/analytes/bun/",
           "verifiedAt": "2026-08-06"
         },
@@ -5182,14 +5182,14 @@
         "ageMin": 30,
         "ageMax": 39
       },
-      "median": 27.8,
+      "median": 13,
       "unit": "mg/dL",
-      "dataset": "NHANES 2017–March 2020 BUN medians converted to urea mg/dL (×2.14)",
+      "dataset": "NHANES 2017–March 2020 BUN medians (US adults, age-/sex-stratified)",
       "sourced": true,
       "sourceRefs": [
         {
-          "label": "NHANES 2017–2020 BUN→urea medians (via LabNorms; ×2.14)",
-          "citation": "Age band 30–39, male: median 27.8 mg/dL. Computed from CDC NHANES public laboratory microdata (weighted adult sample); values redistributed by LabNorms.",
+          "label": "NHANES 2017–2020 BUN medians (via LabNorms)",
+          "citation": "Age band 30–39, male: median 13 mg/dL. Computed from CDC NHANES public laboratory microdata (weighted adult sample); values redistributed by LabNorms.",
           "url": "https://labnorms.com/analytes/bun/",
           "verifiedAt": "2026-08-06"
         },
@@ -5208,14 +5208,14 @@
         "ageMin": 30,
         "ageMax": 39
       },
-      "median": 23.5,
+      "median": 11,
       "unit": "mg/dL",
-      "dataset": "NHANES 2017–March 2020 BUN medians converted to urea mg/dL (×2.14)",
+      "dataset": "NHANES 2017–March 2020 BUN medians (US adults, age-/sex-stratified)",
       "sourced": true,
       "sourceRefs": [
         {
-          "label": "NHANES 2017–2020 BUN→urea medians (via LabNorms; ×2.14)",
-          "citation": "Age band 30–39, female: median 23.5 mg/dL. Computed from CDC NHANES public laboratory microdata (weighted adult sample); values redistributed by LabNorms.",
+          "label": "NHANES 2017–2020 BUN medians (via LabNorms)",
+          "citation": "Age band 30–39, female: median 11 mg/dL. Computed from CDC NHANES public laboratory microdata (weighted adult sample); values redistributed by LabNorms.",
           "url": "https://labnorms.com/analytes/bun/",
           "verifiedAt": "2026-08-06"
         },
@@ -5234,14 +5234,14 @@
         "ageMin": 40,
         "ageMax": 49
       },
-      "median": 32.1,
+      "median": 15,
       "unit": "mg/dL",
-      "dataset": "NHANES 2017–March 2020 BUN medians converted to urea mg/dL (×2.14)",
+      "dataset": "NHANES 2017–March 2020 BUN medians (US adults, age-/sex-stratified)",
       "sourced": true,
       "sourceRefs": [
         {
-          "label": "NHANES 2017–2020 BUN→urea medians (via LabNorms; ×2.14)",
-          "citation": "Age band 40–49, male: median 32.1 mg/dL. Computed from CDC NHANES public laboratory microdata (weighted adult sample); values redistributed by LabNorms.",
+          "label": "NHANES 2017–2020 BUN medians (via LabNorms)",
+          "citation": "Age band 40–49, male: median 15 mg/dL. Computed from CDC NHANES public laboratory microdata (weighted adult sample); values redistributed by LabNorms.",
           "url": "https://labnorms.com/analytes/bun/",
           "verifiedAt": "2026-08-06"
         },
@@ -5260,14 +5260,14 @@
         "ageMin": 40,
         "ageMax": 49
       },
-      "median": 25.7,
+      "median": 12,
       "unit": "mg/dL",
-      "dataset": "NHANES 2017–March 2020 BUN medians converted to urea mg/dL (×2.14)",
+      "dataset": "NHANES 2017–March 2020 BUN medians (US adults, age-/sex-stratified)",
       "sourced": true,
       "sourceRefs": [
         {
-          "label": "NHANES 2017–2020 BUN→urea medians (via LabNorms; ×2.14)",
-          "citation": "Age band 40–49, female: median 25.7 mg/dL. Computed from CDC NHANES public laboratory microdata (weighted adult sample); values redistributed by LabNorms.",
+          "label": "NHANES 2017–2020 BUN medians (via LabNorms)",
+          "citation": "Age band 40–49, female: median 12 mg/dL. Computed from CDC NHANES public laboratory microdata (weighted adult sample); values redistributed by LabNorms.",
           "url": "https://labnorms.com/analytes/bun/",
           "verifiedAt": "2026-08-06"
         },
@@ -5286,14 +5286,14 @@
         "ageMin": 50,
         "ageMax": 59
       },
-      "median": 32.1,
+      "median": 15,
       "unit": "mg/dL",
-      "dataset": "NHANES 2017–March 2020 BUN medians converted to urea mg/dL (×2.14)",
+      "dataset": "NHANES 2017–March 2020 BUN medians (US adults, age-/sex-stratified)",
       "sourced": true,
       "sourceRefs": [
         {
-          "label": "NHANES 2017–2020 BUN→urea medians (via LabNorms; ×2.14)",
-          "citation": "Age band 50–59, male: median 32.1 mg/dL. Computed from CDC NHANES public laboratory microdata (weighted adult sample); values redistributed by LabNorms.",
+          "label": "NHANES 2017–2020 BUN medians (via LabNorms)",
+          "citation": "Age band 50–59, male: median 15 mg/dL. Computed from CDC NHANES public laboratory microdata (weighted adult sample); values redistributed by LabNorms.",
           "url": "https://labnorms.com/analytes/bun/",
           "verifiedAt": "2026-08-06"
         },
@@ -5312,14 +5312,14 @@
         "ageMin": 50,
         "ageMax": 59
       },
-      "median": 30,
+      "median": 14,
       "unit": "mg/dL",
-      "dataset": "NHANES 2017–March 2020 BUN medians converted to urea mg/dL (×2.14)",
+      "dataset": "NHANES 2017–March 2020 BUN medians (US adults, age-/sex-stratified)",
       "sourced": true,
       "sourceRefs": [
         {
-          "label": "NHANES 2017–2020 BUN→urea medians (via LabNorms; ×2.14)",
-          "citation": "Age band 50–59, female: median 30 mg/dL. Computed from CDC NHANES public laboratory microdata (weighted adult sample); values redistributed by LabNorms.",
+          "label": "NHANES 2017–2020 BUN medians (via LabNorms)",
+          "citation": "Age band 50–59, female: median 14 mg/dL. Computed from CDC NHANES public laboratory microdata (weighted adult sample); values redistributed by LabNorms.",
           "url": "https://labnorms.com/analytes/bun/",
           "verifiedAt": "2026-08-06"
         },
@@ -5338,14 +5338,14 @@
         "ageMin": 60,
         "ageMax": 69
       },
-      "median": 34.2,
+      "median": 16,
       "unit": "mg/dL",
-      "dataset": "NHANES 2017–March 2020 BUN medians converted to urea mg/dL (×2.14)",
+      "dataset": "NHANES 2017–March 2020 BUN medians (US adults, age-/sex-stratified)",
       "sourced": true,
       "sourceRefs": [
         {
-          "label": "NHANES 2017–2020 BUN→urea medians (via LabNorms; ×2.14)",
-          "citation": "Age band 60–69, male: median 34.2 mg/dL. Computed from CDC NHANES public laboratory microdata (weighted adult sample); values redistributed by LabNorms.",
+          "label": "NHANES 2017–2020 BUN medians (via LabNorms)",
+          "citation": "Age band 60–69, male: median 16 mg/dL. Computed from CDC NHANES public laboratory microdata (weighted adult sample); values redistributed by LabNorms.",
           "url": "https://labnorms.com/analytes/bun/",
           "verifiedAt": "2026-08-06"
         },
@@ -5364,14 +5364,14 @@
         "ageMin": 60,
         "ageMax": 69
       },
-      "median": 34.2,
+      "median": 16,
       "unit": "mg/dL",
-      "dataset": "NHANES 2017–March 2020 BUN medians converted to urea mg/dL (×2.14)",
+      "dataset": "NHANES 2017–March 2020 BUN medians (US adults, age-/sex-stratified)",
       "sourced": true,
       "sourceRefs": [
         {
-          "label": "NHANES 2017–2020 BUN→urea medians (via LabNorms; ×2.14)",
-          "citation": "Age band 60–69, female: median 34.2 mg/dL. Computed from CDC NHANES public laboratory microdata (weighted adult sample); values redistributed by LabNorms.",
+          "label": "NHANES 2017–2020 BUN medians (via LabNorms)",
+          "citation": "Age band 60–69, female: median 16 mg/dL. Computed from CDC NHANES public laboratory microdata (weighted adult sample); values redistributed by LabNorms.",
           "url": "https://labnorms.com/analytes/bun/",
           "verifiedAt": "2026-08-06"
         },
@@ -5390,14 +5390,14 @@
         "ageMin": 70,
         "ageMax": 79
       },
-      "median": 38.5,
+      "median": 18,
       "unit": "mg/dL",
-      "dataset": "NHANES 2017–March 2020 BUN medians converted to urea mg/dL (×2.14)",
+      "dataset": "NHANES 2017–March 2020 BUN medians (US adults, age-/sex-stratified)",
       "sourced": true,
       "sourceRefs": [
         {
-          "label": "NHANES 2017–2020 BUN→urea medians (via LabNorms; ×2.14)",
-          "citation": "Age band 70–79, male: median 38.5 mg/dL. Computed from CDC NHANES public laboratory microdata (weighted adult sample); values redistributed by LabNorms.",
+          "label": "NHANES 2017–2020 BUN medians (via LabNorms)",
+          "citation": "Age band 70–79, male: median 18 mg/dL. Computed from CDC NHANES public laboratory microdata (weighted adult sample); values redistributed by LabNorms.",
           "url": "https://labnorms.com/analytes/bun/",
           "verifiedAt": "2026-08-06"
         },
@@ -5416,14 +5416,14 @@
         "ageMin": 70,
         "ageMax": 79
       },
-      "median": 38.5,
+      "median": 18,
       "unit": "mg/dL",
-      "dataset": "NHANES 2017–March 2020 BUN medians converted to urea mg/dL (×2.14)",
+      "dataset": "NHANES 2017–March 2020 BUN medians (US adults, age-/sex-stratified)",
       "sourced": true,
       "sourceRefs": [
         {
-          "label": "NHANES 2017–2020 BUN→urea medians (via LabNorms; ×2.14)",
-          "citation": "Age band 70–79, female: median 38.5 mg/dL. Computed from CDC NHANES public laboratory microdata (weighted adult sample); values redistributed by LabNorms.",
+          "label": "NHANES 2017–2020 BUN medians (via LabNorms)",
+          "citation": "Age band 70–79, female: median 18 mg/dL. Computed from CDC NHANES public laboratory microdata (weighted adult sample); values redistributed by LabNorms.",
           "url": "https://labnorms.com/analytes/bun/",
           "verifiedAt": "2026-08-06"
         },

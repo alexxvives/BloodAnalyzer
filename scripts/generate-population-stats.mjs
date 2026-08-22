@@ -144,16 +144,14 @@ const MEDIAN_TABLES = {
     male: [1.4, 1.3, 1.5, 1.7, 2.0, 1.8],
     female: [1.3, 1.5, 1.6, 1.6, 1.7, 1.9],
   },
-  // markers.json stores European urea mg/dL; LabNorms publishes BUN mg/dL.
-  // Conversion: urea_mg/dL ≈ BUN_mg/dL × 2.14
+  // markers.json stores US BUN mg/dL (Mayo). LabNorms publishes BUN mg/dL.
   urea: {
     unit: "mg/dL",
-    dataset:
-      "NHANES 2017–March 2020 BUN medians converted to urea mg/dL (×2.14)",
+    dataset: "NHANES 2017–March 2020 BUN medians (US adults, age-/sex-stratified)",
     url: "https://labnorms.com/analytes/bun/",
-    label: "NHANES 2017–2020 BUN→urea medians (via LabNorms; ×2.14)",
-    male: [27.8, 27.8, 32.1, 32.1, 34.2, 38.5],
-    female: [23.5, 23.5, 25.7, 30.0, 34.2, 38.5],
+    label: "NHANES 2017–2020 BUN medians (via LabNorms)",
+    male: [13, 13, 15, 15, 16, 18],
+    female: [11, 11, 12, 14, 16, 18],
   },
   "vitamin-b12": {
     unit: "pg/mL",
@@ -521,10 +519,10 @@ function lpAMeans() {
 }
 
 const dataset = {
-  version: "1.8.0",
+  version: "1.8.1",
   reviewStatus: "provisional",
   notes:
-    "Lipid means from Gao et al. JAHA 2023 (NHANES 2017–2018). Hemoglobin means from Le PLOS One 2016 (NHANES 2003–2012). Lp(a) sex-stratified medians from Brandt et al. J Clin Lipidol 2020 (NHANES III 1991–1994). Morning cortisol medians from WVU C8 Health Project adult AM tables. ESR medians from Alende et al. Medicine 2019 (Spanish population sample). Age-/sex-stratified medians for glucose, liver enzymes, creatinine, uric acid, CBC indices (MCV/MCH/MCHC/RDW/RBC), CRP, ferritin, vitamin D, folate, serum iron, vitamin B12, TSH, urea (from BUN×2.14), TIBC, and WBC differential percentages (neutrophils/lymphocytes/monocytes/eosinophils) from CDC NHANES public microdata as redistributed by LabNorms. Serum transferrin mg/dL derived from NHANES TIBC × 0.70 (StatPearls conversion) — NHANES does not publish transferrin concentration directly. Still absent (no cited matching unit/slice): PDW in fL (published large-sample PDW is typically % CV on Sysmex; analyzer fL scales differ), basophil % (NHANES LBXBAPCT exists but no LabNorms age/sex median table or peer-reviewed age/sex median tables with extractable numbers yet).",
+    "Lipid means from Gao et al. JAHA 2023 (NHANES 2017–2018). Hemoglobin means from Le PLOS One 2016 (NHANES 2003–2012). Lp(a) sex-stratified medians from Brandt et al. J Clin Lipidol 2020 (NHANES III 1991–1994). Morning cortisol medians from WVU C8 Health Project adult AM tables. ESR medians from Alende et al. Medicine 2019 (Spanish population sample). Age-/sex-stratified medians for glucose, liver enzymes, creatinine, uric acid, CBC indices (MCV/MCH/MCHC/RDW/RBC), CRP, ferritin, vitamin D, folate, serum iron, vitamin B12, TSH, BUN, TIBC, and WBC differential percentages (neutrophils/lymphocytes/monocytes/eosinophils) from CDC NHANES public microdata as redistributed by LabNorms. Serum transferrin mg/dL derived from NHANES TIBC × 0.70 (StatPearls conversion) — NHANES does not publish transferrin concentration directly. Still absent (no cited matching unit/slice): PDW in fL (published large-sample PDW is typically % CV on Sysmex; analyzer fL scales differ), basophil % (NHANES LBXBAPCT exists but no LabNorms age/sex median table or peer-reviewed age/sex median tables with extractable numbers yet).",
   stats: [
     ...legacyMeans(),
     ...lpAMeans(),
