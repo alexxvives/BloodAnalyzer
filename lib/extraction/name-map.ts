@@ -64,6 +64,7 @@ const ALIASES: Record<string, string> = {
   "apob apoa1 ratio": "apo-b-apo-a1-ratio",
   "apo b apo a1 ratio": "apo-b-apo-a1-ratio",
   "ldl c apob ratio": "ldl-apo-b-ratio",
+  "ldl c apo b ratio": "ldl-apo-b-ratio",
   "ldl apo b ratio": "ldl-apo-b-ratio",
   "triglycerides hdl ratio": "tg-hdl-ratio",
   "tg hdl ratio": "tg-hdl-ratio",

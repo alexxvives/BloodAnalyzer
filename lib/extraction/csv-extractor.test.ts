@@ -53,6 +53,7 @@ describe("csvExtractor", () => {
       "Ferritin,ng/mL,245",
       "Nutritional,,",
       "Total Cholesterol:HDL Ratio,,2.4",
+      "LDL-C:ApoB Ratio,,1.35",
     ].join("\n");
 
     const result = await csvExtractor.extract(
@@ -82,6 +83,7 @@ describe("csvExtractor", () => {
     expect(byId.testosterone?.value).toBe(604.26);
     expect(byId["vitamin-d"]?.value).toBe(29.8);
     expect(byId.ferritin?.value).toBe(245);
+    expect(byId["ldl-apo-b-ratio"]?.value).toBe(1.35);
 
     expect(result.markers.some((m) => m.name === "Heart Health")).toBe(false);
     expect(result.markers.some((m) => m.name.startsWith("Exported:"))).toBe(

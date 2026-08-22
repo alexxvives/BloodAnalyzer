@@ -47,5 +47,7 @@ describe("resolveBiomarkerId — percent-of markers", () => {
     expect(resolveBiomarkerId("Total Protein")).toBe("total-protein");
     expect(resolveBiomarkerId("Estim. Avg Glu (eAG)")).toBe("eag");
     expect(resolveBiomarkerId("Free Androgen Index (FAI)")).toBe("fai");
+    expect(resolveBiomarkerId("LDL-C:ApoB Ratio")).toBe("ldl-apo-b-ratio");
+    expect(resolveBiomarkerId("LDL-C:ApoB ratio")).toBe("ldl-apo-b-ratio");
   });
 });
