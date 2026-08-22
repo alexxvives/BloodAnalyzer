@@ -177,4 +177,32 @@ describe("scoreBiomarker", () => {
     expect(result.status).toBeNull();
     expect(result.unavailableReason).toBe("missing_value");
   });
+
+  it("scores Mayo-sourced ApoA1, iron saturation, and C-peptide", () => {
+    const apoMale = scoreBiomarker({
+      biomarkerId: "apo-a1",
+      value: 146,
+      demographic: { sex: "male", ageYears: 27 },
+    });
+    expect(apoMale.rangeAvailable).toBe(true);
+    expect(apoMale.status).toBe("good");
+    expect(apoMale.labStatus).toBe("in_range");
+
+    const apoLow = scoreBiomarker({
+      biomarkerId: "apo-a1",
+      value: 100,
+      demographic: { sex: "male", ageYears: 27 },
+    });
+    expect(apoLow.status).toBe("attention");
+
+    expect(
+      scoreBiomarker({ biomarkerId: "iron-saturation", value: 39 }).status,
+    ).toBe("good");
+    expect(
+      scoreBiomarker({ biomarkerId: "c-peptide", value: 1.72 }).status,
+    ).toBe("good");
+    expect(
+      scoreBiomarker({ biomarkerId: "tc-hdl-ratio", value: 2.4 }).rangeAvailable,
+    ).toBe(false);
+  });
 });

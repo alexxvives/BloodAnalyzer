@@ -1091,6 +1091,148 @@ export const BIOMARKER_EXPLANATIONS: Record<string, BiomarkerExplanation> = {
       },
     ],
   }),
+
+  "apo-a1": base({
+    summary:
+      "ApoA1 is the main protein on HDL particles and is involved in moving cholesterol back toward the liver.",
+    whatItMeasures:
+      "The concentration of apolipoprotein A1 in serum. It is related to HDL but is not a 1:1 stand-in for HDL cholesterol.",
+    whyItMatters:
+      "Lower ApoA1 is commonly linked with higher atherosclerotic risk in population studies. Clinicians often look at it together with ApoB rather than in isolation.",
+    understandingLevels:
+      "Adult lab catalogs typically flag low ApoA1; there is no widely agreed “higher is always better” ceiling. Compare with HDL, ApoB, and overall risk — not as a diagnosis.",
+    ifLower: [
+      "Increase aerobic activity and avoid smoking",
+      "Review the rest of the lipid panel with a clinician",
+    ],
+    influencingFactors: [
+      "Aerobic activity and smoking status",
+      "Genetics",
+      "The rest of the lipid panel (HDL, ApoB, triglycerides)",
+    ],
+    learnMore: [
+      {
+        label: "Mayo Clinic Laboratories — ApoA1",
+        url: "https://www.mayocliniclabs.com/test-catalog/overview/607591",
+      },
+    ],
+  }),
+
+  "c-peptide": base({
+    summary:
+      "C-peptide is released when the pancreas makes insulin, so it reflects endogenous insulin production.",
+    whatItMeasures:
+      "Connecting peptide of proinsulin, usually after an overnight fast. It stays in the blood longer than insulin itself.",
+    whyItMatters:
+      "Clinicians use it when they need to tell apart insulin the body made versus insulin that was injected, and to gauge remaining insulin production.",
+    understandingLevels:
+      "Fasting values are interpreted with glucose, insulin, and clinical context. This app does not diagnose diabetes or hypoglycemia.",
+    influencingFactors: [
+      "Fasting vs fed state",
+      "Kidney function (C-peptide is cleared by the kidneys)",
+      "Insulin production and insulin resistance",
+    ],
+    learnMore: [
+      {
+        label: "Mayo Clinic Laboratories — C-Peptide",
+        url: "https://www.mayocliniclabs.com/test-catalog/overview/8804/c-peptide-serum",
+      },
+    ],
+  }),
+
+  "iron-saturation": base({
+    summary:
+      "Iron saturation (transferrin saturation) is serum iron divided by total iron-binding capacity.",
+    whatItMeasures:
+      "The share of transferrin that is occupied by iron at the time of the draw. It varies through the day and after meals.",
+    whyItMatters:
+      "Low saturation is used when screening for iron deficiency; high saturation is used when looking for iron overload, always alongside ferritin.",
+    understandingLevels:
+      "A single saturation value is noisy. Ferritin plus this number is more informative than either alone.",
+    influencingFactors: [
+      "Time of day and recent meals",
+      "Inflammation",
+      "Iron stores, bleeding, and supplementation",
+    ],
+    learnMore: [
+      {
+        label: "Mayo Clinic Laboratories — Percent Saturation",
+        url: "https://www.mayocliniclabs.com/test-catalog/overview/2503",
+      },
+    ],
+  }),
+
+  "vldl-cholesterol": base({
+    summary:
+      "VLDL carries triglycerides from the liver. Many labs calculate it from triglycerides rather than measuring it directly.",
+    whatItMeasures:
+      "Cholesterol on very-low-density lipoprotein particles, often estimated as triglycerides ÷ 5 in mg/dL units.",
+    whyItMatters:
+      "It moves with triglycerides. The triglyceride result is usually the more useful number for discussion with a clinician.",
+    understandingLevels:
+      "Optimization bands are not sourced yet, so the value is shown without a grade.",
+    influencingFactors: ["Recent meals", "Triglyceride level", "Alcohol and refined carbohydrate intake"],
+  }),
+
+  "bilirubin-direct": base({
+    summary:
+      "Direct (conjugated) bilirubin is the form processed by the liver for excretion.",
+    whatItMeasures:
+      "Conjugated bilirubin in serum, distinct from total bilirubin which also includes the unconjugated fraction.",
+    whyItMatters:
+      "Clinicians compare direct and total bilirubin when looking at liver and bile-duct patterns — this app does not diagnose those conditions.",
+    understandingLevels:
+      "Optimization bands are not sourced yet, so the value is shown without a grade.",
+    influencingFactors: ["Liver processing of bilirubin", "Bile-duct flow", "Assay method"],
+  }),
+
+  "total-protein": base({
+    summary:
+      "Total protein is the combined concentration of albumin and globulins in serum.",
+    whatItMeasures:
+      "Overall protein in the liquid part of blood. Albumin is usually interpreted alongside it.",
+    whyItMatters:
+      "It is a broad chemistry marker. Low or high values have many possible explanations and need the rest of the panel.",
+    understandingLevels:
+      "Optimization bands are not sourced yet, so the value is shown without a grade.",
+    influencingFactors: ["Hydration", "Liver protein production", "Inflammation and immune proteins"],
+  }),
+
+  uibc: base({
+    summary:
+      "UIBC is the leftover iron-binding capacity of transferrin that is not already occupied by iron.",
+    whatItMeasures:
+      "Unsaturated iron-binding capacity. TIBC is typically serum iron plus UIBC.",
+    whyItMatters:
+      "It is part of the same iron-status set as serum iron, TIBC, saturation, and ferritin.",
+    understandingLevels:
+      "Optimization bands are not sourced yet, so the value is shown without a grade.",
+    influencingFactors: ["Iron stores", "Inflammation", "The paired serum-iron result"],
+  }),
+
+  tpoab: base({
+    summary:
+      "TPO antibodies are immune proteins directed at thyroperoxidase, an enzyme in the thyroid.",
+    whatItMeasures:
+      "Thyroperoxidase antibody concentration. Cutoffs differ by assay, so the number is not interchangeable across labs.",
+    whyItMatters:
+      "Detectable TPO antibodies are commonly discussed in autoimmune thyroid conditions. This app does not diagnose thyroid disease.",
+    understandingLevels:
+      "Optimization bands are not sourced yet because antibody cutoffs are assay-specific. Use the lab’s own reference interval.",
+    influencingFactors: ["Assay method", "Autoimmune thyroid conditions", "Other autoimmune diseases"],
+  }),
+
+  tgab: base({
+    summary:
+      "Thyroglobulin antibodies are immune proteins directed at thyroglobulin.",
+    whatItMeasures:
+      "Thyroglobulin antibody concentration. Like TPO antibodies, cutoffs depend on the assay.",
+    whyItMatters:
+      "They are sometimes measured with TPO antibodies in thyroid autoimmunity workups.",
+    understandingLevels:
+      "Optimization bands are not sourced yet because antibody cutoffs are assay-specific.",
+    influencingFactors: ["Assay method", "Thyroid autoimmunity", "Prior thyroid surgery or radioiodine in some contexts"],
+  }),
 };
 
 export function getBiomarkerExplanation(

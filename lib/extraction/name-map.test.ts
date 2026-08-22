@@ -17,17 +17,35 @@ describe("resolveBiomarkerId — corpuscular indices", () => {
 });
 
 describe("resolveBiomarkerId — percent-of markers", () => {
-  it("does not treat % Free Testosterone as Free Testosterone", () => {
-    expect(resolveBiomarkerId("% Free Testosterone")).toBeNull();
+  it("maps % Free Testosterone separately from Free Testosterone", () => {
+    expect(resolveBiomarkerId("% Free Testosterone")).toBe(
+      "percent-free-testosterone",
+    );
     expect(resolveBiomarkerId("% Hemoglobin A1C")).toBe("hba1c");
   });
 
-  it("does not map VLDL cholesterol or UIBC to a different analyte", () => {
-    expect(resolveBiomarkerId("VLDL Cholesterol (Calc)")).toBeNull();
+  it("maps VLDL and UIBC to their own ids, not cholesterol or iron", () => {
+    expect(resolveBiomarkerId("VLDL Cholesterol (Calc)")).toBe(
+      "vldl-cholesterol",
+    );
     expect(
       resolveBiomarkerId("Unsaturated iron-binding capacity test (UIBC)"),
-    ).toBeNull();
+    ).toBe("uibc");
     expect(resolveBiomarkerId("Iron")).toBe("serum-iron");
     expect(resolveBiomarkerId("Cholesterol, Total")).toBe("total-cholesterol");
+  });
+
+  it("maps EasyDraw export names that were previously unmapped", () => {
+    expect(resolveBiomarkerId("Apolipoprotein A1 (APOA1)")).toBe("apo-a1");
+    expect(resolveBiomarkerId("Total Cholesterol:HDL Ratio")).toBe(
+      "tc-hdl-ratio",
+    );
+    expect(resolveBiomarkerId("C-Peptide")).toBe("c-peptide");
+    expect(resolveBiomarkerId("Direct Bilirubin")).toBe("bilirubin-direct");
+    expect(resolveBiomarkerId("Thyroperoxidase Antibody (TPOAb)")).toBe("tpoab");
+    expect(resolveBiomarkerId("Iron Saturation")).toBe("iron-saturation");
+    expect(resolveBiomarkerId("Total Protein")).toBe("total-protein");
+    expect(resolveBiomarkerId("Estim. Avg Glu (eAG)")).toBe("eag");
+    expect(resolveBiomarkerId("Free Androgen Index (FAI)")).toBe("fai");
   });
 });

@@ -1,7 +1,7 @@
 {
-  "version": "1.2.1",
+  "version": "1.2.2",
   "reviewStatus": "provisional",
-  "notes": "Educational seed. NOT clinician-reviewed. Prefer printed lab intervals when available. Do not treat as diagnosis. v1.2.1: enforced sourced-boundaries-only band policy for reference-interval markers (hematocrit, rbc, creatinine, uric-acid, ggt, hemoglobin, serum-iron) — attention / good / attention at the primary interval endpoints; no invented fair/optimal interiors; serum iron grades on the Mayo interval with an explicit lab-specific caveat. v1.2.0: replaced nine male-derived ranges with sex-specific rows; rebuilt ferritin; removed invented total-cholesterol 180; aligned female HDL; collapsed vitamin D. 27 markers still carry 'NEEDS CLINICIAN REVIEW' citations; see data/SOURCES.md and data/reference-ranges/reference-data.test.ts.",
+  "notes": "Educational seed. NOT clinician-reviewed. Prefer printed lab intervals when available. Do not treat as diagnosis. v1.2.2: added EasyDraw coverage markers (ApoA1, iron saturation, C-peptide sourced from Mayo; remaining calculated ratios as unsourced placeholders). v1.2.1: enforced sourced-boundaries-only band policy for reference-interval markers (hematocrit, rbc, creatinine, uric-acid, ggt, hemoglobin, serum-iron) — attention / good / attention at the primary interval endpoints; no invented fair/optimal interiors; serum iron grades on the Mayo interval with an explicit lab-specific caveat. v1.2.0: replaced nine male-derived ranges with sex-specific rows; rebuilt ferritin; removed invented total-cholesterol 180; aligned female HDL; collapsed vitamin D. 27 markers still carry 'NEEDS CLINICIAN REVIEW' citations; see data/SOURCES.md and data/reference-ranges/reference-data.test.ts.",
   "markers": [
     {
       "biomarkerId": "total-cholesterol",
@@ -2803,6 +2803,515 @@
         {
           "label": "Panel catalog placeholder — range not yet sourced",
           "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "apo-a1",
+      "name": "ApoA1",
+      "subtitle": "Apolipoprotein A1 — main HDL protein",
+      "sectionId": "lipid",
+      "unit": "mg/dL",
+      "loincCode": "1869-7",
+      "sourced": true,
+      "labLow": 120,
+      "labHigh": null,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 119.999
+        },
+        {
+          "status": "good",
+          "min": 120,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories APOA1 — adult male ApoA1 >=120 mg/dL",
+          "citation": "Mayo Clinic Laboratories, test APOA1 (Apolipoprotein A1, Serum). Adult males >18 years: >=120 mg/dL (acceptable). Lower values are flagged; Mayo does not publish an adult upper reference limit, so no high-side grade is claimed.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/607591",
+          "verifiedAt": "2026-08-22"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 18
+      }
+    },
+    {
+      "biomarkerId": "apo-a1",
+      "name": "ApoA1",
+      "subtitle": "Apolipoprotein A1 — main HDL protein",
+      "sectionId": "lipid",
+      "unit": "mg/dL",
+      "loincCode": "1869-7",
+      "sourced": true,
+      "labLow": 140,
+      "labHigh": null,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 139.999
+        },
+        {
+          "status": "good",
+          "min": 140,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories APOA1 — adult female ApoA1 >=140 mg/dL",
+          "citation": "Mayo Clinic Laboratories, test APOA1 (Apolipoprotein A1, Serum). Adult females >18 years: >=140 mg/dL (acceptable). Lower values are flagged; Mayo does not publish an adult upper reference limit, so no high-side grade is claimed.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/607591",
+          "verifiedAt": "2026-08-22"
+        }
+      ],
+      "demographic": {
+        "sex": "female",
+        "ageMin": 18
+      }
+    },
+    {
+      "biomarkerId": "iron-saturation",
+      "name": "Iron Saturation",
+      "subtitle": "Transferrin saturation (serum iron / TIBC)",
+      "sectionId": "vitamins",
+      "unit": "%",
+      "loincCode": "2502-3",
+      "sourced": true,
+      "labLow": 14,
+      "labHigh": 50,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 13.999
+        },
+        {
+          "status": "good",
+          "min": 14,
+          "max": 50
+        },
+        {
+          "status": "attention",
+          "min": 50.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories SAT — percent saturation 14-50%",
+          "citation": "Mayo Clinic Laboratories, test SAT (Percent Saturation), part of SFEC / Iron and Total Iron-Binding Capacity, Serum. Reference interval 14-50%. Mayo notes percent saturation often exceeds 45% in hereditary hemochromatosis, and <16% is generally used to screen for iron deficiency (20% with inflammation). Bands are attention / good / attention at the published 14-50% interval; no interior optimum is claimed.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/2503",
+          "verifiedAt": "2026-08-22"
+        }
+      ]
+    },
+    {
+      "biomarkerId": "c-peptide",
+      "name": "C-Peptide",
+      "subtitle": "Connecting peptide of insulin (fasting)",
+      "sectionId": "metabolic",
+      "unit": "ng/mL",
+      "loincCode": "13037-7",
+      "sourced": true,
+      "labLow": 1.1,
+      "labHigh": 4.4,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 1.099
+        },
+        {
+          "status": "good",
+          "min": 1.1,
+          "max": 4.4
+        },
+        {
+          "status": "attention",
+          "min": 4.401,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories CPR — fasting C-peptide 1.1-4.4 ng/mL",
+          "citation": "Mayo Clinic Laboratories, test CPR (C-Peptide, Serum). Fasting reference interval 1.1-4.4 ng/mL. Bands are attention / good / attention at those endpoints; no interior optimum is claimed.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/8804/c-peptide-serum",
+          "verifiedAt": "2026-08-22"
+        }
+      ]
+    },
+    {
+      "biomarkerId": "vldl-cholesterol",
+      "name": "VLDL Cholesterol",
+      "subtitle": "Calculated VLDL cholesterol",
+      "sectionId": "lipid",
+      "unit": "mg/dL",
+      "loincCode": "13458-5",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "eag",
+      "name": "Estimated Average Glucose",
+      "subtitle": "eAG derived from HbA1c",
+      "sectionId": "metabolic",
+      "unit": "mg/dL",
+      "loincCode": "27353-2",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "bilirubin-direct",
+      "name": "Direct Bilirubin",
+      "subtitle": "Conjugated bilirubin",
+      "sectionId": "liver",
+      "unit": "mg/dL",
+      "loincCode": "1968-7",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "total-protein",
+      "name": "Total Protein",
+      "subtitle": "Serum total protein",
+      "sectionId": "liver",
+      "unit": "g/dL",
+      "loincCode": "2885-2",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "uibc",
+      "name": "UIBC",
+      "subtitle": "Unsaturated iron-binding capacity",
+      "sectionId": "vitamins",
+      "unit": "ug/dL",
+      "loincCode": "2501-5",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "tpoab",
+      "name": "TPO Antibodies",
+      "subtitle": "Thyroperoxidase antibodies",
+      "sectionId": "thyroid",
+      "unit": "IU/mL",
+      "loincCode": "8099-4",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "tgab",
+      "name": "Thyroglobulin Antibodies",
+      "subtitle": "Thyroglobulin antibodies",
+      "sectionId": "thyroid",
+      "unit": "IU/mL",
+      "loincCode": "8098-6",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "tc-hdl-ratio",
+      "name": "Total Cholesterol:HDL Ratio",
+      "subtitle": "Calculated total cholesterol / HDL",
+      "sectionId": "lipid",
+      "unit": "ratio",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "ldl-hdl-ratio",
+      "name": "LDL-C:HDL-C Ratio",
+      "subtitle": "Calculated LDL / HDL",
+      "sectionId": "lipid",
+      "unit": "ratio",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "apo-b-apo-a1-ratio",
+      "name": "ApoB:ApoA1 Ratio",
+      "subtitle": "Calculated ApoB / ApoA1",
+      "sectionId": "lipid",
+      "unit": "ratio",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "ldl-apo-b-ratio",
+      "name": "LDL-C:ApoB Ratio",
+      "subtitle": "Calculated LDL / ApoB",
+      "sectionId": "lipid",
+      "unit": "ratio",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "tg-hdl-ratio",
+      "name": "Triglycerides:HDL Ratio",
+      "subtitle": "Calculated triglycerides / HDL",
+      "sectionId": "lipid",
+      "unit": "ratio",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "fai",
+      "name": "Free Androgen Index",
+      "subtitle": "Calculated (total testosterone / SHBG) × 100",
+      "sectionId": "hormones",
+      "unit": "index",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "testosterone-cortisol-ratio",
+      "name": "Testosterone:Cortisol Ratio",
+      "subtitle": "Calculated testosterone / cortisol",
+      "sectionId": "hormones",
+      "unit": "ratio",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "cortisol-dhea-s-ratio",
+      "name": "Cortisol:DHEA-S Ratio",
+      "subtitle": "Calculated cortisol / DHEA-S",
+      "sectionId": "hormones",
+      "unit": "ratio",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "percent-free-testosterone",
+      "name": "% Free Testosterone",
+      "subtitle": "Calculated free / total testosterone",
+      "sectionId": "hormones",
+      "unit": "%",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "bun-creatinine-ratio",
+      "name": "BUN:Creatinine Ratio",
+      "subtitle": "Calculated urea nitrogen / creatinine",
+      "sectionId": "kidney",
+      "unit": "ratio",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "ast-alt-ratio",
+      "name": "AST:ALT Ratio",
+      "subtitle": "Calculated AST / ALT",
+      "sectionId": "liver",
+      "unit": "ratio",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "free-t3-free-t4-ratio",
+      "name": "Free T3:Free T4 Ratio",
+      "subtitle": "Calculated free T3 / free T4",
+      "sectionId": "thyroid",
+      "unit": "ratio",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
+          "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "tsh-t4-ratio",
+      "name": "TSH:T4 Ratio",
+      "subtitle": "Calculated TSH / T4",
+      "sectionId": "thyroid",
+      "unit": "ratio",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Panel catalog placeholder — range not yet sourced",
+          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
           "verifiedAt": null
         }
       ]

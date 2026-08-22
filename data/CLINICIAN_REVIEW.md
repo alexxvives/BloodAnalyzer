@@ -20,9 +20,10 @@ See also: [`SOURCES.md`](./SOURCES.md), `reference-data.test.ts`.
 ## Still missing from the catalog (need citations before add)
 
 Sodium, potassium, chloride, calcium, magnesium, phosphorus, bicarbonate,
-total protein, direct bilirubin, LDH, reticulocytes, MPV — see SOURCES.md.
-These are **not** to be invented in components or provisional seed scripts
-without a source.
+LDH, reticulocytes, MPV — see SOURCES.md.
+Total protein and direct bilirubin are catalog placeholders (`sourced: false`)
+until a cited interval is attached. These are **not** to be invented in
+components.
 
 ## Population benchmarks
 

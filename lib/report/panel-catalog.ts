@@ -13,11 +13,13 @@ export const PANEL_CATALOG: Array<{
   { biomarkerId: "hdl-cholesterol", sectionId: "lipid" },
   { biomarkerId: "triglycerides", sectionId: "lipid" },
   { biomarkerId: "apo-b", sectionId: "lipid" },
+  { biomarkerId: "apo-a1", sectionId: "lipid" },
   { biomarkerId: "lp-a", sectionId: "lipid" },
   // Metabolic
   { biomarkerId: "glucose-fasting", sectionId: "metabolic" },
   { biomarkerId: "hba1c", sectionId: "metabolic" },
   { biomarkerId: "insulin", sectionId: "metabolic" },
+  { biomarkerId: "c-peptide", sectionId: "metabolic" },
   { biomarkerId: "uric-acid", sectionId: "metabolic" },
   { biomarkerId: "homocysteine", sectionId: "metabolic" },
   // Hormones
@@ -40,11 +42,15 @@ export const PANEL_CATALOG: Array<{
   { biomarkerId: "ggt", sectionId: "liver" },
   { biomarkerId: "alp", sectionId: "liver" },
   { biomarkerId: "bilirubin-total", sectionId: "liver" },
+  { biomarkerId: "bilirubin-direct", sectionId: "liver" },
   { biomarkerId: "albumin", sectionId: "liver" },
+  { biomarkerId: "total-protein", sectionId: "liver" },
   // Thyroid
   { biomarkerId: "tsh", sectionId: "thyroid" },
   { biomarkerId: "free-t4", sectionId: "thyroid" },
   { biomarkerId: "free-t3", sectionId: "thyroid" },
+  { biomarkerId: "tpoab", sectionId: "thyroid" },
+  { biomarkerId: "tgab", sectionId: "thyroid" },
   // Prostate
   { biomarkerId: "psa", sectionId: "prostate" },
   // Nutritional / iron
@@ -53,8 +59,10 @@ export const PANEL_CATALOG: Array<{
   { biomarkerId: "folate", sectionId: "vitamins" },
   { biomarkerId: "ferritin", sectionId: "vitamins" },
   { biomarkerId: "serum-iron", sectionId: "vitamins" },
+  { biomarkerId: "iron-saturation", sectionId: "vitamins" },
   { biomarkerId: "transferrin", sectionId: "vitamins" },
   { biomarkerId: "tibc", sectionId: "vitamins" },
+  { biomarkerId: "uibc", sectionId: "vitamins" },
   { biomarkerId: "omega-3-index", sectionId: "vitamins" },
   // CBC / inflammation
   { biomarkerId: "hemoglobin", sectionId: "cbc" },

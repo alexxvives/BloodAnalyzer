@@ -7,7 +7,7 @@ versioned and cited. **Do not ship invented numbers to real users.**
 
 | Dataset | Location | Citation status |
 |---|---|---|
-| Reference ranges v1.2.1 | `/data/reference-ranges/v1/markers.json` | **Mixed** — 29 rows externally cited with URLs, 27 still awaiting clinician review |
+| Reference ranges v1.2.2 | `/data/reference-ranges/v1/markers.json` | **Mixed** — Mayo-cited ApoA1, iron saturation, and C-peptide added; 27 rows still awaiting clinician review; calculated ratios remain unsourced placeholders |
 | Population stats v1.8.0 | `/data/population-stats/v1/stats.json` | **Partial NHANES load** — see below |
 
 Until an entry is marked `sourced: true` **and** reviewed for production, treat
@@ -184,9 +184,10 @@ findings rather than range bugs. They are listed as explicit exceptions in
   band, using a threshold the Endocrine Society has since withdrawn.
 
 Also missing from the catalog entirely: sodium, potassium, chloride, calcium,
-magnesium, phosphorus, bicarbonate, total protein, direct bilirubin, LDH,
-reticulocytes, MPV. These are exactly the markers where a low value is dangerous,
-so this is a panel-completeness gap worth closing.
+magnesium, phosphorus, bicarbonate, LDH, reticulocytes, MPV. Total protein and
+direct bilirubin are now in the catalog as **unsourced placeholders** (shown
+when uploaded, graded only after a citation). These are exactly the markers
+where a low value is dangerous, so remaining gaps are still worth closing.
 
 ## Biological age (educational)
 

@@ -203,10 +203,13 @@ describe("reference-range data integrity", () => {
    * pattern) or inter-lab disagreement painted as a fair tier.
    */
   const REFERENCE_INTERVAL_ONLY = new Set([
+    "apo-a1",
+    "c-peptide",
     "creatinine",
     "ggt",
     "hematocrit",
     "hemoglobin",
+    "iron-saturation",
     "rbc",
     "serum-iron",
     "uric-acid",
