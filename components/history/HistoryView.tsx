@@ -1,6 +1,7 @@
 "use client";
 
 import { Page, PageBody, PageHeader } from "@/components/layout/Page";
+import { HistoryListSkeleton } from "@/components/ui/Skeleton";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -20,7 +21,9 @@ type StatusCounts = {
 type HistoryReport = {
   id: string;
   createdAt: string;
+  collectedAt?: string | null;
   sourceFileName: string | null;
+  hasSourceFile?: boolean;
   markerCount: number;
   gradedCount: number;
   overallPct: number | null;
@@ -28,49 +31,59 @@ type HistoryReport = {
   sectionSummaries: SectionSummary[];
 };
 
-type Trend = {
-  biomarkerId: string;
-  name: string;
-  unit: string;
-  points: number[];
-};
-
 export function HistoryView() {
   const [reports, setReports] = useState<HistoryReport[]>([]);
-  const [trends, setTrends] = useState<Trend[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
-    void fetch("/api/reports/history")
-      .then(async (r) => {
-        if (r.status === 401) {
-          throw new Error("Sign in to see upload history.");
-        }
-        if (!r.ok) throw new Error("Could not load history");
-        return r.json() as Promise<{
-          reports: HistoryReport[];
-          trends: Trend[];
-        }>;
-      })
-      .then((data) => {
-        if (cancelled) return;
-        setReports(data.reports ?? []);
-        setTrends(data.trends ?? []);
-      })
-      .catch((err: unknown) => {
-        if (!cancelled) {
-          setError(err instanceof Error ? err.message : "History failed");
-        }
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
+
+    function load() {
+      void fetch("/api/reports/history")
+        .then(async (r) => {
+          if (r.status === 401) {
+            throw new Error("Sign in to see upload history.");
+          }
+          if (!r.ok) throw new Error("Could not load history");
+          return r.json() as Promise<{
+            reports: HistoryReport[];
+          }>;
+        })
+        .then((data) => {
+          if (cancelled) return;
+          setReports(data.reports ?? []);
+          setError(null);
+        })
+        .catch((err: unknown) => {
+          if (!cancelled) {
+            setError(err instanceof Error ? err.message : "History failed");
+          }
+        })
+        .finally(() => {
+          if (!cancelled) setLoading(false);
+        });
+    }
+
+    load();
+    const onChanged = () => load();
+    window.addEventListener("ba:reports-changed", onChanged);
     return () => {
       cancelled = true;
+      window.removeEventListener("ba:reports-changed", onChanged);
     };
   }, []);
+
+  async function deleteReport(id: string) {
+    const prev = reports;
+    setReports((items) => items.filter((r) => r.id !== id));
+    const res = await fetch(`/api/reports/${id}`, { method: "DELETE" });
+    if (!res.ok) {
+      setReports(prev);
+      return;
+    }
+    window.dispatchEvent(new Event("ba:reports-changed"));
+  }
 
   return (
     <Page>
@@ -78,14 +91,9 @@ export function HistoryView() {
         eyebrow="Your uploads"
         title="History"
         description="Each card summarizes one upload: overall optimization score and how markers split across grades."
-        actions={
-          <Link href="/upload" className="ba-btn ba-btn-primary">
-            New upload
-          </Link>
-        }
       />
       <PageBody width="narrow">
-        {loading ? <p className="text-sm text-muted">Loading history…</p> : null}
+        {loading ? <HistoryListSkeleton /> : null}
         {error ? <p className="text-sm text-status-fair">{error}</p> : null}
 
         {!loading && !error && reports.length === 0 ? (
@@ -100,131 +108,183 @@ export function HistoryView() {
           </div>
         ) : null}
 
-        {trends.length > 0 ? (
-          <section className="mb-8">
-            <h2 className="ba-eyebrow">Changes across uploads</h2>
-            <ul className="mt-3 grid gap-3 sm:grid-cols-2">
-            {trends.map((t) => (
-              <li
-                key={t.biomarkerId}
-                className="rounded-2xl border border-border bg-surface px-4 py-3"
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-medium">{t.name}</p>
-                    <p className="text-xs text-muted">
-                      {t.points[t.points.length - 1]?.toLocaleString()} {t.unit}
-                      <span className="text-muted/70">
-                        {" "}
-                        · {t.points.length} uploads
-                      </span>
-                    </p>
-                  </div>
-                  <Sparkline values={t.points} />
-                </div>
-              </li>
-            ))}
-            </ul>
-          </section>
-        ) : null}
-
-        <ul className="flex flex-col gap-3">
+        <ul className="flex flex-col gap-4 pt-2">
           {reports.map((report) => (
-          <li key={report.id}>
-            <Link
-              href={`/report/${report.id}`}
-              className="block rounded-2xl border border-border bg-surface p-4 transition hover:border-accent/40 hover:bg-surface-muted/30"
-            >
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <p className="font-[family-name:var(--font-fraunces)] text-lg tracking-tight">
-                    {formatDate(report.createdAt)}
-                  </p>
-                  {report.sourceFileName ? (
-                    <p className="mt-0.5 truncate text-xs text-muted">
-                      {report.sourceFileName}
+            <li key={report.id} className="relative flex items-stretch gap-3 overflow-visible">
+              <div className="group/card relative min-w-0 flex-1 rounded-2xl border border-border bg-surface p-4 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-accent hover:bg-accent-soft/30 hover:shadow-lg hover:shadow-accent/12">
+                <button
+                  type="button"
+                  title="Delete upload"
+                  aria-label="Delete upload"
+                  className="absolute -right-2.5 -top-2.5 z-10 flex h-7 w-7 items-center justify-center rounded-full border border-border bg-surface text-status-attention opacity-0 shadow-sm transition hover:bg-status-attention hover:text-white group-hover/card:opacity-100 focus-visible:opacity-100"
+                  onClick={() => void deleteReport(report.id)}
+                >
+                  <XIcon className="h-3.5 w-3.5" />
+                </button>
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="font-[family-name:var(--font-fraunces)] text-lg tracking-tight">
+                      {formatDate(report.collectedAt ?? report.createdAt)}
                     </p>
-                  ) : null}
-                  <p className="mt-1 text-xs text-muted">
-                    {report.markerCount} marker
-                    {report.markerCount === 1 ? "" : "s"}
-                    {report.gradedCount > 0
-                      ? ` · ${report.gradedCount} graded`
-                      : ""}
-                  </p>
+                    {report.sourceFileName ? (
+                      <p className="mt-0.5 truncate text-xs text-muted">
+                        {report.sourceFileName}
+                      </p>
+                    ) : null}
+                  </div>
+
+                  <div className="text-right">
+                    {report.overallPct != null ? (
+                      <>
+                        <p className="font-[family-name:var(--font-fraunces)] text-3xl leading-none tracking-tight tabular-nums">
+                          {report.overallPct}
+                          <span className="text-lg text-muted">%</span>
+                        </p>
+                        <p className="mt-1 text-[11px] uppercase tracking-wide text-muted">
+                          Overall
+                        </p>
+                      </>
+                    ) : (
+                      <p className="text-xs text-muted">Score unavailable</p>
+                    )}
+                  </div>
                 </div>
 
-                <div className="text-right">
-                  {report.overallPct != null ? (
-                    <>
-                      <p className="font-[family-name:var(--font-fraunces)] text-3xl leading-none tracking-tight tabular-nums">
-                        {report.overallPct}
-                        <span className="text-lg text-muted">%</span>
-                      </p>
-                      <p className="mt-1 text-[11px] uppercase tracking-wide text-muted">
-                        Overall
-                      </p>
-                    </>
-                  ) : (
-                    <p className="text-xs text-muted">Score unavailable</p>
-                  )}
-                </div>
+                {report.gradedCount > 0 ? (
+                  <div className="mt-4">
+                    <GradeBar
+                      counts={report.statusCounts}
+                      total={report.gradedCount}
+                    />
+                    <ul className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-muted">
+                      <li>
+                        <span className="text-status-optimal">●</span>{" "}
+                        {pctOf(report.statusCounts.optimal, report.gradedCount)}%
+                        optimal
+                      </li>
+                      <li>
+                        <span className="text-status-good">●</span>{" "}
+                        {pctOf(report.statusCounts.good, report.gradedCount)}%
+                        good
+                      </li>
+                      <li>
+                        <span className="text-status-fair">●</span>{" "}
+                        {pctOf(report.statusCounts.fair, report.gradedCount)}%
+                        fair
+                      </li>
+                      <li>
+                        <span className="text-status-attention">●</span>{" "}
+                        {pctOf(
+                          report.statusCounts.attention,
+                          report.gradedCount,
+                        )}
+                        % attention
+                      </li>
+                    </ul>
+                  </div>
+                ) : (
+                  <p className="mt-3 text-xs text-muted">
+                    No graded markers saved for this upload.
+                  </p>
+                )}
+
+                {report.sectionSummaries.length > 0 ? (
+                  <ul className="mt-3 grid gap-1.5 sm:grid-cols-2">
+                    {report.sectionSummaries.map((s) => (
+                      <li
+                        key={s.id}
+                        className="flex items-center justify-between gap-2 rounded-xl bg-surface-muted/50 px-3 py-2 text-xs"
+                      >
+                        <span className="truncate text-muted">{s.title}</span>
+                        <span className="tabular-nums font-medium text-foreground">
+                          {s.pct}%
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
               </div>
 
-              {report.gradedCount > 0 ? (
-                <div className="mt-4">
-                  <GradeBar counts={report.statusCounts} total={report.gradedCount} />
-                  <ul className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-muted">
-                    <li>
-                      <span className="text-status-optimal">●</span>{" "}
-                      {pctOf(report.statusCounts.optimal, report.gradedCount)}%
-                      optimal
-                    </li>
-                    <li>
-                      <span className="text-status-good">●</span>{" "}
-                      {pctOf(report.statusCounts.good, report.gradedCount)}%
-                      good
-                    </li>
-                    <li>
-                      <span className="text-status-fair">●</span>{" "}
-                      {pctOf(report.statusCounts.fair, report.gradedCount)}%
-                      fair
-                    </li>
-                    <li>
-                      <span className="text-status-attention">●</span>{" "}
-                      {pctOf(report.statusCounts.attention, report.gradedCount)}%
-                      attention
-                    </li>
-                  </ul>
-                </div>
-              ) : (
-                <p className="mt-3 text-xs text-muted">
-                  No graded markers saved for this upload.
-                </p>
-              )}
-
-              {report.sectionSummaries.length > 0 ? (
-                <ul className="mt-3 grid gap-1.5 sm:grid-cols-2">
-                  {report.sectionSummaries.map((s) => (
-                    <li
-                      key={s.id}
-                      className="flex items-center justify-between gap-2 rounded-xl bg-surface-muted/50 px-3 py-2 text-xs"
-                    >
-                      <span className="truncate text-muted">{s.title}</span>
-                      <span className="tabular-nums font-medium text-foreground">
-                        {s.pct}%
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              ) : null}
-            </Link>
-          </li>
+              <div className="flex w-36 shrink-0 flex-col gap-2 self-stretch">
+                {report.hasSourceFile ? (
+                  <FilePreview
+                    reportId={report.id}
+                    fileName={report.sourceFileName}
+                  />
+                ) : (
+                  <div className="flex min-h-24 flex-1 items-center justify-center rounded-xl border border-dashed border-border bg-surface-muted/40 px-2 text-center text-[10px] text-muted">
+                    No file
+                  </div>
+                )}
+                <Link
+                  href={`/report/${report.id}`}
+                  className="ba-btn ba-btn-primary w-full shrink-0 justify-center px-2 py-2 text-xs"
+                >
+                  Open report
+                </Link>
+              </div>
+            </li>
           ))}
         </ul>
       </PageBody>
     </Page>
   );
+}
+
+function FilePreview({
+  reportId,
+  fileName,
+}: {
+  reportId: string;
+  fileName: string | null;
+}) {
+  const href = `/api/reports/${reportId}/file`;
+  const kind = fileKind(fileName);
+
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group relative block min-h-24 w-36 flex-1 overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-accent hover:shadow-md hover:shadow-accent/15"
+      title={fileName ? `Open ${fileName}` : "Open original file"}
+      aria-label={fileName ? `Open ${fileName}` : "Open original file"}
+    >
+      {kind === "image" ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={href}
+          alt=""
+          className="h-full w-full object-cover transition group-hover:scale-[1.02]"
+        />
+      ) : kind === "pdf" ? (
+        <iframe
+          src={`${href}#toolbar=0&navpanes=0&scrollbar=0`}
+          title=""
+          className="pointer-events-none h-[220%] w-[220%] origin-top-left scale-[0.455] border-0 bg-white"
+          tabIndex={-1}
+        />
+      ) : (
+        <div className="flex h-full flex-col items-center justify-center gap-1 px-2 text-center">
+          <span className="text-lg font-semibold text-accent">FILE</span>
+          <span className="truncate text-[10px] text-muted">
+            {fileName ?? "Original"}
+          </span>
+        </div>
+      )}
+      <span className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-sidebar/70 to-transparent px-1.5 pb-1.5 pt-6 text-[10px] font-medium text-sidebar-foreground">
+        {kind === "pdf" ? "PDF" : kind === "image" ? "Image" : "File"}
+      </span>
+    </a>
+  );
+}
+
+function fileKind(fileName: string | null): "pdf" | "image" | "other" {
+  if (!fileName) return "other";
+  const lower = fileName.toLowerCase();
+  if (lower.endsWith(".pdf")) return "pdf";
+  if (/\.(png|jpe?g|webp|gif)$/.test(lower)) return "image";
+  return "other";
 }
 
 function pctOf(count: number, total: number): number {
@@ -274,44 +334,17 @@ function formatDate(iso: string): string {
   });
 }
 
-function Sparkline({
-  values,
-  compact = false,
-}: {
-  values: number[];
-  compact?: boolean;
-}) {
-  if (values.length < 2) return null;
-  const w = compact ? 56 : 88;
-  const h = compact ? 24 : 32;
-  const min = Math.min(...values);
-  const max = Math.max(...values);
-  const span = max - min || 1;
-  const pts = values
-    .map((v, i) => {
-      const x = (i / (values.length - 1)) * (w - 4) + 2;
-      const y = h - 3 - ((v - min) / span) * (h - 6);
-      return `${x},${y}`;
-    })
-    .join(" ");
-  const rising = values[values.length - 1]! >= values[0]!;
-
+function XIcon({ className }: { className?: string }) {
   return (
     <svg
-      width={w}
-      height={h}
-      viewBox={`0 0 ${w} ${h}`}
-      className="shrink-0"
-      aria-hidden
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
     >
-      <polyline
-        fill="none"
-        stroke={rising ? "var(--status-fair)" : "var(--status-optimal)"}
-        strokeWidth="1.75"
-        strokeLinejoin="round"
-        strokeLinecap="round"
-        points={pts}
-      />
+      <path d="M6 6l12 12M18 6L6 18" />
     </svg>
   );
 }

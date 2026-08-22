@@ -36,6 +36,7 @@ export function UploadFlow() {
   const [uploadKey, setUploadKey] = useState<string | null>(null);
   const [sex, setSex] = useState<DemographicSex>("male");
   const [ageYears, setAgeYears] = useState(27);
+  const [collectedDate, setCollectedDate] = useState("");
 
   const demographic: Demographic = useMemo(
     () => ({ sex, ageYears }),
@@ -132,12 +133,20 @@ export function UploadFlow() {
     ]);
   }
 
+  function removeRow(index: number) {
+    setMarkers((prev) => prev.filter((_, i) => i !== index));
+  }
+
   async function confirm() {
     const cleaned = markers.filter(
       (m) => m.name.trim() || m.biomarkerId || m.value != null,
     );
     if (cleaned.length === 0) {
       setError("Add at least one marker before continuing.");
+      return;
+    }
+    if (!collectedDate.trim()) {
+      setError("Choose the date this blood test was collected.");
       return;
     }
 
@@ -150,6 +159,7 @@ export function UploadFlow() {
         body: JSON.stringify({
           sourceFileKey: uploadKey,
           sourceFileName: fileName,
+          collectedAt: collectedDate,
           demographic,
           markers: cleaned,
         }),
@@ -200,7 +210,21 @@ export function UploadFlow() {
           </ul>
         ) : null}
 
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-3">
+          <label className="block text-sm sm:col-span-1">
+            <span className="text-muted">Test date</span>
+            <input
+              type="date"
+              required
+              max={todayInputValue()}
+              className="ba-field mt-1"
+              value={collectedDate}
+              onChange={(e) => setCollectedDate(e.target.value)}
+            />
+            <span className="mt-1 block text-xs text-muted">
+              When was this blood test collected? (not the upload day)
+            </span>
+          </label>
           <label className="block text-sm">
             <span className="text-muted">Biological sex</span>
             <select
@@ -235,6 +259,9 @@ export function UploadFlow() {
                 <th className="px-3 py-2 font-medium">Value</th>
                 <th className="px-3 py-2 font-medium">Unit</th>
                 <th className="px-3 py-2 font-medium">Confidence</th>
+                <th className="px-3 py-2 font-medium">
+                  <span className="sr-only">Remove</span>
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -295,6 +322,15 @@ export function UploadFlow() {
                   </td>
                   <td className="px-3 py-2 text-muted">
                     {Math.round(marker.confidence * 100)}%
+                  </td>
+                  <td className="px-3 py-2">
+                    <button
+                      type="button"
+                      className="text-xs font-medium text-muted underline-offset-2 hover:text-status-attention hover:underline"
+                      onClick={() => removeRow(index)}
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -381,14 +417,15 @@ export function UploadFlow() {
               : "Drop a file or click to browse"}
         </span>
         <span className="mt-2 max-w-md text-sm text-muted">
-          Text-based PDFs work best (digital lab downloads, not phone photos).
-          Images need OCR later — you can still enter values on confirm.
+          Prefer a text-based PDF — AI reads the text layer across varied lab
+          layouts, then you confirm every value. CSV only works with name,
+          value, unit columns. Images need OCR later.
         </span>
         <input
           ref={inputRef}
           type="file"
           className="sr-only"
-          accept=".csv,application/pdf,image/*,.png,.jpg,.jpeg,.webp"
+          accept="application/pdf,.pdf,image/*,.png,.jpg,.jpeg,.webp,.csv,text/csv"
           disabled={busy}
           onChange={(e) => {
             onFileChange(e.target.files);
@@ -435,4 +472,12 @@ export function UploadFlow() {
 
 function tick(ms: number) {
   return new Promise((r) => setTimeout(r, ms));
+}
+
+function todayInputValue(): string {
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
 }

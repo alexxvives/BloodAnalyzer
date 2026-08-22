@@ -1,9 +1,13 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const SESSION_COOKIE = "ba_session";
+/** Better Auth default session cookie (also check secure prefix variant). */
+const SESSION_COOKIES = [
+  "better-auth.session_token",
+  "__Secure-better-auth.session_token",
+];
 
-const PROTECTED_PREFIXES = ["/upload", "/report", "/history", "/app", "/preview"];
+const PROTECTED_PREFIXES = ["/upload", "/report", "/history", "/app"];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -12,8 +16,10 @@ export function middleware(request: NextRequest) {
   );
   if (!needsAuth) return NextResponse.next();
 
-  const token = request.cookies.get(SESSION_COOKIE)?.value;
-  if (token) return NextResponse.next();
+  const hasSession = SESSION_COOKIES.some((name) =>
+    Boolean(request.cookies.get(name)?.value),
+  );
+  if (hasSession) return NextResponse.next();
 
   const home = new URL("/", request.url);
   home.searchParams.set("auth", "login");
@@ -27,6 +33,5 @@ export const config = {
     "/report/:path*",
     "/history/:path*",
     "/app/:path*",
-    "/preview/:path*",
   ],
 };

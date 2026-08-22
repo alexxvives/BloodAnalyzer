@@ -11,10 +11,6 @@ export default function UploadPage() {
       />
       <PageBody width="narrow">
         <UploadFlow />
-        <p className="mt-10 text-xs text-muted">
-          Uploaded files are sensitive health data. Authenticated uploads are
-          stored under your user-scoped R2 key and linked to the saved report.
-        </p>
       </PageBody>
     </Page>
   );

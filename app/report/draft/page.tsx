@@ -1,10 +1,8 @@
 "use client";
 
 import { Page, PageBody, PageHeader } from "@/components/layout/Page";
-import {
-  ReportView,
-  reportSubjectLine,
-} from "@/components/report/ReportView";
+import { ReportLoader } from "@/components/report/ReportLoader";
+import { reportSubjectLine } from "@/components/report/ReportView";
 import { loadReportDraft, type ReportDraft } from "@/lib/report/draft";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -49,7 +47,10 @@ export default function DraftReportPage() {
             </Link>
           </div>
         ) : (
-          <ReportView markers={draft.markers} demographic={draft.demographic} />
+          <ReportLoader
+            markers={draft.markers}
+            demographic={draft.demographic}
+          />
         )}
       </PageBody>
     </Page>

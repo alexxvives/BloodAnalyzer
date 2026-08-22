@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it } from "vitest";
 import { pdfTextExtractor } from "./pdf-text-extractor";
 
 const fixture = join(
@@ -11,7 +11,16 @@ const fixture = join(
 );
 
 describe("pdfTextExtractor", () => {
-  it("extracts mapped biomarkers from a text-layer PDF", async () => {
+  const previousKey = process.env.GROQ_API_KEY;
+
+  afterEach(() => {
+    if (previousKey === undefined) delete process.env.GROQ_API_KEY;
+    else process.env.GROQ_API_KEY = previousKey;
+  });
+
+  it("accepts PDFs and leaves markers empty when AI is off (non-band PDF)", async () => {
+    delete process.env.GROQ_API_KEY;
+
     const bytes = readFileSync(fixture);
     const file = new File([bytes], "sample-lab-text.pdf", {
       type: "application/pdf",
@@ -25,17 +34,7 @@ describe("pdfTextExtractor", () => {
     });
 
     expect(result.method).toBe("pdf-text");
-    const byId = Object.fromEntries(
-      result.markers
-        .filter((m) => m.biomarkerId)
-        .map((m) => [m.biomarkerId, m]),
-    );
-
-    expect(byId["total-cholesterol"]?.value).toBe(134);
-    expect(byId["ldl-cholesterol"]?.value).toBe(67.6);
-    expect(byId["hdl-cholesterol"]?.value).toBe(56);
-    expect(byId["glucose-fasting"]?.value).toBe(92);
-    expect(byId.alt?.value).toBe(28);
-    expect(byId.hemoglobin?.value).toBe(15.2);
+    expect(result.markers).toEqual([]);
+    expect(result.warnings.some((w) => /GROQ_API_KEY/i.test(w))).toBe(true);
   });
 });

@@ -16,6 +16,7 @@ export type ExtractionResult = {
   method:
     | "csv"
     | "pdf-text"
+    | "pdf-ai"
     | "text-lab"
     | "image-pending"
     | "manual";

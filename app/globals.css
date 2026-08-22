@@ -216,3 +216,27 @@ body {
     transform: translateY(0);
   }
 }
+
+@keyframes baShimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+.ba-reveal {
+  animation: fadeUp 0.45s ease both;
+}
+
+.ba-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--surface-muted) 0%,
+    color-mix(in srgb, var(--surface) 70%, var(--border)) 45%,
+    var(--surface-muted) 100%
+  );
+  background-size: 200% 100%;
+  animation: baShimmer 1.35s ease-in-out infinite;
+}

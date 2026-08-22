@@ -2,54 +2,43 @@
 
 ## Current (wired)
 
-- **Credential auth** (email/password) → Cloudflare **D1** (`user`, `account`, `session`)
-- Cookie: `ba_session` (httpOnly)
-- **Reports** → D1 `reports` + `biomarker_results` (always `user_id`-scoped), with demographic snapshot columns
-- **Uploads** → R2 bucket `blood-analyzer-uploads` under `users/{userId}/uploads/...`
-  (in-memory only when `NODE_ENV !== "production"` or `ALLOW_MEMORY_STORE=1`)
+- **[Better Auth](https://www.better-auth.com/docs/installation)** email/password → Cloudflare **D1**
+- Session cookie: `better-auth.session_token` (httpOnly via Better Auth)
+- App port: `requireUser()` / `getAppSession()` in `session.ts` (routes stay stable)
+- Client: `authClient` from `auth-client.ts` (`signIn.email` / `signUp.email`)
+- Handler: `/api/auth/[...all]`
+- **Reports** → D1 `reports` + `biomarker_results` (always `user_id`-scoped) + demographic snapshot
+- **Uploads** → R2 under `users/{userId}/uploads/...`
 
-Middleware gates `/upload`, `/report/*`, `/history`, `/preview/*` — unauthenticated
-users are sent to `/?auth=login&next=…` (home modal). `/login` and `/signup` remain
-thin redirects for bookmarks.
+Middleware gates `/upload`, `/report/*`, `/history`, `/app` — unauthenticated
+users go to `/?auth=login&next=…`.
 
-## Provisioned resources
+Password hashing still uses the existing PBKDF2 helpers so accounts created
+before the Better Auth cutover can sign in.
 
-| Resource | Name | Binding |
-|---|---|---|
-| D1 | `blood-analyzer` | `DB` |
-| R2 | `blood-analyzer-uploads` | `UPLOADS` |
+## Env
 
-Migrations:
+```
+BETTER_AUTH_SECRET=   # 32+ chars — required in production
+BETTER_AUTH_URL=http://localhost:3000
+BETTER_AUTH_TRUSTED_ORIGINS=
+```
+
+See [`DEPLOY.md`](../../DEPLOY.md).
+
+## Migrations
 
 ```bash
 npx wrangler d1 migrations apply blood-analyzer --local
 npx wrangler d1 migrations apply blood-analyzer --remote
 ```
 
-## Better Auth migration path (not installed yet)
-
-Do **not** invent a second session system long-term. Replace
-`lib/auth/credentials.ts` password/session helpers with Better Auth using the
-same D1 tables where possible (`better-auth` + OpenNext Cloudflare). Keep
-`getAppSession()` / `requireUser()` as the app-facing port so routes stay stable.
-
-```bash
-npm i better-auth
-npx wrangler secret put BETTER_AUTH_SECRET
-```
-
-`.dev.vars`:
-
-```
-BETTER_AUTH_SECRET=dev-only-change-me
-BETTER_AUTH_URL=http://localhost:3000
-```
-
-This migration is gated in `AUDIT.md` (sign-off item S1).
+Auth tables in D1 use **snake_case** columns (`user_id`, `email_verified`, …).
+`lib/auth/auth.ts` maps Better Auth’s camelCase fields to those columns — without
+that mapping, sign-in fails with `no such column: account.userId`.
 
 ## Non-negotiable
 
 Every D1 query for reports/uploads/profiles **must** include `user_id = session.userId`.
 R2 keys must use `users/{userId}/...`.
-Protected API routes must call `requireUser()` and return 401 when absent —
-never invent a synthetic user id for writes.
+Protected API routes must call `requireUser()` and return 401 when absent.

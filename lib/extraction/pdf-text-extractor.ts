@@ -1,9 +1,9 @@
-import { extractMarkersFromLabText } from "./text-lab-extractor";
-import type { ExtractionResult, Extractor } from "./types";
+import { extractMarkersFromLabTextWithAi } from "./ai-lab-extractor";
+import type { Extractor } from "./types";
 
 /**
- * PDF path: pull embedded text (when present), then run the lab-text heuristic.
- * Scanned/image-only PDFs will yield little text — those need vision OCR later.
+ * PDF path: text layer → Groq AI (layout-agnostic).
+ * No layout-specific value parsers — AI extracts; user confirms.
  */
 export const pdfTextExtractor: Extractor = {
   accepts({ type, name }) {
@@ -19,24 +19,48 @@ export const pdfTextExtractor: Extractor = {
         return {
           markers: [],
           warnings: [
-            `No extractable text in “${meta.name}”. This may be a scanned PDF — use a text-based PDF, CSV export, or manual entry.`,
+            `No extractable text in “${meta.name}”. This may be a scanned PDF — use a text-based PDF or enter values manually.`,
           ],
           method: "pdf-text",
         };
       }
-      const result = extractMarkersFromLabText(text);
-      return {
-        ...result,
-        method: "pdf-text",
-        warnings: result.warnings,
-      };
+
+      const apiKey = process.env.GROQ_API_KEY?.trim();
+      if (!apiKey) {
+        return {
+          markers: [],
+          warnings: [
+            "AI PDF extraction is off — set GROQ_API_KEY, or enter values manually on the confirm screen.",
+          ],
+          method: "pdf-text",
+        };
+      }
+
+      try {
+        const ai = await extractMarkersFromLabTextWithAi(text, { apiKey });
+        return {
+          markers: ai.markers,
+          warnings: ai.warnings,
+          method: "pdf-ai",
+        };
+      } catch (err) {
+        return {
+          markers: [],
+          warnings: [
+            `AI PDF extraction failed (${
+              err instanceof Error ? err.message : "unknown error"
+            }). Enter values manually from the original PDF.`,
+          ],
+          method: "pdf-ai",
+        };
+      }
     } catch (e) {
       return {
         markers: [],
         warnings: [
           `PDF parse failed for “${meta.name}”: ${
             e instanceof Error ? e.message : "unknown error"
-          }. Try CSV or manual entry.`,
+          }. Try another export or manual entry.`,
         ],
         method: "pdf-text",
       };
@@ -48,5 +72,6 @@ async function extractPdfText(data: Uint8Array): Promise<string> {
   const { extractText, getDocumentProxy } = await import("unpdf");
   const pdf = await getDocumentProxy(data);
   const { text } = await extractText(pdf, { mergePages: true });
-  return typeof text === "string" ? text : text.join("\n");
+  // unpdf types `text` as string when mergePages is true; tolerate arrays at runtime.
+  return Array.isArray(text) ? (text as string[]).join("\n") : String(text ?? "");
 }

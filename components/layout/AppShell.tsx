@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const NAV = [
-  { href: "/upload", label: "Upload", icon: UploadIcon },
+  { href: "/app", label: "Home", icon: HomeIcon },
   { href: "/history", label: "History", icon: HistoryIcon },
 ] as const;
 
@@ -45,8 +45,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     let cancelled = false;
     void fetch("/api/auth/me")
       .then((r) => (r.ok ? r.json() : null))
-      .then((data: { user?: SessionUser } | null) => {
-        if (!cancelled) setUser(data?.user ?? null);
+      .then((data) => {
+        const payload = data as { user?: SessionUser } | null;
+        if (!cancelled) setUser(payload?.user ?? null);
       })
       .catch(() => {
         if (!cancelled) setUser(null);
@@ -58,24 +59,26 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     let cancelled = false;
-    void fetch("/api/reports/history")
-      .then((r) => (r.ok ? r.json() : null))
-      .then(
-        (data: {
-          reports?: Array<{
-            id: string;
-            createdAt: string;
-            sourceFileName: string | null;
-            markerCount: number;
-            overallPct: number | null;
-          }>;
-        } | null) => {
-          if (cancelled || !data?.reports) {
+
+    function loadHistory() {
+      void fetch("/api/reports/history")
+        .then((r) => (r.ok ? r.json() : null))
+        .then((data) => {
+          const payload = data as {
+            reports?: Array<{
+              id: string;
+              createdAt: string;
+              sourceFileName: string | null;
+              markerCount: number;
+              overallPct: number | null;
+            }>;
+          } | null;
+          if (cancelled || !payload?.reports) {
             if (!cancelled) setHistory([]);
             return;
           }
           setHistory(
-            data.reports.map((r) => ({
+            payload.reports.map((r) => ({
               id: r.id,
               href: `/report/${r.id}`,
               label: formatHistoryLabel(r.createdAt, r.sourceFileName),
@@ -83,13 +86,18 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               overallPct: r.overallPct,
             })),
           );
-        },
-      )
-      .catch(() => {
-        if (!cancelled) setHistory([]);
-      });
+        })
+        .catch(() => {
+          if (!cancelled) setHistory([]);
+        });
+    }
+
+    loadHistory();
+    const onChanged = () => loadHistory();
+    window.addEventListener("ba:reports-changed", onChanged);
     return () => {
       cancelled = true;
+      window.removeEventListener("ba:reports-changed", onChanged);
     };
   }, [pathname]);
 
@@ -109,6 +117,20 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     await fetch("/api/auth/logout", { method: "POST" });
     router.push("/");
     router.refresh();
+  }
+
+  async function deleteHistoryItem(id: string) {
+    const prev = history;
+    setHistory((items) => items.filter((item) => item.id !== id));
+    const res = await fetch(`/api/reports/${id}`, { method: "DELETE" });
+    if (!res.ok) {
+      setHistory(prev);
+      return;
+    }
+    window.dispatchEvent(new Event("ba:reports-changed"));
+    if (pathname === `/report/${id}`) {
+      router.push("/history");
+    }
   }
 
   const sidebarWidth = collapsed ? "md:w-[4.5rem]" : "md:w-64";
@@ -136,7 +158,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           }`}
         >
           <Link
-            href="/"
+            href="/app"
             className={`flex min-w-0 flex-1 items-center gap-3 ${
               collapsed ? "md:flex-none md:justify-center" : "px-1"
             }`}
@@ -207,11 +229,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 {history.slice(0, 5).map((item) => {
                   const active = pathname === item.href;
                   return (
-                    <li key={item.id}>
+                    <li key={item.id} className="group relative">
                       <Link
                         href={item.href}
                         title={item.label}
-                        className={`block rounded-xl px-3 py-2.5 transition ${
+                        className={`block rounded-xl px-3 py-2.5 pr-9 transition ${
                           active
                             ? "bg-white/10 text-accent"
                             : "text-sidebar-foreground/70 hover:bg-white/5 hover:text-sidebar-foreground"
@@ -226,6 +248,19 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                             : `${item.markerCount} markers`}
                         </p>
                       </Link>
+                      <button
+                        type="button"
+                        title="Delete upload"
+                        aria-label={`Delete ${item.label}`}
+                        className="absolute -right-1.5 -top-1.5 z-10 flex h-6 w-6 items-center justify-center rounded-full border border-white/15 bg-sidebar text-status-attention opacity-0 shadow-sm transition hover:bg-status-attention hover:text-white group-hover:opacity-100 focus-visible:opacity-100"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          void deleteHistoryItem(item.id);
+                        }}
+                      >
+                        <XIcon className="h-3 w-3" />
+                      </button>
                     </li>
                   );
                 })}
@@ -262,6 +297,16 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </nav>
 
         <div className="mt-auto border-t border-white/10 p-3">
+          <Link
+            href="/upload"
+            title="New upload"
+            className={`mb-2 flex items-center gap-3 rounded-xl bg-accent px-3 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:brightness-110 ${
+              collapsed ? "md:justify-center md:px-2" : ""
+            } ${pathname === "/upload" || pathname.startsWith("/upload/") ? "ring-2 ring-white/30" : ""}`}
+          >
+            <UploadIcon className="h-5 w-5 shrink-0" />
+            <span className={collapsed ? "md:hidden" : ""}>New upload</span>
+          </Link>
           <div
             className={`flex items-center gap-2 rounded-xl px-2 py-2 ${
               collapsed ? "md:justify-center md:px-0" : ""
@@ -344,6 +389,14 @@ function shortHistoryLabel(label: string): string {
   return `${m[1].slice(0, 1)}${String(m[2]).slice(-2)}`;
 }
 
+function HomeIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
+      <path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z" />
+    </svg>
+  );
+}
+
 function UploadIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
@@ -384,6 +437,21 @@ function LogoutIcon({ className }: { className?: string }) {
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
       <path d="M10 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4" />
       <path d="M15 12H8m7 0 3-3m-3 3 3 3" />
+    </svg>
+  );
+}
+
+function XIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+    >
+      <path d="M6 6l12 12M18 6L6 18" />
     </svg>
   );
 }

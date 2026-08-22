@@ -18,7 +18,7 @@ type AuthModalProps = {
 export function AuthModal({
   open,
   mode,
-  next = "/upload",
+  next = "/app",
   onClose,
   onModeChange,
 }: AuthModalProps) {

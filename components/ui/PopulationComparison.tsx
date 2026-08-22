@@ -70,13 +70,9 @@ export function PopulationComparisonView({
   if (compact) return null;
 
   return (
-    <div className="space-y-3">
-      <div className="flex items-center gap-2">
-        <p className="text-xs font-medium text-muted">
-          vs {comparison.benchmarkLabel ?? "population"}
-          {comparison.dataset ? ` · ${comparison.dataset}` : ""}
-        </p>
-        {comparison.sourceRefs.length > 0 || comparison.dataset ? (
+    <div className="relative mx-auto w-full max-w-xs">
+      {comparison.sourceRefs.length > 0 || comparison.dataset ? (
+        <div className="absolute right-0 top-0 z-10">
           <InfoPopover label="Population benchmark sources">
             {comparison.dataset ? (
               <p className="mb-2 text-muted">Dataset: {comparison.dataset}</p>
@@ -113,17 +109,18 @@ export function PopulationComparisonView({
               </p>
             )}
           </InfoPopover>
-        ) : null}
-      </div>
+        </div>
+      ) : null}
 
       {unit && comparison.benchmarkValue != null ? (
         <span className="sr-only">
-          Benchmark {comparison.benchmarkLabel}:{" "}
+          Benchmark {comparison.benchmarkLabel}
+          {comparison.dataset ? ` · ${comparison.dataset}` : ""}:{" "}
           {formatLabNumber(avg)} {scale.unit}
         </span>
       ) : null}
 
-      <div className="h-28 w-full max-w-xs">
+      <div className="h-28 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={chartData} barCategoryGap="30%">
             <XAxis

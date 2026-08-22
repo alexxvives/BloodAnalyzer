@@ -37,6 +37,8 @@ export type SaveReportInput = {
   userId: string;
   sourceFileKey?: string | null;
   sourceFileName?: string | null;
+  /** ISO date/time when the lab sample was collected (not upload time). */
+  collectedAt?: string | null;
   demographic?: Demographic | null;
   markers: Array<{
     biomarkerId: string | null;

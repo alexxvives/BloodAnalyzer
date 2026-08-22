@@ -1,11 +1,13 @@
 import { requireUser } from "@/lib/auth/session";
 import { demographicFromReport } from "@/lib/db/types";
 import { getReportRepository } from "@/lib/db/report-repository";
+import { buildBiomarkerTrends } from "@/lib/report/biomarker-trends";
 import {
   buildReportSections,
   sectionOptimizationPercent,
 } from "@/lib/report/build-report";
-import type { ExtractedMarker } from "@/lib/extraction";
+import { buildReportViewModel } from "@/lib/report/report-dto";
+import type { ExtractedMarker } from "@/lib/extraction/types";
 import type { Demographic } from "@/lib/types";
 import { NextResponse } from "next/server";
 
@@ -90,7 +92,9 @@ export async function GET() {
     return {
       id: report.id,
       createdAt: report.createdAt,
+      collectedAt: report.collectedAt,
       sourceFileName: report.sourceFileName,
+      hasSourceFile: Boolean(report.sourceFileKey),
       demographic,
       demographicFallback: stored == null,
       markerCount: measured.length,
@@ -101,45 +105,27 @@ export async function GET() {
     };
   });
 
-  // Cross-upload series for shared biomarker ids (oldest → newest).
-  const TREND_IDS = [
-    "ldl-cholesterol",
-    "hdl-cholesterol",
-    "triglycerides",
-    "glucose-fasting",
-    "hemoglobin",
-    "ferritin",
-    "vitamin-d",
-    "crp",
-    "alt",
-    "tsh",
-  ];
-  const seriesMap = new Map<
-    string,
-    { biomarkerId: string; name: string; unit: string; points: number[] }
-  >();
-  for (const row of [...rows].reverse()) {
-    for (const m of row.markers) {
-      if (!m.biomarkerId || typeof m.value !== "number") continue;
-      if (!TREND_IDS.includes(m.biomarkerId) && seriesMap.size >= 8) continue;
-      const key = m.biomarkerId;
-      const existing = seriesMap.get(key);
-      if (existing) {
-        existing.points.push(m.value);
-      } else if (TREND_IDS.includes(key) || seriesMap.size < 6) {
-        seriesMap.set(key, {
-          biomarkerId: key,
-          name: m.name,
-          unit: m.unit,
-          points: [m.value],
-        });
-      }
-    }
+  const trends = buildBiomarkerTrends(rows);
+
+  // Latest upload drives home overview cards (trends still use full history).
+  const latestRow = rows[0];
+  let latestReport = null;
+  if (latestRow) {
+    const extracted: ExtractedMarker[] = latestRow.markers.map((m) => ({
+      biomarkerId: m.biomarkerId,
+      name: m.name,
+      value: m.value,
+      valueDisplay: m.valueDisplay ?? undefined,
+      unit: m.unit,
+      confidence: 1,
+    }));
+    const demographic =
+      demographicFromReport(latestRow.report) ?? FALLBACK_DEMOGRAPHIC;
+    latestReport = {
+      id: latestRow.report.id,
+      model: buildReportViewModel({ markers: extracted, demographic }),
+    };
   }
 
-  const trends = [...seriesMap.values()]
-    .filter((s) => s.points.length >= 2)
-    .slice(0, 6);
-
-  return NextResponse.json({ reports, trends });
+  return NextResponse.json({ reports, trends, latestReport });
 }

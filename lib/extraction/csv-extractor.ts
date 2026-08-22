@@ -2,8 +2,9 @@ import { resolveBiomarkerId } from "./name-map";
 import type { ExtractedMarker, ExtractionResult, Extractor } from "./types";
 
 /**
- * Parses a simple CSV of biomarker results.
- * Headers (flexible): name|biomarker|biomarkerId, value, unit
+ * Parses biomarker CSVs:
+ * - Headered: name|biomarker|biomarkerId, value, unit
+ * - EasyDraw / portal export: name, unit, value (section headers + metadata rows)
  */
 export const csvExtractor: Extractor = {
   accepts({ type, name }) {
@@ -16,7 +17,7 @@ export const csvExtractor: Extractor = {
   },
 
   async extract(input) {
-    const text = await input.text();
+    const text = (await input.text()).replace(/^\uFEFF/, "");
     const lines = text
       .split(/\r?\n/)
       .map((l) => l.trim())
@@ -30,7 +31,8 @@ export const csvExtractor: Extractor = {
       };
     }
 
-    const headers = splitCsvLine(lines[0]).map((h) => h.toLowerCase());
+    const rows = lines.map(splitCsvLine);
+    const headers = rows[0]!.map((h) => h.trim().toLowerCase());
     const nameIdx = headers.findIndex((h) =>
       ["name", "biomarker", "biomarkerid", "marker", "test"].includes(h),
     );
@@ -39,53 +41,119 @@ export const csvExtractor: Extractor = {
     );
     const unitIdx = headers.findIndex((h) => ["unit", "units"].includes(h));
 
-    if (nameIdx < 0 || valueIdx < 0) {
-      return {
-        markers: [],
-        warnings: [
-          "CSV must include name/biomarker and value columns. Example: name,value,unit",
-        ],
-        method: "csv",
-      };
-    }
-
-    const markers: ExtractedMarker[] = [];
-    const warnings: string[] = [];
-
-    for (let i = 1; i < lines.length; i++) {
-      const cols = splitCsvLine(lines[i]);
-      const name = cols[nameIdx]?.trim() ?? "";
-      if (!name) continue;
-
-      const rawValue = cols[valueIdx]?.trim() ?? "";
-      const unit = unitIdx >= 0 ? (cols[unitIdx]?.trim() ?? "") : "";
-      const parsed = parseLabValue(rawValue);
-      const biomarkerId =
-        headers[nameIdx] === "biomarkerid"
-          ? name
-          : resolveBiomarkerId(name);
-
-      if (!biomarkerId) {
-        warnings.push(`Row ${i + 1}: could not map “${name}” to a known marker.`);
-      }
-
-      markers.push({
-        biomarkerId,
-        name,
-        value: parsed.value,
-        valueDisplay: parsed.valueDisplay,
-        unit,
-        confidence: biomarkerId && parsed.value != null ? 0.95 : 0.5,
+    if (nameIdx >= 0 && valueIdx >= 0) {
+      return collectFromColumns(rows, {
+        nameIdx,
+        valueIdx,
+        unitIdx,
+        nameIsId: headers[nameIdx] === "biomarkerid",
+        startRow: 1,
       });
     }
 
-    if (markers.length === 0) {
-      warnings.push("No marker rows were parsed from the CSV.");
+    if (looksLikeNameUnitValueExport(rows)) {
+      return collectFromColumns(rows, {
+        nameIdx: 0,
+        valueIdx: 2,
+        unitIdx: 1,
+        nameIsId: false,
+        startRow: 0,
+        skipNonResultRows: true,
+      });
     }
 
-    return { markers, warnings, method: "csv" };
+    return {
+      markers: [],
+      warnings: [
+        "CSV must include name/biomarker and value columns. Example: name,value,unit",
+      ],
+      method: "csv",
+    };
   },
 };
+
+function collectFromColumns(
+  rows: string[][],
+  opts: {
+    nameIdx: number;
+    valueIdx: number;
+    unitIdx: number;
+    nameIsId: boolean;
+    startRow: number;
+    skipNonResultRows?: boolean;
+  },
+): ExtractionResult {
+  const markers: ExtractedMarker[] = [];
+  const warnings: string[] = [];
+
+  for (let i = opts.startRow; i < rows.length; i++) {
+    const cols = rows[i]!;
+    const name = cols[opts.nameIdx]?.trim() ?? "";
+    const rawValue = cols[opts.valueIdx]?.trim() ?? "";
+    const unit = opts.unitIdx >= 0 ? (cols[opts.unitIdx]?.trim() ?? "") : "";
+
+    if (!name) continue;
+    if (opts.skipNonResultRows && isNonResultRow(name, unit, rawValue)) continue;
+
+    const parsed = parseLabValue(rawValue);
+    if (opts.skipNonResultRows && parsed.value == null) continue;
+
+    const biomarkerId = opts.nameIsId ? name : resolveBiomarkerId(name);
+
+    if (!biomarkerId) {
+      warnings.push(`Row ${i + 1}: could not map “${name}” to a known marker.`);
+    }
+
+    markers.push({
+      biomarkerId,
+      name,
+      value: parsed.value,
+      valueDisplay: parsed.valueDisplay,
+      unit,
+      confidence: biomarkerId && parsed.value != null ? 0.95 : 0.5,
+    });
+  }
+
+  if (markers.length === 0) {
+    warnings.push("No marker rows were parsed from the CSV.");
+  }
+
+  return { markers, warnings, method: "csv" };
+}
+
+/** EasyDraw / wellness-panel export: marker, unit, result (no name/value header). */
+function looksLikeNameUnitValueExport(rows: string[][]): boolean {
+  const preview = rows.slice(0, 8).flat().join(" ").toLowerCase();
+  if (
+    preview.includes("exported:") ||
+    preview.includes("easydraw") ||
+    /\bunit\b/.test(preview)
+  ) {
+    return countNameUnitValueRows(rows) >= 3;
+  }
+  return countNameUnitValueRows(rows) >= 5;
+}
+
+function countNameUnitValueRows(rows: string[][]): number {
+  let n = 0;
+  for (const cols of rows) {
+    const name = cols[0]?.trim() ?? "";
+    const unit = cols[1]?.trim() ?? "";
+    const rawValue = cols[2]?.trim() ?? "";
+    if (!name || isNonResultRow(name, unit, rawValue)) continue;
+    if (parseLabValue(rawValue).value == null) continue;
+    n += 1;
+  }
+  return n;
+}
+
+function isNonResultRow(name: string, unit: string, rawValue: string): boolean {
+  if (/^exported:/i.test(name)) return true;
+  if (!rawValue && !unit) return true;
+  if (/health$/i.test(name) && !rawValue) return true;
+  if (/^(nutritional|unit)$/i.test(name) && !rawValue) return true;
+  return false;
+}
 
 function splitCsvLine(line: string): string[] {
   const result: string[] = [];

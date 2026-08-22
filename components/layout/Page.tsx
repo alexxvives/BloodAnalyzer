@@ -30,9 +30,9 @@ export function PageHeader({
               {title}
             </h1>
             {description ? (
-              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
+              <div className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
                 {description}
-              </p>
+              </div>
             ) : null}
           </div>
           {actions ? (

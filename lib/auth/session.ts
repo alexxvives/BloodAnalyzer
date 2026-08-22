@@ -1,14 +1,16 @@
 /**
- * Session port — credential cookie auth against D1 today;
- * migrate to Better Auth + D1 (see lib/auth/README.md) without changing call sites.
+ * Session port — Better Auth + D1.
+ * Call sites should keep using requireUser() / getAppSession().
  */
 
-import { cookies } from "next/headers";
-import {
-  SESSION_COOKIE,
-  getUserBySessionToken,
-  type AuthUser,
-} from "@/lib/auth/credentials";
+import { headers } from "next/headers";
+import { getAuth } from "@/lib/auth/auth";
+
+export type AuthUser = {
+  id: string;
+  email: string;
+  name: string;
+};
 
 export type AppSession = {
   userId: string;
@@ -17,25 +19,35 @@ export type AppSession = {
 };
 
 /**
- * Returns the authenticated session, or null when the cookie is missing/invalid.
- * Never invents a synthetic user id — callers that need auth must use requireUser().
+ * Returns the authenticated session, or null when missing/invalid.
+ * Never invents a synthetic user id.
  */
 export async function getAppSession(): Promise<AppSession | null> {
-  const jar = await cookies();
-  const token = jar.get(SESSION_COOKIE)?.value;
-  const user = await getUserBySessionToken(token);
-  if (!user) return null;
-  return {
-    userId: user.id,
-    email: user.email,
-    name: user.name,
-  };
+  try {
+    const auth = await getAuth();
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+    if (!session?.user) return null;
+    return {
+      userId: session.user.id,
+      email: session.user.email ?? null,
+      name: session.user.name ?? null,
+    };
+  } catch {
+    return null;
+  }
 }
 
 export async function requireUser(): Promise<AuthUser | null> {
-  const jar = await cookies();
-  const token = jar.get(SESSION_COOKIE)?.value;
-  return getUserBySessionToken(token);
+  const session = await getAppSession();
+  if (!session?.userId || !session.email) return null;
+  return {
+    id: session.userId,
+    email: session.email,
+    name: session.name ?? session.email.split("@")[0] ?? "Member",
+  };
 }
 
-export { SESSION_COOKIE };
+/** Better Auth session cookie name (presence check in middleware). */
+export const SESSION_COOKIE = "better-auth.session_token";

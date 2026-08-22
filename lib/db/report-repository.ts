@@ -18,6 +18,17 @@ export type ReportRepository = {
     userId: string,
     reportId: string,
   ): Promise<ReportWithMarkers | null>;
+  /** Returns the deleted report (for R2 cleanup) or null if not found / not owned. */
+  deleteReportForUser(
+    userId: string,
+    reportId: string,
+  ): Promise<ReportRow | null>;
+  /** Update lab collection date for an owned report. */
+  updateCollectedAtForUser(
+    userId: string,
+    reportId: string,
+    collectedAt: string,
+  ): Promise<ReportRow | null>;
 };
 
 type MemoryState = {
@@ -43,7 +54,7 @@ export const memoryReportRepository: ReportRepository = {
       userId: input.userId,
       sourceFileKey: input.sourceFileKey ?? null,
       sourceFileName: input.sourceFileName ?? null,
-      collectedAt: null,
+      collectedAt: input.collectedAt ?? null,
       demographicSex: input.demographic?.sex ?? null,
       demographicAgeYears: input.demographic?.ageYears ?? null,
       createdAt: now,
@@ -71,7 +82,11 @@ export const memoryReportRepository: ReportRepository = {
   async listReportsForUser(userId) {
     return memory.reports
       .filter((r) => r.userId === userId)
-      .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+      .sort((a, b) => {
+        const aAt = a.collectedAt ?? a.createdAt;
+        const bAt = b.collectedAt ?? b.createdAt;
+        return bAt.localeCompare(aAt);
+      });
   },
 
   async listReportsWithMarkersForUser(userId) {
@@ -93,6 +108,28 @@ export const memoryReportRepository: ReportRepository = {
       (m) => m.reportId === reportId && m.userId === userId,
     );
     return { report, markers };
+  },
+
+  async deleteReportForUser(userId, reportId) {
+    const idx = memory.reports.findIndex(
+      (r) => r.id === reportId && r.userId === userId,
+    );
+    if (idx < 0) return null;
+    const [report] = memory.reports.splice(idx, 1);
+    memory.markers = memory.markers.filter(
+      (m) => !(m.reportId === reportId && m.userId === userId),
+    );
+    return report ?? null;
+  },
+
+  async updateCollectedAtForUser(userId, reportId, collectedAt) {
+    const report = memory.reports.find(
+      (r) => r.id === reportId && r.userId === userId,
+    );
+    if (!report) return null;
+    report.collectedAt = collectedAt;
+    report.updatedAt = new Date().toISOString();
+    return report;
   },
 };
 

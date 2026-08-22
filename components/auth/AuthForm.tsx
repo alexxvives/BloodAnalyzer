@@ -1,13 +1,14 @@
 "use client";
 
 import { PasswordField } from "@/components/ui/PasswordField";
+import { authClient } from "@/lib/auth/auth-client";
+import type { AuthMode } from "@/lib/auth/paths";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import type { AuthMode } from "@/lib/auth/paths";
 
 type AuthFormProps = {
   mode: AuthMode;
-  /** Where to go after success (defaults to /upload). */
+  /** Where to go after success (defaults to /app home). */
   nextPath?: string;
   /** Compact layout for modal embedding. */
   embedded?: boolean;
@@ -16,7 +17,7 @@ type AuthFormProps = {
 
 export function AuthForm({
   mode,
-  nextPath = "/upload",
+  nextPath = "/app",
   embedded = false,
   onModeChange,
 }: AuthFormProps) {
@@ -31,14 +32,24 @@ export function AuthForm({
     setBusy(true);
     setError(null);
     try {
-      const res = await fetch(`/api/auth/${mode}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-      const data = (await res.json()) as { error?: string };
-      if (!res.ok) throw new Error(data.error ?? "Request failed");
-      const dest = nextPath.startsWith("/") ? nextPath : "/upload";
+      const dest = nextPath.startsWith("/") ? nextPath : "/app";
+      if (mode === "signup") {
+        const name = email.trim().split("@")[0] || "Member";
+        const { error: signUpError } = await authClient.signUp.email({
+          email: email.trim(),
+          password,
+          name,
+          callbackURL: dest,
+        });
+        if (signUpError) throw new Error(signUpError.message || "Sign up failed");
+      } else {
+        const { error: signInError } = await authClient.signIn.email({
+          email: email.trim(),
+          password,
+          callbackURL: dest,
+        });
+        if (signInError) throw new Error(signInError.message || "Log in failed");
+      }
       router.push(dest);
       router.refresh();
     } catch (err) {

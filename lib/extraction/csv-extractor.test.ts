@@ -33,4 +33,59 @@ describe("csvExtractor", () => {
       true,
     );
   });
+
+  it("parses EasyDraw name/unit/value exports without a name,value header", async () => {
+    const csv = [
+      ",,21-Jul-26",
+      `"Exported: Aug 9, 2026",Unit,EasyDraw Ultimate Health Test`,
+      "Heart Health,,",
+      "Apolipoprotein B (APOB),mg/dL,50",
+      "Lipoprotein (a),mg/dL,<6.2",
+      `"Cholesterol, Total",mg/dL,134`,
+      "HDL Cholesterol,mg/dL,56",
+      "LDL Cholesterol,mg/dL,67.6",
+      "Metabolic Health,,",
+      "% Hemoglobin A1C,%,5.4",
+      "High-Sensitivity CRP,mg/L,<0.2",
+      "Morning Cortisol,ug/dL,20.2",
+      `"Testosterone, Total (Males)",ng/dL,604.26`,
+      "25-(OH) Vitamin D,ng/mL,29.8",
+      "Ferritin,ng/mL,245",
+      "Nutritional,,",
+      "Total Cholesterol:HDL Ratio,,2.4",
+    ].join("\n");
+
+    const result = await csvExtractor.extract(
+      new Blob([csv], { type: "text/csv" }),
+      { name: "results.csv", type: "text/csv" },
+    );
+
+    expect(result.method).toBe("csv");
+    expect(result.warnings.some((w) => w.includes("name/biomarker"))).toBe(
+      false,
+    );
+
+    const byId = Object.fromEntries(
+      result.markers
+        .filter((m) => m.biomarkerId)
+        .map((m) => [m.biomarkerId, m]),
+    );
+
+    expect(byId["apo-b"]?.value).toBe(50);
+    expect(byId["lp-a"]?.valueDisplay).toBe("<6.2");
+    expect(byId["total-cholesterol"]?.value).toBe(134);
+    expect(byId["hdl-cholesterol"]?.unit).toBe("mg/dL");
+    expect(byId["ldl-cholesterol"]?.value).toBe(67.6);
+    expect(byId.hba1c?.value).toBe(5.4);
+    expect(byId.crp?.valueDisplay).toBe("<0.2");
+    expect(byId.cortisol?.value).toBe(20.2);
+    expect(byId.testosterone?.value).toBe(604.26);
+    expect(byId["vitamin-d"]?.value).toBe(29.8);
+    expect(byId.ferritin?.value).toBe(245);
+
+    expect(result.markers.some((m) => m.name === "Heart Health")).toBe(false);
+    expect(result.markers.some((m) => m.name.startsWith("Exported:"))).toBe(
+      false,
+    );
+  });
 });

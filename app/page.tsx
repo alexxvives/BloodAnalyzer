@@ -68,11 +68,7 @@ export default function Home() {
       {/* Hero */}
       <section className="relative mx-auto grid w-full max-w-6xl gap-12 px-5 pb-20 pt-10 sm:px-6 md:px-10 md:pb-28 md:pt-16 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16">
         <div className="min-w-0">
-          <p className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/80 px-3 py-1 text-xs text-muted animate-[fadeUp_0.6s_ease-out_both]">
-            <span className="size-1.5 rounded-full bg-accent" aria-hidden />
-            Educational bloodwork reports
-          </p>
-          <h1 className="mt-5 max-w-[13ch] font-[family-name:var(--font-fraunces)] text-4xl leading-[1.05] tracking-tight text-foreground sm:text-5xl md:text-6xl animate-[fadeUp_0.6s_ease-out_0.06s_both]">
+          <h1 className="max-w-[13ch] font-[family-name:var(--font-fraunces)] text-4xl leading-[1.05] tracking-tight text-foreground sm:text-5xl md:text-6xl animate-[fadeUp_0.6s_ease-out_both]">
             See your bloodwork clearly.
           </h1>
           <p className="mt-6 max-w-xl text-base leading-relaxed text-muted md:text-lg animate-[fadeUp_0.6s_ease-out_0.12s_both]">

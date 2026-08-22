@@ -18,19 +18,21 @@ export function createD1ReportRepository(db: D1Database): ReportRepository {
       const reportId = id();
       const sex = input.demographic?.sex ?? null;
       const ageYears = input.demographic?.ageYears ?? null;
+      const collectedAt = input.collectedAt ?? null;
 
       await db
         .prepare(
           `INSERT INTO reports (
              id, user_id, source_file_key, source_file_name, collected_at,
              demographic_sex, demographic_age_years, created_at, updated_at
-           ) VALUES (?, ?, ?, ?, NULL, ?, ?, ?, ?)`,
+           ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         )
         .bind(
           reportId,
           input.userId,
           input.sourceFileKey ?? null,
           input.sourceFileName ?? null,
+          collectedAt,
           sex,
           ageYears,
           now,
@@ -77,7 +79,7 @@ export function createD1ReportRepository(db: D1Database): ReportRepository {
         userId: input.userId,
         sourceFileKey: input.sourceFileKey ?? null,
         sourceFileName: input.sourceFileName ?? null,
-        collectedAt: null,
+        collectedAt,
         demographicSex: sex,
         demographicAgeYears: ageYears,
         createdAt: now,
@@ -90,7 +92,8 @@ export function createD1ReportRepository(db: D1Database): ReportRepository {
         .prepare(
           `SELECT id, user_id, source_file_key, source_file_name, collected_at,
                   demographic_sex, demographic_age_years, created_at, updated_at
-           FROM reports WHERE user_id = ? ORDER BY created_at DESC`,
+           FROM reports WHERE user_id = ?
+           ORDER BY COALESCE(collected_at, created_at) DESC`,
         )
         .bind(userId)
         .all<D1ReportRow>();
@@ -189,6 +192,60 @@ export function createD1ReportRepository(db: D1Database): ReportRepository {
           }),
         ),
       };
+    },
+
+    async deleteReportForUser(userId, reportId) {
+      const existing = await db
+        .prepare(
+          `SELECT id, user_id, source_file_key, source_file_name, collected_at,
+                  demographic_sex, demographic_age_years, created_at, updated_at
+           FROM reports WHERE id = ? AND user_id = ?`,
+        )
+        .bind(reportId, userId)
+        .first<D1ReportRow>();
+
+      if (!existing) return null;
+
+      // biomarker_results cascade via FK; still scope by user_id explicitly.
+      await db
+        .prepare(`DELETE FROM biomarker_results WHERE report_id = ? AND user_id = ?`)
+        .bind(reportId, userId)
+        .run();
+      await db
+        .prepare(`DELETE FROM reports WHERE id = ? AND user_id = ?`)
+        .bind(reportId, userId)
+        .run();
+
+      return mapReport(existing);
+    },
+
+    async updateCollectedAtForUser(userId, reportId, collectedAt) {
+      const now = new Date().toISOString();
+      const existing = await db
+        .prepare(
+          `SELECT id, user_id, source_file_key, source_file_name, collected_at,
+                  demographic_sex, demographic_age_years, created_at, updated_at
+           FROM reports WHERE id = ? AND user_id = ?`,
+        )
+        .bind(reportId, userId)
+        .first<D1ReportRow>();
+
+      if (!existing) return null;
+
+      await db
+        .prepare(
+          `UPDATE reports
+           SET collected_at = ?, updated_at = ?
+           WHERE id = ? AND user_id = ?`,
+        )
+        .bind(collectedAt, now, reportId, userId)
+        .run();
+
+      return mapReport({
+        ...existing,
+        collected_at: collectedAt,
+        updated_at: now,
+      });
     },
   };
 }

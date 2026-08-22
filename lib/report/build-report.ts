@@ -38,7 +38,7 @@ export const SECTION_TITLES: Record<string, string> = {
   other: "Other markers",
 };
 
-const SECTION_ORDER = [
+export const SECTION_ORDER = [
   "lipid",
   "metabolic",
   "hormones",

@@ -89,7 +89,9 @@ describe("Spanish PDF fixture Analitica_OCT2024", () => {
 
     const pdf = await getDocumentProxy(new Uint8Array(bytes));
     const { text } = await extractText(pdf, { mergePages: true });
-    const joined = typeof text === "string" ? text : text.join("\n");
+    const joined = Array.isArray(text)
+      ? (text as string[]).join("\n")
+      : String(text ?? "");
     const result = extractMarkersFromLabText(joined);
     const byId = Object.fromEntries(
       result.markers

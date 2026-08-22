@@ -15,6 +15,7 @@ const ALIASES: Record<string, string> = {
   ldl: "ldl-cholesterol",
   "ldl cholesterol": "ldl-cholesterol",
   "ldl chol": "ldl-cholesterol",
+  "ldl c": "ldl-cholesterol",
   "ldl-c": "ldl-cholesterol",
   "ldl-cholesterol": "ldl-cholesterol",
   "direct ldl": "ldl-cholesterol",
@@ -25,6 +26,7 @@ const ALIASES: Record<string, string> = {
   hdl: "hdl-cholesterol",
   "hdl cholesterol": "hdl-cholesterol",
   "hdl chol": "hdl-cholesterol",
+  "hdl c": "hdl-cholesterol",
   "hdl-c": "hdl-cholesterol",
   "hdl-cholesterol": "hdl-cholesterol",
   "colesterol hdl": "hdl-cholesterol",
@@ -35,14 +37,16 @@ const ALIASES: Record<string, string> = {
   triglicerides: "triglycerides",
   "lipoproteina a": "lp-a",
   "lipoprotein a": "lp-a",
+  "lipoprotein a lp a": "lp-a",
+  "lp a": "lp-a",
   "lp-a": "lp-a",
   "lp(a)": "lp-a",
   lpa: "lp-a",
   "apo b": "apo-b",
   "apo-b": "apo-b",
   apob: "apo-b",
-  apolipoprotein: "apo-b",
   "apolipoprotein b": "apo-b",
+  "apolipoprotein b apob": "apo-b",
   "apolipoproteina b": "apo-b",
 
   // Glucose / metabolic
@@ -205,6 +209,8 @@ const ALIASES: Record<string, string> = {
   transferrina: "transferrin",
   tibc: "tibc",
   "total iron binding capacity": "tibc",
+  "iron bind cap tibc": "tibc",
+  "iron bind cap": "tibc",
   "capacidad total de fijacion de hierro": "tibc",
   ferritin: "ferritin",
   ferritina: "ferritin",
@@ -224,6 +230,8 @@ const ALIASES: Record<string, string> = {
   "25-hidroxicolecalciferol": "vitamin-d",
   "25 oh vitamin d": "vitamin-d",
   "25 oh d": "vitamin-d",
+  "25- oh vitamin d": "vitamin-d",
+  "25 hydroxyvitamin d": "vitamin-d",
   "omega 3": "omega-3-index",
   "omega-3": "omega-3-index",
   "omega-3 index": "omega-3-index",
@@ -236,7 +244,10 @@ const ALIASES: Record<string, string> = {
   "hs crp": "crp",
   "hs-crp": "crp",
   "high sensitivity crp": "crp",
+  "high-sensitivity crp": "crp",
+  "high sensitivity c reactive protein": "crp",
   "high-sensitivity c-reactive protein": "crp",
+  "high-sensitivity c reactive protein": "crp",
   "proteina c reactiva": "crp",
   "proteina c reactiva pcr": "crp",
   pcr: "crp",
@@ -246,10 +257,12 @@ const ALIASES: Record<string, string> = {
   "tirotropina tsh": "tsh",
   "free t4": "free-t4",
   "free-t4": "free-t4",
+  "free thyroxine": "free-t4",
   ft4: "free-t4",
   "t4 libre": "free-t4",
   "free t3": "free-t3",
   "free-t3": "free-t3",
+  "free triiodothyronine": "free-t3",
   ft3: "free-t3",
   "t3 libre": "free-t3",
   cortisol: "cortisol",
@@ -259,17 +272,36 @@ const ALIASES: Record<string, string> = {
   "testosterona libre": "free-testosterone",
   shbg: "shbg",
   "sex hormone binding globulin": "shbg",
+  "sex hormone binding globulin shbg": "shbg",
   estradiol: "estradiol",
+  "estradiol sensitive": "estradiol",
   "dhea s": "dhea-s",
   "dhea-s": "dhea-s",
   dheas: "dhea-s",
+  "dehydroepiandrosterone sulfate": "dhea-s",
+  "dehydroepiandrosterone sulfate dhea s": "dhea-s",
   fsh: "fsh",
+  "follicle stimulating hormone": "fsh",
+  "follicle stimulating hormone fsh": "fsh",
   lh: "lh",
+  "luteinizing hormone": "lh",
+  "luteinizing hormone lh": "lh",
   prolactin: "prolactin",
   prolactina: "prolactin",
+  "prolactin prl": "prolactin",
   psa: "psa",
   "prostate specific antigen": "psa",
+  "prostate specific antigen psa": "psa",
   "antigeno prostatico": "psa",
+  "morning cortisol": "cortisol",
+  "testosterone total": "testosterone",
+  "testosterone total males": "testosterone",
+  "testosterone free": "free-testosterone",
+  "testosterone free calc": "free-testosterone",
+  "thyroid stimulating hormone": "tsh",
+  "thyroid stimulating hormone tsh": "tsh",
+  "blood urea nitrogen bun": "urea",
+  "% hemoglobin a1c": "hba1c",
 };
 
 export function normalizeMarkerKey(name: string): string {
@@ -279,7 +311,7 @@ export function normalizeMarkerKey(name: string): string {
     // CamelCase lab OCR: "HbCorpuscolar" → "Hb Corpuscolar"
     .replace(/([a-z])([A-Z])/g, "$1 $2")
     .toLowerCase()
-    .replace(/[_/]+/g, " ")
+    .replace(/[_/\-]+/g, " ")
     // Periods matter for "C. Hb … (CHCM)" — treat as separators
     .replace(/[()[\],:;.]+/g, " ")
     // Italian / OCR spelling → English alias keys
@@ -289,10 +321,21 @@ export function normalizeMarkerKey(name: string): string {
     .trim();
 }
 
+/** Too generic to phrase-match inside other names (VLDL cholesterol, UIBC). */
+const EXACT_ONLY_ALIASES = new Set(["cholesterol", "iron"]);
+
 export function resolveBiomarkerId(name: string): string | null {
   const key = normalizeMarkerKey(name);
   if (!key) return null;
   if (ALIASES[key]) return ALIASES[key];
+
+  // "% Free Testosterone" is not Free Testosterone; only exact % aliases (e.g. HbA1c)
+  if (key.startsWith("% ")) return null;
+
+  // Calculated ratios / indexes / saturations are not the base analyte
+  if (/\b(ratio|index|saturation)\b/.test(key)) {
+    return null;
+  }
 
   // Strip trailing LOINC-ish bracket content already removed; try prefix before "srm"
   const beforeSrm = key.split(/\bsrm\b/)[0]?.trim();
@@ -300,16 +343,21 @@ export function resolveBiomarkerId(name: string): string | null {
     return ALIASES[beforeSrm];
   }
 
-  // Prefer longer aliases to avoid "hdl" matching inside longer unrelated strings poorly
+  // Prefer longer aliases. Match as whole words/phrases only — never raw
+  // substring (or "vldl cholesterol" falsely matches "ldl cholesterol").
   const aliases = Object.entries(ALIASES).sort((a, b) => b[0].length - a[0].length);
   for (const [alias, id] of aliases) {
     if (alias.length < 3) continue;
-    if (key === alias || key.startsWith(`${alias} `) || key.includes(` ${alias} `)) {
-      return id;
-    }
-    if (key.includes(alias) && alias.length >= 5) return id;
+    if (key === alias) return id;
+    if (EXACT_ONLY_ALIASES.has(alias)) continue;
+    if (hasAliasPhrase(key, alias)) return id;
   }
   return null;
+}
+
+function hasAliasPhrase(key: string, alias: string): boolean {
+  const escaped = alias.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`(?:^|\\s)${escaped}(?:\\s|$)`).test(key);
 }
 
 /** Canonical English display names for confirm screen + report cards */

@@ -21,6 +21,7 @@ export type UploadStore = {
     contentType: string,
   ): Promise<StoredUpload>;
   get(key: string): Promise<{ data: ArrayBuffer; contentType: string } | null>;
+  delete(key: string): Promise<void>;
 };
 
 const memory = new Map<string, { data: ArrayBuffer; contentType: string }>();
@@ -32,6 +33,9 @@ export const memoryUploadStore: UploadStore = {
   },
   async get(key) {
     return memory.get(key) ?? null;
+  },
+  async delete(key) {
+    memory.delete(key);
   },
 };
 
@@ -51,6 +55,9 @@ function createR2UploadStore(bucket: R2Bucket): UploadStore {
         data,
         contentType: obj.httpMetadata?.contentType || "application/octet-stream",
       };
+    },
+    async delete(key) {
+      await bucket.delete(key);
     },
   };
 }

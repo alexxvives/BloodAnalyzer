@@ -1,5 +1,6 @@
 import { requireUser } from "@/lib/auth/session";
 import { getReportRepository } from "@/lib/db/report-repository";
+import { parseCollectedAt } from "@/lib/report/collected-at";
 import type { Demographic, DemographicSex } from "@/lib/types";
 import { NextResponse } from "next/server";
 
@@ -48,6 +49,7 @@ export async function POST(request: Request) {
   const body = (await request.json()) as {
     sourceFileKey?: string | null;
     sourceFileName?: string | null;
+    collectedAt?: unknown;
     demographic?: unknown;
     markers?: Array<{
       biomarkerId: string | null;
@@ -70,6 +72,14 @@ export async function POST(request: Request) {
     );
   }
 
+  const collectedAt = parseCollectedAt(body.collectedAt);
+  if (!collectedAt) {
+    return NextResponse.json(
+      { error: "collectedAt (YYYY-MM-DD) is required" },
+      { status: 400 },
+    );
+  }
+
   try {
     const report = await (
       await getReportRepository()
@@ -77,6 +87,7 @@ export async function POST(request: Request) {
       userId: user.id,
       sourceFileKey: body.sourceFileKey,
       sourceFileName: body.sourceFileName,
+      collectedAt,
       demographic,
       markers: body.markers,
     });

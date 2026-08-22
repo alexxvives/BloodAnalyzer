@@ -31,5 +31,8 @@
       "binding": "UPLOADS",
       "bucket_name": "blood-analyzer-uploads"
     }
-  ]
+  ],
+  "vars": {
+    "BETTER_AUTH_URL": "https://blood-analyzer.alexxvives.workers.dev"
+  }
 }

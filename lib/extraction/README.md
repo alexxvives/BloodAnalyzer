@@ -6,37 +6,40 @@ step** — never write straight from OCR into the saved report.
 ## Recommended approach (tiered)
 
 1. **Prefer structured exports** — CSV / FHIR / HL7 from the lab portal when
-   available. Highest accuracy.
-2. **Text PDF** — extract the embedded text layer (`unpdf`), then run the
-   heuristic lab-line parser + biomarker name map. Always confirm.
-3. **Scanned PDF / photos** — vision LLM (or OCR → LLM) with a **fixed JSON
-   schema** (`name`, `value`, `unit`, `labLow`, `labHigh`, `confidence`).
-   Prefer the report’s printed reference interval when present.
-4. **Human confirm** — mandatory UI to edit values, units, and mapped ids
-   before persistence.
-5. **Unit normalization** — convert mmol/L ↔ mg/dL with explicit conversion
-   tables; never guess.
+   available. Highest accuracy. CSV accepts `name,value,unit` and EasyDraw-style
+   `name,unit,value` exports (section headers are skipped).
+2. **Text PDF + AI** — `unpdf` text layer → light cleanup (PII redact, drop
+   Insights tails, strip `optimal`/`good`/`fair` *range noise* so values stand
+   out) → Groq structured JSON (`pdf-ai`) in sectioned passes. Layout-agnostic:
+   AI picks the markers; we do not hardcode per-lab value parsers in the
+   product path.
+3. **Scanned PDF / photos** — vision LLM with the same JSON schema — not wired
+   yet (`image-pending`).
+4. **Human confirm** — mandatory UI to edit/delete rows and fill gaps before
+   persistence.
 
-## Why the mock “demo values” approach failed
+## Why AI-first for PDFs
 
-Returning canned markers for every PDF/image teaches the UI the wrong lesson
-and hides parse failures. Empty markers + clear warnings is better than fake
-success.
+Clinic PDFs, portal exports, and wellness panels all look different. Hand-written
+layout parsers overfit the few samples we have seen. The model receives **text
+only** (light cleanup + sectioned passes) and must return measured results — not
+range endpoints — into a fixed JSON schema.
 
 ## Text PDF (current)
 
-`pdfTextExtractor` uses `unpdf` + `extractMarkersFromLabText`. Upload a
-digital/text-layer PDF at `/upload`. Confirm every value before save.
+`pdfTextExtractor`:
 
-Supports English line layouts and Spanish clinic formats (`TEST` heading →
-`Resultado … value`, dotted CBC lines, decimal commas / thousand dots).
-Name map covers EN + ES aliases (`lib/extraction/name-map.ts`).
+1. `unpdf` text layer
+2. `prepareTextForModel` (cleanup only — not marker extraction)
+3. Groq AI in sectioned passes when `GROQ_API_KEY` is set
+4. If AI is off/fails → empty markers + warning (manual entry)
 
-Fixture for local checks: `lib/extraction/fixtures/sample-lab-text.pdf`
+Always confirm every value before save.
+
+Fixture for heuristic checks: `lib/extraction/fixtures/sample-lab-text.pdf`
 (`node scripts/make-sample-lab-pdf.mjs` regenerates it).
 
 ## Next implementation step
 
-Wire a provider (Workers AI / OpenAI vision / Document AI) behind
-`imageDocumentExtractor` / a scanned-PDF branch, using the same
-`ExtractionResult` type and confirmation screen.
+Wire vision LLM behind `imageDocumentExtractor` / scanned-PDF branch using the
+same `ExtractionResult` type and confirmation screen.

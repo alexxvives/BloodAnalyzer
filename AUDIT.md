@@ -74,7 +74,7 @@ Extractors in production pipeline: CSV, PDF text (`unpdf`), image stub (empty).
 |---|---|---|
 | `design/.../SiPhox Health.html` + `_files/**` | **delete** | none |
 | `design/.../SiPhox Health.pdf` | **delete** (or local-only) | low |
-| `design/.../*.png` | **keep** | — |
+| `design/.../*.png` | **keep** as `ref-01`…`ref-12` | — |
 | `lib/extraction/mock-document-extractor.ts` | **delete** | none |
 | `components/ui/StatusSwatch.tsx` | **delete** | none |
 | `components/ui/InfoPopover.tsx` | **keep + wire** (AGENTS #5) | — |
@@ -146,22 +146,22 @@ Extractors in production pipeline: CSV, PDF text (`unpdf`), image stub (empty).
 
 ---
 
-## Sign-off queue — do not implement without approval
+## Sign-off queue — status after 2026-08-08 implementation pass
 
-These are the largest / irreversible / product-policy items. Revisit after Phases A–F land on GitHub.
-
-| # | Item | Why gated |
+| # | Item | Status |
 |---|---|---|
-| S1 | Install & migrate to **Better Auth** package | Auth stack swap; AGENTS asks for sign-off |
-| S2 | **OCR / real image extractor** | Product scope + vendor/cost; stub is intentional |
-| S3 | Move **full scoring off the client** (server report DTO / RSC) | Larger architecture; bundle win but wide blast radius |
-| S4 | Clinician review / flip `sourced` / panel completeness | Medical data content |
-| S5 | Chart library swap | AGENTS irreversible decision |
-| S6 | Mass redesign / per-section React components (`LipidPanel`…) | Docs should match data-driven ReportView, not invent new UI split |
-| S7 | Delete `app/preview` + demo biomarkers | Dev tooling preference |
-| S8 | Production deploy / secrets / remote D1+R2 provisioning | Ops, not code cleanup |
+| S1 | Better Auth + D1 | **Done** — `lib/auth/auth.ts`, `/api/auth/[...all]`, client `authClient`; PBKDF2 retained for existing hashes |
+| S2 | OCR / image extractor | **Deferred** — costs money at volume (Workers AI / OpenAI / Document AI). Stub remains |
+| S3 | Server-built report DTO | **Done** — `buildReportViewModel` + `/api/reports/build` + `ReportLoader` |
+| S4 | Clinician review / panel completeness | **Process only** — `data/CLINICIAN_REVIEW.md`. No invented ranges |
+| S5 | Chart library swap | **Kept Recharts** — not Haikei/Watermelon; timelines use `BiomarkerTrendChart` |
+| S6 | Section components + home polish | **Done lightly** — `ReportSectionBlock` + `/app` home (existing design system; no UI-kit dependency) |
+| S7 | Delete preview gallery | **Done** — removed `/preview` + `lib/mock/demo-biomarkers` |
+| S8 | Production deploy | **Docs ready** — `DEPLOY.md` + `.dev.vars.example`. Live `npm run deploy` needs your Cloudflare login/secrets |
 
-When approving, say e.g. “approve S1 + S3” and we resume from this file.
+### New product (approved)
+
+- **`/app` home** — per-biomarker progress timelines across uploads (`HomeView` + `buildBiomarkerTrends`)
 
 ---
 

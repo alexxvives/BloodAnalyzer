@@ -37,6 +37,7 @@ function marker(
       unit: "u",
       status,
       labStatus: "in_range",
+      sectionId: "cbc",
       range: {
         biomarkerId: "x",
         unit: "u",

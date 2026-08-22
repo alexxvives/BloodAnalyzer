@@ -16,7 +16,7 @@ function AuthLauncherInner({ children }: { children: React.ReactNode }) {
     return null;
   }, [search]);
 
-  const next = search.get("next") || "/upload";
+  const next = search.get("next") || "/app";
 
   const setAuth = useCallback(
     (nextMode: AuthMode | null) => {

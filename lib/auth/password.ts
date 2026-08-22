@@ -52,10 +52,11 @@ export async function verifyPassword(
     false,
     ["deriveBits"],
   );
+  const salt = Uint8Array.from(fromHex(saltHex));
   const bits = await crypto.subtle.deriveBits(
     {
       name: "PBKDF2",
-      salt: fromHex(saltHex),
+      salt,
       iterations,
       hash: "SHA-256",
     },

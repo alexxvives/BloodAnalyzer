@@ -1,11 +1,12 @@
 "use client";
 
 import { Page, PageBody, PageHeader } from "@/components/layout/Page";
-import {
-  ReportView,
-  reportSubjectLine,
-} from "@/components/report/ReportView";
+import { ReportLoader } from "@/components/report/ReportLoader";
+import { ReportPageSkeleton } from "@/components/ui/Skeleton";
 import type { ExtractedMarker } from "@/lib/extraction/types";
+import {
+  collectedAtToInputValue,
+} from "@/lib/report/collected-at";
 import { loadReportDraft } from "@/lib/report/draft";
 import type { Demographic, DemographicSex } from "@/lib/types";
 import Link from "next/link";
@@ -13,9 +14,12 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 type LoadedReport = {
+  id: string;
   markers: ExtractedMarker[];
   demographic: Demographic;
   sourceFileName?: string;
+  hasSourceFile: boolean;
+  collectedAt: string | null;
   createdAt: string;
   demographicFallback: boolean;
 };
@@ -30,6 +34,9 @@ export default function SavedReportPage() {
   >("loading");
   const [report, setReport] = useState<LoadedReport | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [dateDraft, setDateDraft] = useState("");
+  const [dateSaving, setDateSaving] = useState(false);
+  const [dateError, setDateError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!params.id) return;
@@ -47,7 +54,10 @@ export default function SavedReportPage() {
         if (!res.ok) throw new Error("Could not load report.");
         const data = (await res.json()) as {
           report: {
+            id: string;
             sourceFileName: string | null;
+            sourceFileKey: string | null;
+            collectedAt: string | null;
             createdAt: string;
             demographicSex: DemographicSex | null;
             demographicAgeYears: number | null;
@@ -84,12 +94,16 @@ export default function SavedReportPage() {
 
         if (!cancelled) {
           setReport({
+            id: data.report.id,
             markers,
             demographic,
             sourceFileName: data.report.sourceFileName ?? undefined,
+            hasSourceFile: Boolean(data.report.sourceFileKey),
+            collectedAt: data.report.collectedAt,
             createdAt: data.report.createdAt,
             demographicFallback: fromReport == null,
           });
+          setDateDraft(collectedAtToInputValue(data.report.collectedAt));
           setState("ready");
         }
       })
@@ -104,26 +118,98 @@ export default function SavedReportPage() {
     };
   }, [params.id]);
 
+  async function saveCollectedDate(next: string) {
+    if (!report || !next.trim()) return;
+    const previous = collectedAtToInputValue(report.collectedAt);
+    if (next === previous) return;
+
+    setDateSaving(true);
+    setDateError(null);
+    try {
+      const res = await fetch(`/api/reports/${report.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ collectedAt: next }),
+      });
+      const data = (await res.json()) as {
+        error?: string;
+        report?: { collectedAt: string | null };
+      };
+      if (!res.ok || !data.report) {
+        throw new Error(data.error ?? "Could not update test date.");
+      }
+      setReport((prev) =>
+        prev ? { ...prev, collectedAt: data.report!.collectedAt } : prev,
+      );
+      setDateDraft(collectedAtToInputValue(data.report.collectedAt));
+    } catch (err) {
+      setDateDraft(previous);
+      setDateError(
+        err instanceof Error ? err.message : "Could not update test date.",
+      );
+    } finally {
+      setDateSaving(false);
+    }
+  }
+
+  const titleDate = report?.collectedAt
+    ? formatReportTitle(report.collectedAt)
+    : "Report";
+
   return (
     <Page>
       <PageHeader
-        eyebrow="Saved report"
-        title={report ? formatReportTitle(report.createdAt) : "Report"}
+        title={titleDate}
         description={
-          report
-            ? reportSubjectLine(report.demographic, report.sourceFileName)
-            : undefined
+          report ? (
+            <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
+              <MetaChip>
+                {capitalize(report.demographic.sex)}, age{" "}
+                {report.demographic.ageYears}
+              </MetaChip>
+              {report.sourceFileName ? (
+                <MetaChip truncated>{report.sourceFileName}</MetaChip>
+              ) : (
+                <MetaChip>Manual entry</MetaChip>
+              )}
+              <label className="inline-flex items-center gap-1.5 text-xs text-muted">
+                <span>Test date</span>
+                <input
+                  type="date"
+                  max={todayInputValue()}
+                  disabled={dateSaving}
+                  className="ba-field ba-field-sm w-auto py-0.5 text-xs text-foreground"
+                  value={dateDraft}
+                  onChange={(e) => setDateDraft(e.target.value)}
+                  onBlur={() => void saveCollectedDate(dateDraft)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.currentTarget.blur();
+                    }
+                  }}
+                />
+              </label>
+              {dateError ? (
+                <span className="text-xs text-status-attention">{dateError}</span>
+              ) : null}
+            </span>
+          ) : undefined
         }
         actions={
-          <Link href="/history" className="ba-btn ba-btn-secondary">
-            All uploads
-          </Link>
+          report?.hasSourceFile ? (
+            <a
+              href={`/api/reports/${report.id}/file`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ba-btn ba-btn-secondary"
+            >
+              View original
+            </a>
+          ) : undefined
         }
       />
       <PageBody>
-        {state === "loading" ? (
-          <p className="text-sm text-muted">Loading report…</p>
-        ) : null}
+        {state === "loading" ? <ReportPageSkeleton /> : null}
 
         {state === "unauthorized" ? (
           <EmptyCard
@@ -152,7 +238,7 @@ export default function SavedReportPage() {
                 confirmed.
               </p>
             ) : null}
-            <ReportView
+            <ReportLoader
               markers={report.markers}
               demographic={report.demographic}
             />
@@ -163,13 +249,45 @@ export default function SavedReportPage() {
   );
 }
 
+function MetaChip({
+  children,
+  truncated,
+}: {
+  children: React.ReactNode;
+  truncated?: boolean;
+}) {
+  return (
+    <span
+      className={`inline-flex items-center rounded-full border border-border bg-surface-muted/60 px-2.5 py-0.5 text-xs text-foreground ${
+        truncated ? "max-w-[16rem] truncate" : ""
+      }`}
+    >
+      {children}
+    </span>
+  );
+}
+
 function formatReportTitle(iso: string): string {
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return "Saved report";
   return d.toLocaleDateString(undefined, {
+    weekday: "short",
     month: "long",
+    day: "numeric",
     year: "numeric",
   });
+}
+
+function todayInputValue(): string {
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+function capitalize(s: string): string {
+  return s.length ? s[0]!.toUpperCase() + s.slice(1) : s;
 }
 
 function EmptyCard({

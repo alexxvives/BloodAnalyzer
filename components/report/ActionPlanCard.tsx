@@ -1,13 +1,17 @@
 "use client";
 
 import { CloseButton } from "@/components/ui/CloseButton";
+import { ActionPlanCardSkeleton } from "@/components/ui/Skeleton";
 import {
-  formatMarkerRef,
   type ActionPlanBlock,
   type ActionPlanFoodItem,
   type ActionPlanMarkerInput,
   type ActionPlanResult,
 } from "@/lib/report/action-plan";
+import {
+  givenMarkerPhrase,
+  plainMarkerCue,
+} from "@/lib/report/action-plan-language";
 import type { Demographic } from "@/lib/types";
 import { useEffect, useMemo, useState } from "react";
 
@@ -108,9 +112,7 @@ export function ActionPlanCard({ demographic, markers }: ActionPlanCardProps) {
           advice.
         </p>
 
-        {loading ? (
-          <p className="mt-4 text-sm text-muted">Generating a daily routine…</p>
-        ) : null}
+        {loading ? <ActionPlanCardSkeleton /> : null}
 
         {!loading && error ? (
           <div className="mt-4 flex flex-1 flex-col">
@@ -281,16 +283,18 @@ function PlanFoodLine({
     (item.marker
       ? tipForMarkerLabel(item.marker, markers)
       : undefined);
+  const action = item.food.replace(/[.!?]\s*$/, "");
 
   return (
     <li className="text-sm leading-relaxed text-foreground">
-      <span className="font-medium">{item.food}</span>
+      <span className="font-medium">{action}</span>
       {item.marker ? (
         <>
-          {" "}
+          {" — "}
           <WordTip label={item.marker} tip={tip} />
         </>
       ) : null}
+      <span aria-hidden>.</span>
     </li>
   );
 }
@@ -299,14 +303,29 @@ function tipForMarkerLabel(
   label: string,
   markers: ActionPlanMarkerInput[],
 ): string | undefined {
-  const hit = markers.find(
-    (m) =>
-      formatMarkerRef(m).toLowerCase() === label.toLowerCase() ||
-      label.toLowerCase().includes(m.name.toLowerCase()),
-  );
+  const lower = label.toLowerCase();
+  const hit = markers.find((m) => {
+    const cue = plainMarkerCue(m).toLowerCase();
+    const given = givenMarkerPhrase(m).toLowerCase();
+    return (
+      lower === cue ||
+      lower === given ||
+      lower.includes(cue) ||
+      lower.includes(m.name.toLowerCase())
+    );
+  });
   if (!hit) return undefined;
-  const grade = hit.status ?? "ungraded";
-  return `${formatMarkerRef(hit)} · grade ${grade} · lab ${hit.labStatus}`;
+  const cue = plainMarkerCue(hit);
+  if (hit.status === "attention" || hit.labStatus === "out_of_range") {
+    return `Paired with ${cue} — a lifestyle idea to discuss with your clinician, not a diagnosis.`;
+  }
+  if (hit.status === "fair") {
+    return `Paired with ${cue} — small daily choices people often use while aiming toward optimal.`;
+  }
+  if (hit.status === "optimal" || hit.status === "good") {
+    return `Paired with ${cue} — keep supporting habits while this marker looks steady.`;
+  }
+  return `Paired with ${cue}.`;
 }
 
 /** Hoverable marker word — tip appears only for that word */
@@ -332,7 +351,7 @@ function WordTip({ label, tip }: { label: string; tip?: string }) {
   );
 }
 
-/** Highlight marker value phrases inside summary for word-level hover */
+/** Highlight plain-language marker cues inside summary for word-level hover */
 function MarkedSummary({
   text,
   markers,
@@ -340,10 +359,12 @@ function MarkedSummary({
   text: string;
   markers: ActionPlanMarkerInput[];
 }) {
-  const refs = markers.map(formatMarkerRef).filter(Boolean);
+  const refs = markers
+    .flatMap((m) => [givenMarkerPhrase(m), plainMarkerCue(m)])
+    .filter(Boolean);
   if (refs.length === 0) return <>{text}</>;
 
-  const sorted = [...refs].sort((a, b) => b.length - a.length);
+  const sorted = [...new Set(refs)].sort((a, b) => b.length - a.length);
   const pattern = new RegExp(
     `(${sorted.map(escapeRegExp).join("|")})`,
     "gi",

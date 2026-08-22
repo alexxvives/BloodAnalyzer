@@ -15,3 +15,19 @@ describe("resolveBiomarkerId — corpuscular indices", () => {
     expect(resolveBiomarkerId("C Hb Corpuscular media")).toBe("mchc");
   });
 });
+
+describe("resolveBiomarkerId — percent-of markers", () => {
+  it("does not treat % Free Testosterone as Free Testosterone", () => {
+    expect(resolveBiomarkerId("% Free Testosterone")).toBeNull();
+    expect(resolveBiomarkerId("% Hemoglobin A1C")).toBe("hba1c");
+  });
+
+  it("does not map VLDL cholesterol or UIBC to a different analyte", () => {
+    expect(resolveBiomarkerId("VLDL Cholesterol (Calc)")).toBeNull();
+    expect(
+      resolveBiomarkerId("Unsaturated iron-binding capacity test (UIBC)"),
+    ).toBeNull();
+    expect(resolveBiomarkerId("Iron")).toBe("serum-iron");
+    expect(resolveBiomarkerId("Cholesterol, Total")).toBe("total-cholesterol");
+  });
+});
