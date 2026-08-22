@@ -79,6 +79,13 @@ body {
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
   }
 
+  .ba-field.ba-field-invalid,
+  .ba-field.ba-field-invalid:hover,
+  .ba-field.ba-field-invalid:focus {
+    border-color: var(--status-attention);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--status-attention) 22%, transparent);
+  }
+
   .ba-field:disabled {
     opacity: 0.6;
     cursor: not-allowed;
@@ -224,6 +231,29 @@ body {
   100% {
     background-position: -100% 0;
   }
+}
+
+@keyframes baShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-7px);
+  }
+  40% {
+    transform: translateX(7px);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+  80% {
+    transform: translateX(4px);
+  }
+}
+
+.ba-shake {
+  animation: baShake 0.45s ease-in-out;
 }
 
 .ba-reveal {

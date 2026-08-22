@@ -8,12 +8,14 @@ import {
 import { saveReportDraft } from "@/lib/report/draft";
 import type { Demographic, DemographicSex } from "@/lib/types";
 import { useRouter } from "next/navigation";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 type Step = "upload" | "confirm";
 type ProgressPhase = "idle" | "reading" | "uploading" | "analyzing" | "done";
 
 const KNOWN_IDS = KNOWN_BIOMARKER_IDS;
+
+const DATE_REQUIRED_ERROR = "Choose the date this blood test was collected.";
 
 const PHASE_LABEL: Record<Exclude<ProgressPhase, "idle" | "done">, string> = {
   reading: "Reading file…",
@@ -37,11 +39,20 @@ export function UploadFlow() {
   const [sex, setSex] = useState<DemographicSex>("male");
   const [ageYears, setAgeYears] = useState(27);
   const [collectedDate, setCollectedDate] = useState("");
+  const [dateMissing, setDateMissing] = useState(false);
+  const [dateShake, setDateShake] = useState(0);
+  const dateInputRef = useRef<HTMLInputElement>(null);
 
   const demographic: Demographic = useMemo(
     () => ({ sex, ageYears }),
     [sex, ageYears],
   );
+
+  useEffect(() => {
+    if (!dateMissing) return;
+    dateInputRef.current?.focus();
+    dateInputRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, [dateMissing, dateShake]);
 
   async function processFile(file: File) {
     setBusy(true);
@@ -146,12 +157,15 @@ export function UploadFlow() {
       return;
     }
     if (!collectedDate.trim()) {
-      setError("Choose the date this blood test was collected.");
+      setError(DATE_REQUIRED_ERROR);
+      setDateMissing(true);
+      setDateShake((n) => n + 1);
       return;
     }
 
     setBusy(true);
     setError(null);
+    setDateMissing(false);
     try {
       const saveRes = await fetch("/api/reports", {
         method: "POST",
@@ -212,17 +226,36 @@ export function UploadFlow() {
 
         <div className="grid gap-4 sm:grid-cols-3">
           <label className="block text-sm sm:col-span-1">
-            <span className="text-muted">Test date</span>
+            <span className={dateMissing ? "text-status-attention" : "text-muted"}>
+              Test date
+            </span>
             <input
+              ref={dateInputRef}
+              key={dateShake}
               type="date"
               required
+              aria-invalid={dateMissing}
               max={todayInputValue()}
-              className="ba-field mt-1"
+              className={`ba-field mt-1 ${dateMissing ? "ba-field-invalid ba-shake" : ""}`}
               value={collectedDate}
-              onChange={(e) => setCollectedDate(e.target.value)}
+              onChange={(e) => {
+                setCollectedDate(e.target.value);
+                if (e.target.value.trim()) {
+                  setDateMissing(false);
+                  setError((prev) =>
+                    prev === DATE_REQUIRED_ERROR
+                      ? null
+                      : prev,
+                  );
+                }
+              }}
             />
-            <span className="mt-1 block text-xs text-muted">
-              When was this blood test collected? (not the upload day)
+            <span
+              className={`mt-1 block text-xs ${dateMissing ? "text-status-attention" : "text-muted"}`}
+            >
+              {dateMissing
+                ? "Add the collection date to continue."
+                : "When was this blood test collected? (not the upload day)"}
             </span>
           </label>
           <label className="block text-sm">
@@ -250,16 +283,23 @@ export function UploadFlow() {
           </label>
         </div>
 
-        <div className="overflow-x-auto rounded-2xl border border-border bg-surface">
+        <div className="max-h-[min(28rem,55vh)] overflow-auto rounded-2xl border border-border bg-surface">
           <table className="min-w-full text-left text-sm">
-            <thead className="border-b border-border text-muted">
+            <thead className="sticky top-0 z-10 border-b border-border bg-surface-muted text-muted">
               <tr>
-                <th className="px-3 py-2 font-medium">Marker</th>
-                <th className="px-3 py-2 font-medium">Mapped id</th>
-                <th className="px-3 py-2 font-medium">Value</th>
-                <th className="px-3 py-2 font-medium">Unit</th>
-                <th className="px-3 py-2 font-medium">Confidence</th>
-                <th className="px-3 py-2 font-medium">
+                <th className="sticky top-0 bg-surface-muted px-3 py-2 font-medium">
+                  Marker
+                </th>
+                <th className="sticky top-0 bg-surface-muted px-3 py-2 font-medium">
+                  Mapped id
+                </th>
+                <th className="sticky top-0 bg-surface-muted px-3 py-2 font-medium">
+                  Value
+                </th>
+                <th className="sticky top-0 bg-surface-muted px-3 py-2 font-medium">
+                  Unit
+                </th>
+                <th className="sticky top-0 bg-surface-muted px-3 py-2 font-medium">
                   <span className="sr-only">Remove</span>
                 </th>
               </tr>
@@ -320,9 +360,6 @@ export function UploadFlow() {
                       }
                     />
                   </td>
-                  <td className="px-3 py-2 text-muted">
-                    {Math.round(marker.confidence * 100)}%
-                  </td>
                   <td className="px-3 py-2">
                     <button
                       type="button"
@@ -347,6 +384,7 @@ export function UploadFlow() {
             onClick={() => {
               setStep("upload");
               setError(null);
+              setDateMissing(false);
               setPhase("idle");
               setProgress(0);
             }}
