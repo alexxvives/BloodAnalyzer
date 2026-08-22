@@ -24,7 +24,8 @@
 
 # local tooling
 /.firecrawl/
-/.cursor/
+/.cursor/*
+!/.cursor/rules/
 
 # Competitor site dumps (keep curated PNGs only under design/reference-screenshots/)
 /design/reference-screenshots/SiPhox Health.html

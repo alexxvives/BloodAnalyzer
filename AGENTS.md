@@ -83,6 +83,9 @@ SiPhox (see `/design/reference-screenshots`). Product branding is **Blood Analyz
   `RangeBar` / `PopulationComparisonView`) — don't mix chart libraries.
 - Ask before irreversible architecture decisions (swapping Cloudflare stack,
   changing chart library, Better Auth cutover).
+- **Ship after every completed change:** commit, `git push` to origin, and
+  `npm run deploy`. There is no CI — push alone does not update the live
+  Worker. Do not wait to be asked.
 
 ## Before marking any task "done"
 

@@ -1,0 +1,16 @@
+---
+description: Commit, push, and deploy after every completed change so production is testable
+alwaysApply: true
+---
+
+# Ship after every change
+
+When a code change is finished and ready to test, do not wait to be asked:
+
+1. **Commit** the change (unless the user said not to).
+2. **Push** to `origin` (`git push -u origin HEAD` if upstream is missing).
+3. **Deploy** with `npm run deploy` so https://blood-analyzer.alexxvives.workers.dev matches local.
+
+GitHub has no deploy workflow — `git push` alone does not update the live Worker.
+
+Skip push/deploy only if the user said the work is local-only, or the change is not meant to ship (notes, aborted work).
