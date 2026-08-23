@@ -3,6 +3,7 @@ import {
   chunkLabText,
   chunkText,
   normalizeAiMarkers,
+  packChunks,
   prepareTextForModel,
 } from "./ai-lab-extractor";
 
@@ -107,5 +108,14 @@ Lipoprotein (a) (mg/dL) good: 0 - 30
       ],
     });
     expect(markers[0]?.biomarkerId).toBe("urea");
+  });
+
+  it("packs tiny sections without exceeding the char budget", () => {
+    const packed = packChunks(["Heart\n67", "Kidney\n0.8", "A".repeat(400)], 200);
+    expect(packed.length).toBeGreaterThanOrEqual(2);
+    expect(packed.every((c) => c.length <= 400)).toBe(true);
+    expect(packed.some((c) => c.includes("Heart") && c.includes("Kidney"))).toBe(
+      true,
+    );
   });
 });

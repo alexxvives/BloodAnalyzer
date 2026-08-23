@@ -1,4 +1,8 @@
-import { groqJsonChatBody, readGroqJsonText } from "@/lib/ai/groq";
+import {
+  GROQ_MAX_COMPLETION_TOKENS,
+  groqJsonChatBody,
+  readGroqJsonText,
+} from "@/lib/ai/groq";
 import { canonicalizeUreaMarker } from "./canonicalize";
 import {
   CANONICAL_MARKER_NAMES,
@@ -8,12 +12,17 @@ import {
 import { parseLocalizedLabValue } from "./text-lab-extractor";
 import type { ExtractedMarker, ExtractionResult } from "./types";
 
-/** After range-noise cleanup, larger chunks + fewer calls avoids free-tier 429s. */
-const MAX_CHARS_PER_CHUNK = 8_000;
-const MAX_CHUNKS = 4;
+/**
+ * Groq free/on_demand gpt-oss-120b is 8K TPM and reserves
+ * max_completion_tokens at admission. Keep chunks modest so
+ * prompt + reserved output stays under that cap.
+ */
+const MAX_CHARS_PER_CHUNK = 3_500;
+const MAX_CHUNKS = 6;
 const MAX_MARKERS = 120;
 const MAX_RETRIES = 5;
 const CHUNK_GAP_MS = 1_500;
+const GROQ_ERROR_DETAIL_CHARS = 320;
 
 type AiRawMarker = {
   name?: unknown;
@@ -41,16 +50,22 @@ export async function extractMarkersFromLabTextWithAi(
   }
 
   // Prefer health-section chunks so the model isn't flooded with range numbers.
-  const chunks = packChunks(
+  const packed = packChunks(
     chunkLabText(cleaned, MAX_CHARS_PER_CHUNK),
-    MAX_CHUNKS,
+    MAX_CHARS_PER_CHUNK,
   );
+  const chunks = packed.slice(0, MAX_CHUNKS);
   const warnings: string[] = [];
   const collected: ExtractedMarker[] = [];
+  if (packed.length > MAX_CHUNKS) {
+    warnings.push(
+      `Lab text was long — only the first ${MAX_CHUNKS} parts were sent to AI. Add any missing values manually.`,
+    );
+  }
 
   let rateLimited = false;
   for (let i = 0; i < chunks.length; i++) {
-    if (i > 0) await sleep(rateLimited ? 8_000 : CHUNK_GAP_MS);
+    if (i > 0) await sleep(rateLimited ? 20_000 : CHUNK_GAP_MS);
     const chunk = chunks[i]!;
     try {
       const raw = await callGroqExtraction(chunk, options.apiKey, {
@@ -61,7 +76,7 @@ export async function extractMarkersFromLabTextWithAi(
       rateLimited = false;
     } catch (err) {
       const message = err instanceof Error ? err.message : "unknown error";
-      if (/rate limited/i.test(message)) rateLimited = true;
+      if (isGroqTokenCapError(message)) rateLimited = true;
       warnings.push(
         `AI extraction part ${i + 1}/${chunks.length} failed: ${message}`,
       );
@@ -152,14 +167,30 @@ export function chunkLabText(text: string, maxChars: number): string[] {
   return chunks.length > 0 ? chunks : [text];
 }
 
-/** Merge tiny section chunks so we rarely exceed a few Groq calls. */
-export function packChunks(chunks: string[], maxChunks: number): string[] {
-  if (chunks.length <= maxChunks) return chunks;
-  const target = Math.ceil(chunks.length / maxChunks);
+/** Merge tiny section chunks without exceeding the per-request char budget. */
+export function packChunks(chunks: string[], maxChars: number): string[] {
   const packed: string[] = [];
-  for (let i = 0; i < chunks.length; i += target) {
-    packed.push(chunks.slice(i, i + target).join("\n\n"));
+  let current = "";
+
+  const flush = () => {
+    if (current) packed.push(current);
+    current = "";
+  };
+
+  for (const chunk of chunks) {
+    if (!current) {
+      current = chunk;
+      continue;
+    }
+    const next = `${current}\n\n${chunk}`;
+    if (next.length <= maxChars) {
+      current = next;
+    } else {
+      flush();
+      current = chunk;
+    }
   }
+  flush();
   return packed;
 }
 
@@ -349,6 +380,7 @@ ${text}
 ---`;
 
   let lastError = "Groq extraction failed";
+  let completionTokens = GROQ_MAX_COMPLETION_TOKENS;
   for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
     const response = await fetch(
       "https://api.groq.com/openai/v1/chat/completions",
@@ -363,18 +395,25 @@ ${text}
             system,
             user,
             temperature: 0,
-            maxCompletionTokens: 8000,
+            maxCompletionTokens: completionTokens,
           }),
         ),
       },
     );
 
-    if (response.status === 429) {
-      lastError = `Groq rate limited (429)`;
+    if (response.status === 429 || response.status === 413) {
+      const detail = await response.text().catch(() => "");
+      lastError = `Groq rate limited (${response.status})${
+        detail ? `: ${detail.slice(0, GROQ_ERROR_DETAIL_CHARS)}` : ""
+      }`;
+      if (response.status === 413) {
+        completionTokens = Math.max(768, Math.floor(completionTokens * 0.6));
+      }
       const retryAfter = Number(response.headers.get("retry-after"));
-      const waitMs = Number.isFinite(retryAfter) && retryAfter > 0
-        ? Math.min(retryAfter * 1000, 60_000)
-        : Math.min(2000 * 2 ** attempt, 30_000);
+      const waitMs =
+        Number.isFinite(retryAfter) && retryAfter > 0
+          ? Math.min(retryAfter * 1000, 60_000)
+          : Math.min(2000 * 2 ** attempt, 30_000);
       await sleep(waitMs);
       continue;
     }
@@ -383,7 +422,7 @@ ${text}
       const detail = await response.text().catch(() => "");
       throw new Error(
         `Groq extraction failed (${response.status})${
-          detail ? `: ${detail.slice(0, 180)}` : ""
+          detail ? `: ${detail.slice(0, GROQ_ERROR_DETAIL_CHARS)}` : ""
         }`,
       );
     }
@@ -393,6 +432,10 @@ ${text}
   }
 
   throw new Error(lastError);
+}
+
+function isGroqTokenCapError(message: string): boolean {
+  return /rate limited|tokens per minute|\bTPM\b|413/i.test(message);
 }
 
 function sleep(ms: number): Promise<void> {

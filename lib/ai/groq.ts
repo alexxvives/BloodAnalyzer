@@ -5,6 +5,15 @@
  */
 export const GROQ_CHAT_MODEL = "openai/gpt-oss-120b";
 
+/**
+ * Free/on_demand `openai/gpt-oss-120b` is 8K TPM. Groq reserves
+ * `max_completion_tokens` against that cap at admission, so asking for
+ * 8000 completion tokens makes every prompt a 413 ("Limit 8000").
+ * Keep this well under 8K so input + reserved output still fit.
+ * @see https://console.groq.com/docs/rate-limits
+ */
+export const GROQ_MAX_COMPLETION_TOKENS = 2_500;
+
 type GroqMessage = {
   content?: string | null;
   reasoning?: string | null;
@@ -27,9 +36,8 @@ export function groqJsonChatBody(input: {
   return {
     model: GROQ_CHAT_MODEL,
     temperature: input.temperature,
-    ...(input.maxCompletionTokens != null
-      ? { max_completion_tokens: input.maxCompletionTokens }
-      : {}),
+    max_completion_tokens:
+      input.maxCompletionTokens ?? GROQ_MAX_COMPLETION_TOKENS,
     reasoning_effort: "low",
     reasoning_format: "parsed",
     response_format: { type: "json_object" },
