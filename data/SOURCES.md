@@ -7,7 +7,7 @@ versioned and cited. **Do not ship invented numbers to real users.**
 
 | Dataset | Location | Citation status |
 |---|---|---|
-| Reference ranges v1.3.2 | `/data/reference-ranges/v1/markers.json` | **Mixed** — Mayo/ADA/ACC/KDIGO/Harris plus v1.3.2 Mayo APOAB ApoB:ApoA1 (sex-specific); 19 CBC/chem rows still awaiting clinician review; remaining calculated ratios and female cycle-phase hormones stay unsourced |
+| Reference ranges v1.3.3 | `/data/reference-ranges/v1/markers.json` | **Mixed** — Mayo/ADA/ACC/KDIGO/Harris/AHA plus v1.3.3 TSH, morning cortisol, folate, hs-CRP, Lp(a); 14 CBC/chem rows still awaiting clinician review; remaining calculated ratios and female cycle-phase hormones stay unsourced |
 | Population stats v1.8.1 | `/data/population-stats/v1/stats.json` | **Partial NHANES load** — see below |
 
 Until an entry is marked `sourced: true` **and** reviewed for production, treat
@@ -120,6 +120,23 @@ are visual references only and are not copied into the data layer.
 Still no NHANES demographic median for this ratio — the UI keeps
 **benchmark data not yet available** for population comparison.
 
+## TSH, morning cortisol, folate, hs-CRP, Lp(a) (v1.3.3)
+
+These rows were `sourced: true` with "NEEDS CLINICIAN REVIEW" citations.
+They now use named pages; invented interiors were removed.
+
+| biomarkerId | Interval / cutpoints | Source |
+|---|---|---|
+| `tsh` | adults ≥20 years 0.3–4.2 mIU/L (≡ uU/mL) | [Mayo STSH](https://www.mayocliniclabs.com/test-catalog/overview/8939) |
+| `cortisol` | adults ≥18 a.m. 7–25 mcg/dL (p.m. 2–14 not graded — draw time is not collected) | [Mayo CORT](https://www.mayocliniclabs.com/test-catalog/overview/8545) |
+| `folate` | ≥4.0 mcg/L (≡ ng/mL); below 4 suggests deficiency. No upper bound. | [Mayo FOL](https://www.mayocliniclabs.com/test-catalog/overview/9198) + WHO 2008 (citation only) |
+| `crp` | hs-CRP tertiles ≤1 / 1–3 / >3 mg/L | [AHA/CDC 2003](https://www.ahajournals.org/doi/10.1161/01.CIR.0000052939.59093.45) |
+| `lp-a` | attention ≥50 mg/dL (risk-enhancing). The common <30 flag is not used. | [ACC/AHA 2018](https://www.ahajournals.org/doi/10.1161/CIR.0000000000000625) |
+
+TSH no longer claims an unpublished 0.4–2.5 "optimal" interior. Folate no
+longer invents an optimum above 20. Cortisol is the **morning** Mayo interval;
+an afternoon draw can be mis-flagged until draw time is a product field.
+
 ## Mayo CBC / liver / B12 batch (v1.3.1)
 
 These rows were marked sourced but still said "NEEDS CLINICIAN REVIEW". They
@@ -136,9 +153,10 @@ removed:
 | `rdw` | men 11.8–14.5% / women 12.2–16.1% | [Mayo CBC 9109](https://www.mayocliniclabs.com/test-catalog/Overview/9109) |
 | `vitamin-b12` | 180–914 ng/L (= pg/mL) | [Mayo 9154](https://www.mayocliniclabs.com/test-catalog/Overview/9154) |
 
-Still unverified (no matching Mayo page in this pass, or unit mismatch): TSH,
-folate, CRP vs hs-CRP, cortisol, transferrin, Lp(a), PDW, MCH/MCHC, and
-percentage differentials (Mayo CBC publishes absolute counts, not %).
+Still unverified (no matching Mayo page in this pass, or unit mismatch):
+transferrin, PDW, MCH/MCHC, and percentage differentials (Mayo CBC 9109
+publishes absolute counts, not %). TSH, folate, cortisol, hs-CRP, and Lp(a)
+moved to v1.3.3.
 
 ## Why US and European numbers differ
 
@@ -176,10 +194,13 @@ SiPhox-style extra-green wellness bands are unpublished and still not copied.
 | `apo-b` | optimal 48–89 / good 90–99 / fair 100–119 / attention ≥120 (and <48) | Mayo APOLB adult categories; ACC/AHA 2018 flags ≥130 as risk-enhancing |
 | `egfr` | optimal ≥90 / good 60–89 / fair 30–59 / attention <30 | KDIGO 2024 G1–G5 |
 | `omega-3-index` | attention ≤4 / fair 4–8 / optimal ≥8 | Harris & von Schacky 2004 |
+| `crp` | optimal ≤1 / good 1–3 / attention >3 mg/L | AHA/CDC 2003 hs-CRP tertiles |
+| `lp-a` | good <50 / attention ≥50 mg/dL | ACC/AHA 2018 risk-enhancing factor |
 | Lipids, glucose, HDL, ferritin, vitamin D, … | already had guideline interiors | ATP III, ADA, WHO/EASL, Holick |
 
-CBC, BUN, ALP, bilirubin, albumin, enzymes, TSH, most hormones: still
-**attention / good / attention** at the Mayo (or other) reference interval.
+CBC, BUN, ALP, bilirubin, albumin, enzymes, TSH, morning cortisol, most
+hormones: still **attention / good / attention** at the Mayo (or other)
+reference interval.
 Inventing “optimal BUN 10–18” would be the unpublished wellness scale we
 refused to copy from SiPhox.
 
@@ -210,7 +231,7 @@ Three markers cited a guideline that did not contain the numbers attached to it:
 ### Review checklist before real user data
 
 - [ ] Clinician or qualified reviewer signs off on each band
-- [ ] Resolve the 19 rows still marked `sourced: true` with a "NEEDS CLINICIAN
+- [ ] Resolve the 14 rows still marked `sourced: true` with a "NEEDS CLINICIAN
       REVIEW" citation — each must gain a real citation or flip to
       `sourced: false`. The list is pinned in `reference-data.test.ts`; the test
       fails if it grows.

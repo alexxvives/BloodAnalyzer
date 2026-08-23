@@ -10,6 +10,13 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 # AGENTS.md
 
+## Agent memory
+
+Read [`knowledge/index.md`](knowledge/index.md) first. Append notable
+decisions to [`knowledge/log.md`](knowledge/log.md). Sourcing or filling
+biomarker gaps: follow [`.cursor/skills/source-biomarker/SKILL.md`](.cursor/skills/source-biomarker/SKILL.md)
+and finish every sourceable marker in the backlog, not one example.
+
 ## Project
 
 A web platform where a user uploads a blood test (PDF/image/CSV), and gets a

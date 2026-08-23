@@ -206,6 +206,35 @@ describe("scoreBiomarker", () => {
     ).toBe(false);
   });
 
+  it("grades TSH, morning cortisol, folate, hs-CRP, and Lp(a) on cited cutpoints", () => {
+    const demo = { sex: "male" as const, ageYears: 40 };
+    expect(scoreBiomarker({ biomarkerId: "tsh", value: 1.8, demographic: demo }).status).toBe(
+      "good",
+    );
+    expect(scoreBiomarker({ biomarkerId: "tsh", value: 5.0, demographic: demo }).status).toBe(
+      "attention",
+    );
+    expect(
+      scoreBiomarker({ biomarkerId: "cortisol", value: 12, demographic: demo }).status,
+    ).toBe("good");
+    expect(
+      scoreBiomarker({ biomarkerId: "cortisol", value: 4, demographic: demo }).status,
+    ).toBe("attention");
+    expect(scoreBiomarker({ biomarkerId: "folate", value: 8 }).status).toBe("good");
+    expect(scoreBiomarker({ biomarkerId: "folate", value: 2.5 }).status).toBe(
+      "attention",
+    );
+    expect(scoreBiomarker({ biomarkerId: "crp", value: 0.6 }).status).toBe("optimal");
+    expect(scoreBiomarker({ biomarkerId: "crp", value: 2.0 }).status).toBe("good");
+    expect(scoreBiomarker({ biomarkerId: "crp", value: 4.1 }).status).toBe(
+      "attention",
+    );
+    expect(scoreBiomarker({ biomarkerId: "lp-a", value: 20 }).status).toBe("good");
+    expect(scoreBiomarker({ biomarkerId: "lp-a", value: 75 }).status).toBe(
+      "attention",
+    );
+  });
+
   it("grades ApoB:ApoA1 on Mayo APOAB sex-specific risk tiers", () => {
     const maleLow = scoreBiomarker({
       biomarkerId: "apo-b-apo-a1-ratio",

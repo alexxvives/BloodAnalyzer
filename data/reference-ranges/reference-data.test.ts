@@ -28,12 +28,8 @@ const AWAITING_CLINICIAN_REVIEW = new Set([
   "atypical-lymphs",
   "bands",
   "basophils",
-  "cortisol",
-  "crp",
   "eosinophils",
   "esr-2h",
-  "folate",
-  "lp-a",
   "lymphocytes",
   "mch",
   "mchc",
@@ -43,7 +39,6 @@ const AWAITING_CLINICIAN_REVIEW = new Set([
   "neutrophils",
   "pdw",
   "transferrin",
-  "tsh",
 ]);
 
 function describeRow(range: ReferenceRange): string {
@@ -203,8 +198,10 @@ describe("reference-range data integrity", () => {
     "bilirubin-direct",
     "bilirubin-total",
     "c-peptide",
+    "cortisol",
     "creatinine",
     "dhea-s",
+    "folate",
     "estradiol",
     "free-t3",
     "free-t4",
@@ -229,6 +226,7 @@ describe("reference-range data integrity", () => {
     "tibc",
     "total-protein",
     "tpoab",
+    "tsh",
     "urea",
     "uric-acid",
     "vitamin-b12",
@@ -274,6 +272,36 @@ describe("reference-range data integrity", () => {
     expect(male?.labHigh).toBe(55);
     expect(female?.sourceRefs[0]?.label).toMatch(/Mayo/i);
     expect(male?.sourceRefs[0]?.label).toMatch(/Mayo/i);
+  });
+
+  it("grades TSH, morning cortisol, and folate on Mayo endpoints", () => {
+    const tsh = getReferenceRange("tsh", { sex: "male", ageYears: 40 });
+    expect(tsh?.labLow).toBe(0.3);
+    expect(tsh?.labHigh).toBe(4.2);
+    expect(tsh?.sourceRefs[0]?.url).toMatch(/8939/);
+
+    const cortisol = getReferenceRange("cortisol", {
+      sex: "female",
+      ageYears: 30,
+    });
+    expect(cortisol?.labLow).toBe(7);
+    expect(cortisol?.labHigh).toBe(25);
+    expect(cortisol?.sourceRefs[0]?.url).toMatch(/8545/);
+
+    const folate = getReferenceRange("folate", { sex: "male", ageYears: 40 });
+    expect(folate?.labLow).toBe(4);
+    expect(folate?.labHigh).toBeNull();
+    expect(folate?.sourceRefs[0]?.url).toMatch(/9198/);
+  });
+
+  it("grades hs-CRP and Lp(a) on named guideline cutpoints", () => {
+    const crp = getReferenceRange("crp", { sex: "male", ageYears: 40 });
+    expect(crp?.labHigh).toBe(3);
+    expect(crp?.sourceRefs[0]?.label).toMatch(/AHA\/CDC/);
+
+    const lpa = getReferenceRange("lp-a", { sex: "female", ageYears: 40 });
+    expect(lpa?.labHigh).toBe(50);
+    expect(lpa?.sourceRefs[0]?.label).toMatch(/AHA\/ACC/);
   });
 });
 

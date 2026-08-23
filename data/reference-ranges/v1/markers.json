@@ -1,7 +1,7 @@
 {
-  "version": "1.3.2",
+  "version": "1.3.3",
   "reviewStatus": "provisional",
-  "notes": "Educational seed. NOT clinician-reviewed. Prefer printed lab intervals when available. Do not treat as diagnosis. v1.3.2: sourced ApoB:ApoA1 from Mayo APOAB sex-specific Lower/Average/Higher Risk bands. v1.3.1: sourced ALT, AST, WBC, platelets, MCV, RDW, and vitamin B12 from Mayo Clinic Laboratories catalogs (CBC 9109, ALT 8362, AST 8360, B12 9154), collapsing invented interiors to attention/good/attention. v1.3.0: sourced the next PANEL_CATALOG batch from Mayo (insulin, ALP, bilirubin, albumin, free T3/T4, testosterone, free testosterone, SHBG, DHEA-S, prolactin, PSA, TIBC, TPO/TgAb, male estradiol/FSH/LH), ADA+Mayo HbA1c, Mayo+ACC ApoB, KDIGO eGFR, and Harris 2004 Omega-3 Index. Female cycle-phase estradiol/FSH/LH stay unsourced. Remaining calculated ratios, UIBC, VLDL, and eAG remain placeholders. See data/SOURCES.md.",
+  "notes": "Educational seed. NOT clinician-reviewed. Prefer printed lab intervals when available. Do not treat as diagnosis. v1.3.3: sourced TSH (Mayo STSH 0.3-4.2), morning cortisol (Mayo CORT a.m. 7-25), folate (Mayo FOL >=4), hs-CRP (AHA/CDC 2003 tertiles), and Lp(a) (ACC/AHA 2018 >=50). v1.3.2: Mayo APOAB ApoB:ApoA1. Remaining calculated ratios, UIBC, VLDL, eAG, female cycle-phase hormones, and analyzer-specific CBC indices stay unsourced or in the review backlog. See data/SOURCES.md.",
   "markers": [
     {
       "biomarkerId": "total-cholesterol",
@@ -443,40 +443,6 @@
           "label": "NCEP ATP III triglyceride categories (provisional mapping)",
           "citation": "National Cholesterol Education Program Adult Treatment Panel III. Circulation. 2002. Normal <150, borderline 150–199, high ≥200 mg/dL.",
           "url": "https://www.nhlbi.nih.gov/files/docs/guidelines/atp3xsum.pdf",
-          "verifiedAt": null
-        }
-      ]
-    },
-    {
-      "biomarkerId": "lp-a",
-      "name": "Lipoprotein(a)",
-      "subtitle": "Genetically influenced lipoprotein particle",
-      "sectionId": "lipid",
-      "unit": "mg/dL",
-      "sourced": true,
-      "labLow": null,
-      "labHigh": 30,
-      "bands": [
-        {
-          "status": "optimal",
-          "min": null,
-          "max": 29.999
-        },
-        {
-          "status": "fair",
-          "min": 30,
-          "max": 49.999
-        },
-        {
-          "status": "attention",
-          "min": 50,
-          "max": null
-        }
-      ],
-      "sourceRefs": [
-        {
-          "label": "Common Lp(a) risk thresholds (assay-dependent, provisional)",
-          "citation": "NEEDS CLINICIAN REVIEW: Many labs flag Lp(a) <30 mg/dL; risk rises above ~50 mg/dL. Assays/units vary (mg/dL vs nmol/L).",
           "verifiedAt": null
         }
       ]
@@ -2341,45 +2307,6 @@
       ]
     },
     {
-      "biomarkerId": "folate",
-      "name": "Folate",
-      "subtitle": "Vitamin B9",
-      "sectionId": "vitamins",
-      "unit": "ng/mL",
-      "sourced": true,
-      "labLow": 3.1,
-      "labHigh": null,
-      "bands": [
-        {
-          "status": "attention",
-          "min": null,
-          "max": 3.099
-        },
-        {
-          "status": "fair",
-          "min": 3.1,
-          "max": 5.999
-        },
-        {
-          "status": "good",
-          "min": 6,
-          "max": 20
-        },
-        {
-          "status": "optimal",
-          "min": 20.001,
-          "max": null
-        }
-      ],
-      "sourceRefs": [
-        {
-          "label": "Common serum folate sufficiency thresholds (provisional)",
-          "citation": "NEEDS CLINICIAN REVIEW: Folate cutoffs vary; many labs use ~3 ng/mL as deficiency threshold.",
-          "verifiedAt": null
-        }
-      ]
-    },
-    {
       "biomarkerId": "vitamin-b12",
       "name": "Vitamin B12",
       "subtitle": "Cobalamin",
@@ -2469,123 +2396,6 @@
           "citation": "Demay MB, et al. Vitamin D for the Prevention of Disease: an Endocrine Society Clinical Practice Guideline. J Clin Endocrinol Metab. 2024. The Society no longer endorses its previously proposed definition of vitamin D 'sufficiency' (at least 30 ng/mL) and does not recommend routine 25(OH)D screening in healthy adults. The 2011 thresholds are retained here because the 2024 guideline proposes no replacement cutpoints, and are shown with this caveat rather than presented as current consensus.",
           "url": "https://doi.org/10.1210/clinem/dgae322",
           "verifiedAt": "2026-08-07"
-        }
-      ]
-    },
-    {
-      "biomarkerId": "crp",
-      "name": "CRP",
-      "subtitle": "C-reactive protein",
-      "sectionId": "inflammation",
-      "unit": "mg/L",
-      "sourced": true,
-      "labLow": null,
-      "labHigh": 5,
-      "bands": [
-        {
-          "status": "optimal",
-          "min": null,
-          "max": 1
-        },
-        {
-          "status": "good",
-          "min": 1.001,
-          "max": 3
-        },
-        {
-          "status": "fair",
-          "min": 3.001,
-          "max": 5
-        },
-        {
-          "status": "attention",
-          "min": 5.001,
-          "max": null
-        }
-      ],
-      "sourceRefs": [
-        {
-          "label": "hs-CRP / CRP risk-style bands (provisional; assay-dependent)",
-          "citation": "NEEDS CLINICIAN REVIEW: Standard CRP vs hs-CRP differ. Seed treats <5 mg/L as common lab ULN with tighter lifestyle bands below.",
-          "verifiedAt": null
-        }
-      ]
-    },
-    {
-      "biomarkerId": "tsh",
-      "name": "TSH",
-      "subtitle": "Thyroid-stimulating hormone",
-      "sectionId": "thyroid",
-      "unit": "uU/mL",
-      "sourced": true,
-      "labLow": 0.4,
-      "labHigh": 4.5,
-      "bands": [
-        {
-          "status": "attention",
-          "min": null,
-          "max": 0.399
-        },
-        {
-          "status": "optimal",
-          "min": 0.4,
-          "max": 2.5
-        },
-        {
-          "status": "good",
-          "min": 2.501,
-          "max": 4.5
-        },
-        {
-          "status": "fair",
-          "min": 4.501,
-          "max": 10
-        },
-        {
-          "status": "attention",
-          "min": 10.001,
-          "max": null
-        }
-      ],
-      "sourceRefs": [
-        {
-          "label": "Common adult TSH interval with tighter optimal band (provisional)",
-          "citation": "NEEDS CLINICIAN REVIEW: Typical adult TSH ~0.4–4.5 mIU/L; pregnancy and age alter targets.",
-          "verifiedAt": null
-        }
-      ]
-    },
-    {
-      "biomarkerId": "cortisol",
-      "name": "Cortisol",
-      "subtitle": "Adrenal hormone",
-      "sectionId": "hormones",
-      "unit": "ug/dL",
-      "sourced": true,
-      "labLow": 5,
-      "labHigh": 25,
-      "bands": [
-        {
-          "status": "attention",
-          "min": null,
-          "max": 4.999
-        },
-        {
-          "status": "good",
-          "min": 5,
-          "max": 25
-        },
-        {
-          "status": "attention",
-          "min": 25.001,
-          "max": null
-        }
-      ],
-      "sourceRefs": [
-        {
-          "label": "Common morning cortisol interval (provisional; timing-critical)",
-          "citation": "NEEDS CLINICIAN REVIEW: Cortisol is time-of-day dependent. Seed assumes morning sample context only.",
-          "verifiedAt": null
         }
       ]
     },
@@ -5741,6 +5551,200 @@
           "label": "How these bands were built",
           "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
           "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ]
+    },
+    {
+      "biomarkerId": "tsh",
+      "name": "TSH",
+      "subtitle": "Thyroid-stimulating hormone",
+      "sectionId": "thyroid",
+      "unit": "uU/mL",
+      "loincCode": "11579-0",
+      "sourced": true,
+      "labLow": 0.3,
+      "labHigh": 4.2,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 0.299
+        },
+        {
+          "status": "good",
+          "min": 0.3,
+          "max": 4.2
+        },
+        {
+          "status": "attention",
+          "min": 4.201,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories STSH — adults >=20 years 0.3-4.2 mIU/L",
+          "citation": "Mayo Clinic Laboratories, test STSH (Thyroid-Stimulating Hormone-Sensitive, Serum). Adults >=20 years: 0.3-4.2 mIU/L (numerically identical to uU/mL). The unpublished wellness interior of 0.4-2.5 is not on this page and is not used. Pregnancy-specific targets are not collected here, so this adult ambulatory interval is applied as-is. Mayo's thyroid cascade (THSCM) uses the same 0.3 / 4.2 reflex cutpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/8939",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "ageMin": 20
+      }
+    },
+    {
+      "biomarkerId": "cortisol",
+      "name": "Cortisol",
+      "subtitle": "Adrenal hormone (morning interval)",
+      "sectionId": "hormones",
+      "unit": "ug/dL",
+      "loincCode": "2143-6",
+      "sourced": true,
+      "labLow": 7,
+      "labHigh": 25,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 6.999
+        },
+        {
+          "status": "good",
+          "min": 7,
+          "max": 25
+        },
+        {
+          "status": "attention",
+          "min": 25.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories CORT — adults >=18 years a.m. 7-25 mcg/dL (p.m. 2-14 not graded)",
+          "citation": "Mayo Clinic Laboratories, test CORT (Cortisol, Serum). Adults >=18 years: a.m. 7-25 mcg/dL; p.m. 2-14 mcg/dL. This product does not collect draw time, so the a.m. interval is the grade (typical fasting/morning panels). A true afternoon draw in the p.m. interval can sit below 7 and be flagged attention even though Mayo would call it in-range for p.m. mcg/dL is numerically identical to ug/dL.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/8545",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "ageMin": 18
+      }
+    },
+    {
+      "biomarkerId": "folate",
+      "name": "Folate",
+      "subtitle": "Vitamin B9",
+      "sectionId": "vitamins",
+      "unit": "ng/mL",
+      "loincCode": "2284-8",
+      "sourced": true,
+      "labLow": 4,
+      "labHigh": null,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 3.999
+        },
+        {
+          "status": "good",
+          "min": 4,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories FOL — >=4.0 mcg/L; <4.0 mcg/L suggests folate deficiency",
+          "citation": "Mayo Clinic Laboratories, test FOL (Folate, Serum). Reference values: >=4.0 mcg/L. <4.0 mcg/L suggests folate deficiency. mcg/L is numerically identical to ng/mL. No upper reference limit or interior optimum is published, so bands are attention below 4 / good at or above 4. Mayo notes the cutoff is consensus derived from US NHANES III.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/9198",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "WHO 2008 technical consultation — serum folate <4 mcg/L used as a deficiency cutoff (citation only; Mayo supplies the product bands)",
+          "citation": "de Benoist B. Conclusions of a WHO Technical Consultation on folate and vitamin B12 deficiencies. Food Nutr Bull. 2008;29(2 Suppl):S238-S244. Cited by Mayo FOL as the source of the <4 mcg/L consensus cutoff. Does not add an upper bound or an optimum above 4.",
+          "url": "https://doi.org/10.1177/15648265080292S129",
+          "verifiedAt": "2026-08-23"
+        }
+      ]
+    },
+    {
+      "biomarkerId": "crp",
+      "name": "CRP",
+      "subtitle": "C-reactive protein (hs-CRP risk tertiles)",
+      "sectionId": "inflammation",
+      "unit": "mg/L",
+      "loincCode": "30522-7",
+      "sourced": true,
+      "labLow": null,
+      "labHigh": 3,
+      "bands": [
+        {
+          "status": "optimal",
+          "min": null,
+          "max": 1
+        },
+        {
+          "status": "good",
+          "min": 1.001,
+          "max": 3
+        },
+        {
+          "status": "attention",
+          "min": 3.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "AHA/CDC 2003 — hs-CRP relative-risk tertiles <1.0 / 1.0-3.0 / >3.0 mg/L",
+          "citation": "Pearson TA, Mensah GA, Alexander RW, et al. Markers of Inflammation and Cardiovascular Disease: Application to Clinical and Public Health Practice. AHA/CDC Scientific Statement. Circulation. 2003;107:499-511. Relative-risk categories (low, average, high) correspond to approximate tertiles of hs-CRP (<1.0, 1.0 to 3.0, and >3.0 mg/L). Mapped here as optimal <=1 / good 1-3 / attention >3. The statement is for high-sensitivity CRP, not conventional CRP assays whose upper limits are often ~5-10 mg/L. Values >10 mg/L should be repeated because they often reflect acute inflammation rather than chronic vascular risk. Lab in-range is <=3 mg/L (high-risk tertile begins above 3).",
+          "url": "https://www.ahajournals.org/doi/10.1161/01.CIR.0000052939.59093.45",
+          "verifiedAt": "2026-08-23"
+        }
+      ]
+    },
+    {
+      "biomarkerId": "lp-a",
+      "name": "Lipoprotein(a)",
+      "subtitle": "Genetically influenced lipoprotein particle",
+      "sectionId": "lipid",
+      "unit": "mg/dL",
+      "loincCode": "10835-7",
+      "sourced": true,
+      "labLow": null,
+      "labHigh": 50,
+      "bands": [
+        {
+          "status": "good",
+          "min": null,
+          "max": 49.999
+        },
+        {
+          "status": "attention",
+          "min": 50,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "2018 AHA/ACC cholesterol guideline — Lp(a) >=50 mg/dL (>=125 nmol/L) is a risk-enhancing factor",
+          "citation": "Grundy SM et al. 2018 AHA/ACC/Multisociety Guideline on the Management of Blood Cholesterol. Circulation. 2019. Lipoprotein(a) >=50 mg/dL or >=125 nmol/L constitutes a risk-enhancing factor. That is the only named cutpoint used here. The common lab flag of <30 mg/dL is not in this guideline and is not used as an optimum. Assays report mg/dL or nmol/L; this row grades mg/dL only. nmol/L results need conversion before grading.",
+          "url": "https://www.ahajournals.org/doi/10.1161/CIR.0000000000000625",
           "verifiedAt": "2026-08-23"
         }
       ]

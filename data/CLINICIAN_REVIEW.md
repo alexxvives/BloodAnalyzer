@@ -25,7 +25,8 @@ Total protein and direct bilirubin now have Mayo-cited intervals. Still
 unsourced: remaining calculated ratios (TC:HDL, LDL:HDL, LDL:ApoB, TG:HDL, and
 hormone/thyroid ratios), VLDL, eAG, UIBC, and female cycle-phase estradiol /
 FSH / LH (Mayo intervals require cycle day or menopausal status). ApoB:ApoA1
-is Mayo APOAB-sourced (v1.3.2).
+is Mayo APOAB-sourced (v1.3.2). TSH, morning cortisol, folate, hs-CRP, and
+Lp(a) are sourced as of v1.3.3.
 
 ## Population benchmarks
 
