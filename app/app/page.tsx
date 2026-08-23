@@ -7,7 +7,7 @@ export default function AppHomePage() {
       <PageHeader
         eyebrow="Home"
         title="Your biomarkers"
-        description="Progress across every confirmed blood analytic — educational timelines, not a diagnosis."
+        description="Progress across every confirmed blood analytic"
       />
       <PageBody>
         <HomeView />

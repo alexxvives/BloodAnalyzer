@@ -1,3 +1,4 @@
+import { groqJsonChatBody, readGroqJsonText } from "@/lib/ai/groq";
 import { canonicalizeUreaMarker } from "./canonicalize";
 import {
   CANONICAL_MARKER_NAMES,
@@ -7,7 +8,6 @@ import {
 import { parseLocalizedLabValue } from "./text-lab-extractor";
 import type { ExtractedMarker, ExtractionResult } from "./types";
 
-const MODEL = "llama-3.3-70b-versatile";
 /** After range-noise cleanup, larger chunks + fewer calls avoids free-tier 429s. */
 const MAX_CHARS_PER_CHUNK = 8_000;
 const MAX_CHUNKS = 4;
@@ -358,16 +358,14 @@ ${text}
           Authorization: `Bearer ${apiKey}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          model: MODEL,
-          temperature: 0,
-          max_tokens: 8000,
-          response_format: { type: "json_object" },
-          messages: [
-            { role: "system", content: system },
-            { role: "user", content: user },
-          ],
-        }),
+        body: JSON.stringify(
+          groqJsonChatBody({
+            system,
+            user,
+            temperature: 0,
+            maxCompletionTokens: 8000,
+          }),
+        ),
       },
     );
 
@@ -390,18 +388,8 @@ ${text}
       );
     }
 
-    const data = (await response.json()) as {
-      choices?: Array<{ message?: { content?: string } }>;
-    };
-    const content = data.choices?.[0]?.message?.content;
-    if (!content) throw new Error("Empty Groq extraction response");
-
-    const cleaned = content
-      .trim()
-      .replace(/^```json\s*/i, "")
-      .replace(/^```\s*/i, "")
-      .replace(/\s*```$/i, "");
-    return JSON.parse(cleaned) as unknown;
+    const data: unknown = await response.json();
+    return JSON.parse(readGroqJsonText(data)) as unknown;
   }
 
   throw new Error(lastError);

@@ -68,7 +68,11 @@ export async function POST(request: Request) {
   try {
     const plan = await generateActionPlanWithGroq(input, apiKey, seed);
     return NextResponse.json({ plan, source: "groq" });
-  } catch {
+  } catch (err) {
+    console.error(
+      "[action-plan] Groq failed",
+      err instanceof Error ? err.message : err,
+    );
     return NextResponse.json(
       {
         error:

@@ -81,6 +81,12 @@ describe("parseActionPlanJson", () => {
     expect(plan.summary).toBe("A");
   });
 
+  it("strips reasoning think tags around JSON", () => {
+    const plan = parseActionPlanJson(`<think>planning the day</think>
+{"summary":"A","routine":[{"time":"7:00","title":"Wake","items":[{"food":"Water","why":"Hydration"}]}],"focus":["F"]}`);
+    expect(plan.summary).toBe("A");
+  });
+
   it("aligns bare/glued marker cues to status-specific phrases", () => {
     const plan = alignActionPlanCues(
       {

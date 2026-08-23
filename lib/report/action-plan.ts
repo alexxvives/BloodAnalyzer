@@ -1,4 +1,9 @@
 import {
+  groqJsonChatBody,
+  readGroqJsonText,
+  stripJsonFences,
+} from "@/lib/ai/groq";
+import {
   cueHasStatusDetail,
   givenMarkerPhrase,
   isVagueMarkerCue,
@@ -225,11 +230,7 @@ function normalizeFromLegacy(parsed: Partial<ActionPlanResult>): ActionPlanBlock
 }
 
 export function parseActionPlanJson(raw: string): ActionPlanResult {
-  const cleaned = raw
-    .trim()
-    .replace(/^```json\s*/i, "")
-    .replace(/^```\s*/i, "")
-    .replace(/\s*```$/i, "");
+  const cleaned = stripJsonFences(raw);
   const parsed = JSON.parse(cleaned) as Partial<ActionPlanResult>;
 
   if (!parsed || typeof parsed.summary !== "string") {
@@ -338,15 +339,13 @@ export async function generateActionPlanWithGroq(
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        model: "llama-3.3-70b-versatile",
-        temperature: 0.7,
-        response_format: { type: "json_object" },
-        messages: [
-          { role: "system", content: SYSTEM_PROMPT },
-          { role: "user", content: buildActionPlanUserPrompt(input, seed) },
-        ],
-      }),
+      body: JSON.stringify(
+        groqJsonChatBody({
+          system: SYSTEM_PROMPT,
+          user: buildActionPlanUserPrompt(input, seed),
+          temperature: 0.7,
+        }),
+      ),
     },
   );
 
@@ -357,10 +356,9 @@ export async function generateActionPlanWithGroq(
     );
   }
 
-  const data = (await response.json()) as {
-    choices?: Array<{ message?: { content?: string } }>;
-  };
-  const content = data.choices?.[0]?.message?.content;
-  if (!content) throw new Error("Empty Groq response");
-  return alignActionPlanCues(parseActionPlanJson(content), input.markers);
+  const data: unknown = await response.json();
+  return alignActionPlanCues(
+    parseActionPlanJson(readGroqJsonText(data)),
+    input.markers,
+  );
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { FilePreview } from "@/components/history/FilePreview";
 import {
   SectionDemographicBadge,
 } from "@/components/report/ReportSection";
@@ -39,6 +40,7 @@ type HomeReport = {
   createdAt: string;
   collectedAt?: string | null;
   sourceFileName: string | null;
+  hasSourceFile?: boolean;
   markerCount: number;
   overallPct: number | null;
   demographic?: Demographic;
@@ -65,26 +67,35 @@ export function HomeView() {
 
   useEffect(() => {
     let cancelled = false;
-    void fetch("/api/reports/history")
-      .then(async (res) => {
-        if (res.status === 401) throw new Error("Please log in.");
-        const json = (await res.json()) as HomePayload & { error?: string };
-        if (!res.ok) throw new Error(json.error ?? "Could not load home.");
-        if (!cancelled) {
-          setData({
-            reports: json.reports,
-            trends: json.trends,
-            latestReport: json.latestReport ?? null,
-          });
-        }
-      })
-      .catch((err: unknown) => {
-        if (!cancelled) {
-          setError(err instanceof Error ? err.message : "Could not load home.");
-        }
-      });
+
+    function load() {
+      void fetch("/api/reports/history")
+        .then(async (res) => {
+          if (res.status === 401) throw new Error("Please log in.");
+          const json = (await res.json()) as HomePayload & { error?: string };
+          if (!res.ok) throw new Error(json.error ?? "Could not load home.");
+          if (!cancelled) {
+            setError(null);
+            setData({
+              reports: json.reports,
+              trends: json.trends,
+              latestReport: json.latestReport ?? null,
+            });
+          }
+        })
+        .catch((err: unknown) => {
+          if (!cancelled) {
+            setError(err instanceof Error ? err.message : "Could not load home.");
+          }
+        });
+    }
+
+    load();
+    const onChanged = () => load();
+    window.addEventListener("ba:reports-changed", onChanged);
     return () => {
       cancelled = true;
+      window.removeEventListener("ba:reports-changed", onChanged);
     };
   }, []);
 
@@ -145,6 +156,8 @@ export function HomeView() {
 
   return (
     <div className="space-y-10">
+      <UploadsStrip reports={data.reports} />
+
       {latest ? (
         <div className="space-y-3">
           <div className="flex flex-wrap items-end justify-between gap-2">
@@ -233,6 +246,61 @@ export function HomeView() {
       ) : null}
     </div>
   );
+}
+
+function UploadsStrip({ reports }: { reports: HomeReport[] }) {
+  return (
+    <div className="space-y-3">
+      <div className="flex flex-wrap items-end justify-between gap-2">
+        <p className="text-xs font-medium uppercase tracking-wide text-muted">
+          Uploads
+        </p>
+        <Link
+          href="/history"
+          className="text-xs font-medium text-accent hover:underline"
+        >
+          All uploads with original files →
+        </Link>
+      </div>
+      <ul className="flex gap-3 overflow-x-auto pb-1">
+        {reports.map((report) => (
+          <li
+            key={report.id}
+            className="flex w-36 shrink-0 flex-col gap-2"
+          >
+            {report.hasSourceFile ? (
+              <FilePreview
+                reportId={report.id}
+                fileName={report.sourceFileName}
+              />
+            ) : (
+              <div className="flex min-h-24 items-center justify-center rounded-xl border border-dashed border-border bg-surface-muted/40 px-2 text-center text-[10px] text-muted">
+                No file
+              </div>
+            )}
+            <Link
+              href={`/report/${report.id}`}
+              className="block truncate text-center text-xs text-muted hover:text-accent hover:underline"
+              title={report.sourceFileName ?? "Open report"}
+            >
+              {formatUploadDate(report.collectedAt ?? report.createdAt)}
+              {report.sourceFileName ? ` · ${report.sourceFileName}` : ""}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function formatUploadDate(iso: string): string {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "Unknown date";
+  return d.toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
 }
 
 function groupTrendsBySection(
