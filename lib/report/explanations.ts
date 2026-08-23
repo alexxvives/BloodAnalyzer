@@ -229,7 +229,7 @@ export const BIOMARKER_EXPLANATIONS: Record<string, BiomarkerExplanation> = {
     summary:
       "BUN (blood urea nitrogen) is a waste product from protein metabolism filtered by the kidneys. US labs report BUN; some European labs report urea instead (urea mg/dL ≈ BUN × 2.14).",
     whatItMeasures:
-      "How much urea nitrogen is in blood, as BUN in mg/dL. This app grades the US BUN scale used by Mayo and by typical at-home US panels.",
+      "How much urea nitrogen is in blood, as BUN in mg/dL. US labs print BUN; many European/Spanish labs print urea mass (urea mg/dL ≈ BUN × 2.14). On upload, a label of Urea (not BUN / urea nitrogen) is converted to BUN before grading so both report styles land on the same Mayo interval.",
     whyItMatters:
       "BUN rises when kidney filtration falls, when protein intake is high, or when you are dehydrated. It is interpreted with creatinine, eGFR, and clinical context — not alone.",
     understandingLevels:
@@ -1096,6 +1096,55 @@ export const BIOMARKER_EXPLANATIONS: Record<string, BiomarkerExplanation> = {
     ],
   }),
 
+  "apo-b": base({
+    summary:
+      "ApoB (apolipoprotein B) is the main structural protein on atherogenic lipoproteins. Each VLDL, IDL, LDL, and Lp(a) particle carries one ApoB molecule, so the blood level is a count of those particles rather than the cholesterol they happen to be carrying.",
+    whatItMeasures:
+      "Serum ApoB concentration, usually in mg/dL. Routine assays do not separate ApoB-100 from ApoB-48; after an overnight fast, nearly all of the measured ApoB is ApoB-100.",
+    whyItMatters:
+      "LDL cholesterol measures how much cholesterol is packed into particles; ApoB measures how many particles there are. Expert consensus and several studies have found that when those two numbers disagree, long-term atherosclerotic event risk tends to follow ApoB more closely than LDL-C. That is an association used for risk discussion — not a diagnosis of heart disease from a single result.",
+    understandingLevels:
+      "Lab catalogs often call <90 mg/dL “desirable.” The 2024 National Lipid Association expert consensus instead suggests ApoB intensification thresholds of 60, 70, and 90 mg/dL for very-high, high, and borderline-to-intermediate ASCVD risk — those are risk-category treatment prompts, not a single healthy-adult target. Unusually low values are uncommon; this app does not treat “lower is always better” as a clinical rule.",
+    ifHigher: [
+      "Emphasize fiber-rich foods, unsaturated fats, and overall calorie balance",
+      "Stay physically active most days of the week and avoid tobacco",
+      "Review the rest of the lipid panel (LDL, non-HDL, triglycerides, Lp(a)) with a clinician",
+    ],
+    ifLower: [
+      "Very low ApoB is uncommon on an optimization panel — share it with a clinician rather than trying to raise it on your own",
+    ],
+    influencingFactors: [
+      "Dietary saturated fat, refined carbohydrates, and overall energy balance",
+      "Physical activity, body composition, and not smoking",
+      "Genetics and family history of high cholesterol",
+      "Lipid-lowering therapy, if prescribed",
+      "Metabolic context such as triglycerides, insulin resistance, and thyroid status",
+    ],
+    learnMore: [
+      {
+        label:
+          "NLA 2024 — Role of apolipoprotein B in clinical management of cardiovascular risk (Expert Clinical Consensus)",
+        url: "https://www.lipidjournal.com/article/S1933-2874(24)00240-X/fulltext",
+      },
+      {
+        label:
+          "Behbodikhah et al. 2021 — Apolipoprotein B and cardiovascular disease (review)",
+        url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC8540246/",
+      },
+      {
+        label:
+          "Marston et al. 2022 — ApoB-containing lipoproteins and myocardial infarction (JAMA Cardiology)",
+        url: "https://doi.org/10.1001/jamacardio.2021.5083",
+      },
+      {
+        label: "Cleveland Clinic — ApoB test",
+        url: "https://my.clevelandclinic.org/health/diagnostics/24992-apolipoprotein-b-test",
+      },
+    ],
+    discussWithClinician:
+      "Ask how this ApoB result sits next to LDL, non-HDL, triglycerides, and your overall cardiovascular risk. Thresholds for considering treatment differ by risk category — this app does not assign you one.",
+  }),
+
   "apo-a1": base({
     summary:
       "ApoA1 is the main protein on HDL particles and is involved in moving cholesterol back toward the liver.",
@@ -1186,7 +1235,7 @@ export const BIOMARKER_EXPLANATIONS: Record<string, BiomarkerExplanation> = {
     whyItMatters:
       "Clinicians compare direct and total bilirubin when looking at liver and bile-duct patterns — this app does not diagnose those conditions.",
     understandingLevels:
-      "Optimization bands are not sourced yet, so the value is shown without a grade.",
+      "Mayo grades adults at 0.0-0.3 mg/dL (good through the lab high, attention above). There is no sourced interior optimum.",
     influencingFactors: ["Liver processing of bilirubin", "Bile-duct flow", "Assay method"],
   }),
 
@@ -1198,7 +1247,7 @@ export const BIOMARKER_EXPLANATIONS: Record<string, BiomarkerExplanation> = {
     whyItMatters:
       "It is a broad chemistry marker. Low or high values have many possible explanations and need the rest of the panel.",
     understandingLevels:
-      "Optimization bands are not sourced yet, so the value is shown without a grade.",
+      "Mayo grades ages >=1 year at 6.3-7.9 g/dL. Values inside that interval cap at good; there is no sourced interior optimum.",
     influencingFactors: ["Hydration", "Liver protein production", "Inflammation and immune proteins"],
   }),
 
@@ -1222,7 +1271,7 @@ export const BIOMARKER_EXPLANATIONS: Record<string, BiomarkerExplanation> = {
     whyItMatters:
       "Detectable TPO antibodies are commonly discussed in autoimmune thyroid conditions. This app does not diagnose thyroid disease.",
     understandingLevels:
-      "Optimization bands are not sourced yet because antibody cutoffs are assay-specific. Use the lab’s own reference interval.",
+      "Mayo's Access TPO assay flags values at or above 9.0 IU/mL. Antibody cutoffs do not transfer across methods — if your lab used a different assay, prefer the printed interval.",
     influencingFactors: ["Assay method", "Autoimmune thyroid conditions", "Other autoimmune diseases"],
   }),
 
@@ -1234,7 +1283,7 @@ export const BIOMARKER_EXPLANATIONS: Record<string, BiomarkerExplanation> = {
     whyItMatters:
       "They are sometimes measured with TPO antibodies in thyroid autoimmunity workups.",
     understandingLevels:
-      "Optimization bands are not sourced yet because antibody cutoffs are assay-specific.",
+      "The Mayo thyroid-autoantibody profile flags thyroglobulin antibody at or above 4.0 IU/mL. Other Mayo TgAb methods use a different cutoff — prefer the printed interval when the assay is not this one.",
     influencingFactors: ["Assay method", "Thyroid autoimmunity", "Prior thyroid surgery or radioiodine in some contexts"],
   }),
 };

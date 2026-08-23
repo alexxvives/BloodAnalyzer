@@ -32,7 +32,7 @@ export function SectionScoreRing({
     status === "in_range" ? "var(--in-range)" : STATUS_CSS_VAR[status];
   const valueSize = Math.round(size * 0.26);
   const pctSize = Math.round(size * 0.1);
-  const captionSize = Math.max(10, Math.round(size * 0.09));
+  const captionSize = Math.max(8, Math.round(size * 0.0675));
 
   return (
     <div
