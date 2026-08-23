@@ -47,4 +47,34 @@ describe("groq helpers", () => {
       }),
     ).toBe('{"ok":true}');
   });
+
+  it("uses content JSON and ignores sibling reasoning prose", () => {
+    expect(
+      readGroqJsonText({
+        choices: [
+          {
+            message: {
+              content: '{"markers":[{"name":"LDL","value":67.6}]}',
+              reasoning: "The user wants every assay extracted from the PDF.",
+            },
+          },
+        ],
+      }),
+    ).toBe('{"markers":[{"name":"LDL","value":67.6}]}');
+  });
+
+  it("extracts the first JSON object when prose follows it", () => {
+    expect(
+      readGroqJsonText({
+        choices: [
+          {
+            message: {
+              content:
+                '{"ok":true}\nThe user wants every assay extracted from the PDF.',
+            },
+          },
+        ],
+      }),
+    ).toBe('{"ok":true}');
+  });
 });

@@ -1,7 +1,7 @@
 import {
+  extractJsonText,
   groqJsonChatBody,
   readGroqJsonText,
-  stripJsonFences,
 } from "@/lib/ai/groq";
 import {
   cueHasStatusDetail,
@@ -230,7 +230,7 @@ function normalizeFromLegacy(parsed: Partial<ActionPlanResult>): ActionPlanBlock
 }
 
 export function parseActionPlanJson(raw: string): ActionPlanResult {
-  const cleaned = stripJsonFences(raw);
+  const cleaned = extractJsonText(raw);
   const parsed = JSON.parse(cleaned) as Partial<ActionPlanResult>;
 
   if (!parsed || typeof parsed.summary !== "string") {
