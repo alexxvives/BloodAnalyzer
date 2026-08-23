@@ -206,6 +206,47 @@ describe("scoreBiomarker", () => {
     ).toBe(false);
   });
 
+  it("grades ApoB:ApoA1 on Mayo APOAB sex-specific risk tiers", () => {
+    const maleLow = scoreBiomarker({
+      biomarkerId: "apo-b-apo-a1-ratio",
+      value: 0.65,
+      demographic: { sex: "male", ageYears: 40 },
+    });
+    expect(maleLow.rangeAvailable).toBe(true);
+    expect(maleLow.status).toBe("optimal");
+    expect(maleLow.labStatus).toBe("in_range");
+
+    expect(
+      scoreBiomarker({
+        biomarkerId: "apo-b-apo-a1-ratio",
+        value: 0.8,
+        demographic: { sex: "male", ageYears: 40 },
+      }).status,
+    ).toBe("good");
+    expect(
+      scoreBiomarker({
+        biomarkerId: "apo-b-apo-a1-ratio",
+        value: 1.0,
+        demographic: { sex: "male", ageYears: 40 },
+      }).status,
+    ).toBe("attention");
+
+    const femaleMid = scoreBiomarker({
+      biomarkerId: "apo-b-apo-a1-ratio",
+      value: 0.65,
+      demographic: { sex: "female", ageYears: 40 },
+    });
+    expect(femaleMid.status).toBe("good");
+    expect(femaleMid.labStatus).toBe("in_range");
+    expect(
+      scoreBiomarker({
+        biomarkerId: "apo-b-apo-a1-ratio",
+        value: 0.85,
+        demographic: { sex: "female", ageYears: 40 },
+      }).labStatus,
+    ).toBe("out_of_range");
+  });
+
   it("scores US BUN (urea id) on Mayo intervals, not European urea", () => {
     const male = scoreBiomarker({
       biomarkerId: "urea",

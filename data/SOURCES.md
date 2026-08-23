@@ -7,7 +7,7 @@ versioned and cited. **Do not ship invented numbers to real users.**
 
 | Dataset | Location | Citation status |
 |---|---|---|
-| Reference ranges v1.3.1 | `/data/reference-ranges/v1/markers.json` | **Mixed** — Mayo/ADA/ACC/KDIGO/Harris plus the v1.3.1 Mayo CBC/liver/B12 batch (ALT, AST, WBC, platelets, MCV, RDW, vitamin B12); 19 CBC/chem rows still awaiting clinician review; calculated ratios and female cycle-phase hormones remain unsourced |
+| Reference ranges v1.3.2 | `/data/reference-ranges/v1/markers.json` | **Mixed** — Mayo/ADA/ACC/KDIGO/Harris plus v1.3.2 Mayo APOAB ApoB:ApoA1 (sex-specific); 19 CBC/chem rows still awaiting clinician review; remaining calculated ratios and female cycle-phase hormones stay unsourced |
 | Population stats v1.8.1 | `/data/population-stats/v1/stats.json` | **Partial NHANES load** — see below |
 
 Until an entry is marked `sourced: true` **and** reviewed for production, treat
@@ -100,6 +100,25 @@ Grading 34 on the BUN scale would falsely flag attention; grading 16 on a
 European urea interval (≈19–44) would falsely flag low. Conversion is wired in
 `lib/extraction/canonicalize.ts` from the **printed name**, because the two
 mg/dL scales overlap and cannot be told apart from the number alone.
+
+## ApoB:ApoA1 ratio (v1.3.2)
+
+`apo-b-apo-a1-ratio` uses Mayo Clinic Laboratories **APOAB** (result RBAA1)
+adult Lower / Average / Higher Risk tiers, split by sex:
+
+| Sex | Lower risk (optimal) | Average (good) | Higher risk (attention) | Lab high |
+|---|---|---|---|---|
+| Men ≥18 | <0.7 | 0.7–0.9 | >0.9 | 0.9 |
+| Women ≥18 | <0.6 | 0.6–0.8 | >0.8 | 0.8 |
+
+Source: [Mayo APOAB](https://www.mayocliniclabs.com/test-catalog/Overview/607593).
+Mayo names three tiers, so there is no separate `fair` band. INTERHEART
+(McQueen 2008) is cited only as supporting epidemiology; it does not define
+these cutpoints. Consumer “optimal / good / fair” pages (including SiPhox)
+are visual references only and are not copied into the data layer.
+
+Still no NHANES demographic median for this ratio — the UI keeps
+**benchmark data not yet available** for population comparison.
 
 ## Mayo CBC / liver / B12 batch (v1.3.1)
 
@@ -272,7 +291,8 @@ findings rather than range bugs. They are listed as explicit exceptions in
 Also missing from the catalog entirely: sodium, potassium, chloride, calcium,
 magnesium, phosphorus, bicarbonate, LDH, reticulocytes, MPV. Total protein and
 direct bilirubin are now Mayo-sourced. Remaining unsourced placeholders are
-calculated ratios, VLDL, eAG, UIBC, and female cycle-phase estradiol/FSH/LH.
+other calculated ratios, VLDL, eAG, UIBC, and female cycle-phase
+estradiol/FSH/LH. ApoB:ApoA1 is Mayo APOAB-sourced (v1.3.2).
 Electrolytes are still the dangerous-when-low gap.
 
 ## Biological age (educational)

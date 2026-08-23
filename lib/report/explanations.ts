@@ -1171,6 +1171,44 @@ export const BIOMARKER_EXPLANATIONS: Record<string, BiomarkerExplanation> = {
     ],
   }),
 
+  "apo-b-apo-a1-ratio": base({
+    summary:
+      "The ApoB:ApoA1 ratio is ApoB divided by ApoA1. It condenses the balance between ApoB-containing (atherogenic) particles and ApoA1, the main protein on HDL.",
+    whatItMeasures:
+      "A calculated mass ratio from the two protein results (units cancel). Labs that report both ApoB and ApoA1 can print this number; it is not a separate chemical assay.",
+    whyItMatters:
+      "In the INTERHEART case-control study across 52 countries, ApoB:ApoA1 was more strongly associated with a first myocardial infarction than several cholesterol-based ratios. That is a population association used for risk discussion — not a diagnosis of heart disease from one number.",
+    understandingLevels:
+      "Mayo Clinic Laboratories (APOAB) uses sex-specific catalogs: adult men lower risk <0.7, average 0.7–0.9, higher risk >0.9; adult women lower risk <0.6, average 0.6–0.8, higher risk >0.8. Lower values sit on the more favorable side of those tiers. This app does not assign you a cardiovascular-risk category.",
+    ifHigher: [
+      "Emphasize fiber-rich foods, unsaturated fats, and overall calorie balance",
+      "Stay physically active most days of the week and avoid tobacco",
+      "Review ApoB, ApoA1, LDL, HDL, and triglycerides together with a clinician",
+    ],
+    ifLower: [
+      "An unusually low ratio is not something to try to raise on your own — share unexpected results with a clinician",
+    ],
+    influencingFactors: [
+      "The separate ApoB and ApoA1 concentrations (either can move the ratio)",
+      "Dietary saturated fat, refined carbohydrates, and overall energy balance",
+      "Physical activity, body composition, and not smoking",
+      "Genetics and lipid-lowering therapy, if prescribed",
+    ],
+    learnMore: [
+      {
+        label: "Mayo Clinic Laboratories — Apolipoprotein A1 and B (APOAB)",
+        url: "https://www.mayocliniclabs.com/test-catalog/Overview/607593",
+      },
+      {
+        label:
+          "McQueen et al. 2008 — INTERHEART lipids, lipoproteins, and apolipoproteins (Lancet)",
+        url: "https://doi.org/10.1016/S0140-6736(08)61076-4",
+      },
+    ],
+    discussWithClinician:
+      "Ask how this ratio sits next to ApoB, ApoA1, LDL, HDL, and your overall cardiovascular risk. Catalog tiers are not a personal risk score.",
+  }),
+
   "c-peptide": base({
     summary:
       "C-peptide is released when the pancreas makes insulin, so it reflects endogenous insulin production.",
