@@ -7,7 +7,7 @@ versioned and cited. **Do not ship invented numbers to real users.**
 
 | Dataset | Location | Citation status |
 |---|---|---|
-| Reference ranges v1.3.5 | `/data/reference-ranges/v1/markers.json` | **Mixed** — Mayo/ADA/ACC/KDIGO/Harris/AHA plus Quest VLDL, BUN:creatinine, TC:HDL, LDL:HDL; Labcorp FAI and UIBC; ADA/ADAG eAG; 13 CBC/chem rows still awaiting clinician review; remaining calculated ratios and female cycle-phase hormones stay unsourced |
+| Reference ranges v1.3.6 | `/data/reference-ranges/v1/markers.json` | **Mixed** — Mayo/ADA/ACC/KDIGO/Harris/AHA plus Quest VLDL, BUN:creatinine, TC:HDL, LDL:HDL; Labcorp FAI, UIBC, and % free T; McLaughlin 2005 TG:HDL; Taneva 2024 LDL:ApoB; ADA/ADAG eAG; 13 CBC/chem rows still awaiting clinician review; T:C / cortisol:DHEA-S / thyroid ratios and female cycle-phase hormones stay unsourced |
 | Population stats v1.8.1 | `/data/population-stats/v1/stats.json` | **Partial NHANES load** — see below |
 
 Until an entry is marked `sourced: true` **and** reviewed for production, treat
@@ -128,13 +128,26 @@ Still no NHANES demographic median for this ratio — the UI keeps
 | `ldl-hdl-ratio` | sex-specific Quest 19543 risk tiers (Below Average / Average / Moderate / High Risk) | [Quest 19543](https://testdirectory.questdiagnostics.com/test/test-detail/19543/lipid-panel-with-ratios). Men: <2.28 / 2.29–4.90 / 4.91–7.12 / >7.13. Women: <2.34 / 2.35–4.12 / 4.13–5.56 / >5.57. Mapped optimal / good / fair / attention. |
 | `eag` | ADA/ADAG formula 28.7 × A1C − 46.7 mapped onto existing HbA1c bands | [ADA calculator](https://professional.diabetes.org/glucose_calc) + [Nathan 2008](https://doi.org/10.2337/dc08-0545). ~68–114 mg/dL ≡ A1C 4.0–5.6; then fair through A1C 6.4; attention from A1C ≥6.5. eAG is not an independent assay. |
 
-Still cannot grade without inventing or mixing disagreeing papers:
+## TG:HDL, LDL-C:ApoB, % free testosterone (v1.3.6)
 
-- **`tg-hdl-ratio`** — Quest 37848 prints See Laboratory Report, not a cutpoint. McLaughlin-style papers disagree (~3.0 vs ~3.5 in mg/dL, and they differ by sex and SI vs conventional units). Shown with an explanation; not graded.
-- **`ldl-apo-b-ratio`** — particle-size research proxy; no Mayo/Quest/ACC interval. Grade ApoB instead.
+| biomarkerId | Interval / cutpoints | Source |
+|---|---|---|
+| `tg-hdl-ratio` | adults <3.5 good / ≥3.5 attention (mg/dL ÷ mg/dL) | [McLaughlin 2005](https://pubmed.ncbi.nlm.nih.gov/16054467/) Am J Cardiol. Later, more-cited cutpoint from the same group as the 2003 ~3.0 paper. Quest 37848 still prints See Laboratory Report and is not the band source. SI (mmol/L) ratios are not interchangeable with 3.5. |
+| `ldl-apo-b-ratio` | <1.2 attention / ≥1.2 good (mg/dL ÷ mg/dL) | [Taneva 2024 PMC11460969](https://pmc.ncbi.nlm.nih.gov/articles/PMC11460969/) — LDL-C/ApoB <1.2 estimates small-dense LDL predominance. SiPhox cites the same 1.2 flag; extra wellness interiors (e.g. 1.3) are not copied. Grade ApoB as well. |
+| `percent-free-testosterone` | adult men 1.50–4.20%; adult women 0.50–2.80% | [Labcorp 081786](https://www.labcorp.com/tests/081786/testosterone-free-equilibrium-ultrafiltration-with-total-testosterone) Percentage of Total Testosterone. Grades a printed %, not a recalculation. Not graded under 18. Mayo TGRP / Quest 18944 still publish free T as a concentration. |
+
+Removed from the catalog:
+
 - **`ast-alt-ratio`** — De Ritis teaching pattern, not a catalog reference interval. Grade AST and ALT instead.
-- **Remaining hormone/thyroid calculated ratios** (% free T, T:C, cortisol:DHEA-S, free T3:T4, TSH:T4) — no named catalog interval; Mayo TGRP / Quest 18944 publish free testosterone as a concentration, not a percent.
-- Female cycle-phase estradiol / FSH / LH and female PSA stay unsourced (need cycle day / N/A).
+- **Female PSA** — Mayo PSAFT lists females as N/A. Male age-banded PSA rows remain. Female reports do not show a PSA slot.
+
+Still cannot grade without inventing:
+
+- **`testosterone-cortisol-ratio`** — no catalog interval. SiPhox's biomarker page has no number; SiPhox FAQ articles contradict (0.05 vs 0.35 vs 15:1 vs 30:1) and mix units.
+- **`cortisol-dhea-s-ratio`** — no catalog interval. SiPhox wellness interiors (0.03–0.07) are unpublished; sarcopenia papers using ≥0.2 are a different, narrow population. Draw time not collected.
+- **`free-t3-free-t4-ratio`** — no catalog interval. SiPhox mixes a 0.24–0.33 wellness band with a cited study whose quintiles sit near 2.9 (different unit scales).
+- **`tsh-t4-ratio`** — no catalog interval; denominator (total vs free T4) is not standardized.
+- Female cycle-phase estradiol / FSH / LH stay unsourced (need cycle day / menopausal status).
 
 ## VLDL, UIBC, FAI, BUN:creatinine, transferrin (v1.3.5)
 

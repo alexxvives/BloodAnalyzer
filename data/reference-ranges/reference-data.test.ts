@@ -174,7 +174,15 @@ describe("reference-range data integrity", () => {
       set.add(sex);
       bySex.set(range.biomarkerId, set);
     }
+    const maleOnly = new Set(["psa"]);
     for (const [biomarkerId, sexes] of bySex) {
+      if (maleOnly.has(biomarkerId)) {
+        expect(
+          [...sexes].sort(),
+          `${biomarkerId} is male-only (Mayo N/A for females)`,
+        ).toEqual(["male"]);
+        continue;
+      }
       expect(
         [...sexes].sort(),
         `${biomarkerId} is sex-split but is missing a row for one sex`,
@@ -235,6 +243,9 @@ describe("reference-range data integrity", () => {
     "fai",
     "bun-creatinine-ratio",
     "transferrin",
+    "percent-free-testosterone",
+    "tg-hdl-ratio",
+    "ldl-apo-b-ratio",
   ]);
 
   it("uses only attention/good bands for reference-interval markers", () => {

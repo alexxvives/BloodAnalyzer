@@ -1678,7 +1678,7 @@ export const BIOMARKER_EXPLANATIONS: Record<string, BiomarkerExplanation> = {
     whyItMatters:
       "PSA is a screening and monitoring tool, not a cancer diagnosis. Infection, bike riding, and ejaculation can raise it briefly.",
     understandingLevels:
-      "Male rows use Mayo PSAFT age-banded highs. Female reports show range not available rather than a male cutoff.",
+      "Male rows use Mayo PSAFT age-banded highs. Female reports do not include PSA (Mayo lists females as not applicable).",
     influencingFactors: [
       "Age and prostate size",
       "Infection, procedures, and recent ejaculation",
@@ -1742,11 +1742,17 @@ export const BIOMARKER_EXPLANATIONS: Record<string, BiomarkerExplanation> = {
     summary:
       "The LDL-C to ApoB ratio relates cholesterol in LDL to the number of ApoB particles.",
     whatItMeasures:
-      "A calculated ratio sometimes used in research as a rough particle-size clue (higher often means more cholesterol per particle).",
+      "A calculated ratio (both in mg/dL). Lower values mean less cholesterol per particle — a research proxy for smaller, denser LDL.",
     whyItMatters:
-      "No Mayo, Quest, or ACC/AHA catalog interval is attached here, so the value is shown without an optimization grade. Particle-size papers are not a named lab catalog.",
+      "Published lipid research uses LDL-C/ApoB <1.2 (mg/dL convention) as an estimator of small-dense LDL predominance. ApoB itself remains the more useful particle-count number.",
     understandingLevels:
-      "Range not available until a named lab catalog or guideline publishes cutpoints we can cite. ApoB itself is usually the more useful number.",
+      "Taneva et al. 2024 (PMC11460969): <1.2 attention (sdLDL-predominant estimator) / ≥1.2 good. SiPhox cites the same 1.2 flag; extra wellness interiors above 1.2 are not copied. Not a Mayo/Quest catalog interval.",
+    learnMore: [
+      {
+        label: "PMC11460969 — LDL-C/ApoB and small dense LDL",
+        url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC11460969/",
+      },
+    ],
     influencingFactors: [
       "LDL cholesterol and ApoB",
       "Triglycerides (high TG often travel with smaller, denser particles)",
@@ -1760,11 +1766,17 @@ export const BIOMARKER_EXPLANATIONS: Record<string, BiomarkerExplanation> = {
     summary:
       "The triglycerides to HDL ratio is fasting triglycerides divided by HDL.",
     whatItMeasures:
-      "A calculated ratio. Units must match (both mg/dL, or both mmol/L) or the number is not comparable to published papers.",
+      "A calculated ratio. Units must match (both mg/dL) to compare with the McLaughlin 2005 cutpoint. An SI (mmol/L) ratio is a different number.",
     whyItMatters:
-      "Quest 37848 (Lipid Panel with Triglycerides/HDL-Cholesterol) prints See Laboratory Report, not a cutpoint. McLaughlin-style papers disagree (~3.0 vs ~3.5 in mg/dL, and they differ by sex and units). No guideline or named lab catalog is attached here.",
+      "McLaughlin 2005 (Am J Cardiol, PMID 16054467) found TG/HDL-C ≥3.5 (mg/dL convention) identified insulin-resistant, dyslipidemic adults. Quest 37848 still prints See Laboratory Report and is not the band source. Triglycerides and HDL are also graded on their own rows.",
     understandingLevels:
-      "Range not available — we do not invent a cutpoint where papers disagree. Triglycerides and HDL are graded separately when sourced.",
+      "McLaughlin 2005: <3.5 good / ≥3.5 attention, both analytes in mg/dL. The earlier 2003 ~3.0 cutpoint is not used — 2005 is the later, more-cited threshold from the same group. Not a diagnosis of insulin resistance.",
+    learnMore: [
+      {
+        label: "McLaughlin 2005 — PubMed 16054467",
+        url: "https://pubmed.ncbi.nlm.nih.gov/16054467/",
+      },
+    ],
     influencingFactors: [
       "Fasting triglycerides and HDL",
       "Carbohydrate pattern, alcohol, and body composition",
@@ -1794,29 +1806,13 @@ export const BIOMARKER_EXPLANATIONS: Record<string, BiomarkerExplanation> = {
     ],
   }),
 
-  "ast-alt-ratio": base({
-    summary:
-      "The AST:ALT ratio is AST divided by ALT (sometimes called the De Ritis ratio).",
-    whatItMeasures:
-      "A calculated enzyme ratio. Pattern recognition is not the same as a healthy-person reference interval.",
-    whyItMatters:
-      "Clinicians sometimes glance at this ratio alongside the absolute AST and ALT values. It is not graded here because Mayo and Quest publish the enzymes, not a De Ritis catalog interval.",
-    understandingLevels:
-      "Range not available. Use the sourced AST and ALT rows; discuss unexpected pairs with a clinician rather than treating the ratio as a diagnosis.",
-    influencingFactors: [
-      "The separate AST and ALT results",
-      "Alcohol, medications, and muscle injury (AST also comes from muscle)",
-      "Assay method",
-    ],
-  }),
-
   "free-t3-free-t4-ratio": base({
     summary:
       "The free T3 to free T4 ratio is a calculated thyroid-hormone comparison.",
     whatItMeasures:
       "Free T3 divided by free T4. Assays differ, so published “optimal” wellness cutoffs are not interchangeable.",
     whyItMatters:
-      "No named lab catalog interval is attached, so the value is shown without a grade. TSH, free T4, and free T3 are the sourced thyroid markers.",
+      "No named lab catalog interval is attached. SiPhox’s page mixes a 0.24–0.33 wellness band with a cited study whose quintiles sit near 2.9 — different unit scales — so those interiors are not copied. TSH, free T4, and free T3 are the sourced thyroid markers.",
     understandingLevels:
       "Range not available. Prefer the individual free T3 and free T4 results plus TSH.",
     influencingFactors: [
@@ -1832,7 +1828,7 @@ export const BIOMARKER_EXPLANATIONS: Record<string, BiomarkerExplanation> = {
     whatItMeasures:
       "A calculated ratio. The denominator must be the same T4 assay the lab used or the number is not comparable.",
     whyItMatters:
-      "No Mayo or guideline interval is attached. TSH and free T4 are graded on their own sourced rows.",
+      "No Mayo or guideline interval is attached. The denominator (total vs free T4) is not standardized. TSH and free T4 are graded on their own sourced rows.",
     understandingLevels:
       "Range not available. Read TSH and free T4 separately.",
     influencingFactors: [
@@ -1868,11 +1864,17 @@ export const BIOMARKER_EXPLANATIONS: Record<string, BiomarkerExplanation> = {
     summary:
       "% free testosterone is free testosterone as a share of the total.",
     whatItMeasures:
-      "A calculated percentage. It moves when SHBG moves, even if production is unchanged.",
+      "A calculated percentage printed by some equilibrium-ultrafiltration profiles. It moves when SHBG moves, even if production is unchanged.",
     whyItMatters:
-      "Mayo TGRP and Quest 18944 publish free testosterone as a concentration (ng/dL or pg/mL), not a percent-of-total interval. The free and total testosterone rows carry the sourced intervals.",
+      "Labcorp 081786 publishes adult percent-free intervals for that method. Mayo TGRP and Quest 18944 still report free testosterone as a concentration — those rows remain the preferred free-T grade when both are on the report.",
     understandingLevels:
-      "Range not available. Prefer free testosterone (with method named) and SHBG.",
+      "Labcorp 081786 adults: men 1.50–4.20%, women 0.50–2.80%. Bands are attention / good / attention. This grades a lab-printed percent, not a recalculation in this app. Not graded under 18 here.",
+    learnMore: [
+      {
+        label: "Labcorp 081786 — Testosterone, Free, Equilibrium Ultrafiltration",
+        url: "https://www.labcorp.com/tests/081786/testosterone-free-equilibrium-ultrafiltration-with-total-testosterone",
+      },
+    ],
     influencingFactors: [
       "SHBG",
       "Assay methods for free vs total testosterone",
@@ -1885,9 +1887,9 @@ export const BIOMARKER_EXPLANATIONS: Record<string, BiomarkerExplanation> = {
     whatItMeasures:
       "A ratio sometimes discussed in sports or stress research. Draw time, units, and free vs total testosterone all change the number.",
     whyItMatters:
-      "No guideline or Mayo interval is attached. Cortisol here is the morning Mayo interval; mixing a PM cortisol with a testosterone would mislead.",
+      "No guideline or Mayo interval is attached. SiPhox’s biomarker page publishes no number; SiPhox FAQ articles contradict one another and mix units. Sports-medicine FTCR cutpoints are unit-specific.",
     understandingLevels:
-      "Range not available — we do not invent an athletic “anabolic/catabolic” cutpoint.",
+      "Range not available — we do not invent an athletic “anabolic/catabolic” cutpoint or copy contradictory consumer numbers.",
     influencingFactors: [
       "Draw time (cortisol falls through the day)",
       "Which testosterone fraction is used",
@@ -1901,7 +1903,7 @@ export const BIOMARKER_EXPLANATIONS: Record<string, BiomarkerExplanation> = {
     whatItMeasures:
       "A calculated ratio. Cortisol is highly time-of-day dependent; DHEA-S is more stable.",
     whyItMatters:
-      "Wellness panels sometimes print this ratio. No named lab catalog interval is attached, so it is not graded.",
+      "Wellness panels sometimes print this ratio. No named lab catalog interval is attached. SiPhox wellness interiors are unpublished; sarcopenia papers that use ≥0.2 are a different, narrow population.",
     understandingLevels:
       "Range not available. Read morning cortisol and DHEA-S on their sourced rows.",
     influencingFactors: [

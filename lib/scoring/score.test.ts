@@ -505,11 +505,31 @@ describe("scoreBiomarker", () => {
     expect(transferrin.range?.sourceRefs[0]?.url).toMatch(/34623/);
 
     expect(
-      scoreBiomarker({ biomarkerId: "tg-hdl-ratio", value: 2 }).rangeAvailable,
-    ).toBe(false);
+      scoreBiomarker({ biomarkerId: "tg-hdl-ratio", value: 2 }).status,
+    ).toBe("good");
     expect(
-      scoreBiomarker({ biomarkerId: "ldl-apo-b-ratio", value: 1.2 }).rangeAvailable,
-    ).toBe(false);
+      scoreBiomarker({ biomarkerId: "tg-hdl-ratio", value: 3.5 }).status,
+    ).toBe("attention");
+    expect(
+      scoreBiomarker({ biomarkerId: "ldl-apo-b-ratio", value: 1.2 }).status,
+    ).toBe("good");
+    expect(
+      scoreBiomarker({ biomarkerId: "ldl-apo-b-ratio", value: 1.1 }).status,
+    ).toBe("attention");
+    expect(
+      scoreBiomarker({
+        biomarkerId: "percent-free-testosterone",
+        value: 2.5,
+        demographic: { sex: "male", ageYears: 35 },
+      }).status,
+    ).toBe("good");
+    expect(
+      scoreBiomarker({
+        biomarkerId: "percent-free-testosterone",
+        value: 1.2,
+        demographic: { sex: "female", ageYears: 35 },
+      }).status,
+    ).toBe("good");
     expect(
       scoreBiomarker({ biomarkerId: "ast-alt-ratio", value: 1.1 }).rangeAvailable,
     ).toBe(false);

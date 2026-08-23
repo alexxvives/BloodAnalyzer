@@ -149,3 +149,33 @@ describe("sectionPopulationSummary", () => {
     expect(summary.scoreDelta).toBeGreaterThan(0);
   });
 });
+
+describe("sex-specific catalog slots", () => {
+  it("omits PSA from female reports, including extracted rows", () => {
+    const female: Demographic = { sex: "female", ageYears: 40 };
+    const sections = buildReportSections({
+      demographic: female,
+      markers: [
+        {
+          name: "PSA",
+          biomarkerId: "psa",
+          value: 1.2,
+          unit: "ng/mL",
+          confidence: 1,
+        },
+      ],
+    });
+    const ids = sections.flatMap((s) => s.biomarkers.map((b) => b.biomarker.id));
+    expect(ids).not.toContain("psa");
+    expect(sections.some((s) => s.id === "prostate")).toBe(false);
+  });
+
+  it("keeps PSA on male reports", () => {
+    const sections = buildReportSections({
+      demographic: DEMO,
+      markers: [],
+    });
+    const ids = sections.flatMap((s) => s.biomarkers.map((b) => b.biomarker.id));
+    expect(ids).toContain("psa");
+  });
+});

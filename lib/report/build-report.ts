@@ -7,6 +7,12 @@ import { compareToPopulation, scoreBiomarker } from "@/lib/scoring";
 import type { PopulationComparison } from "@/lib/scoring";
 import type { Biomarker, BiomarkerStatus, Demographic } from "@/lib/types";
 
+/** Mayo PSAFT is not applicable to female reports — do not show a male cutoff. */
+function includeOnReport(biomarkerId: string, demographic: Demographic): boolean {
+  if (biomarkerId === "psa") return demographic.sex === "male";
+  return true;
+}
+
 /** Per-marker contribution to section rings (must mirror status hierarchy). */
 const STATUS_SCORE: Record<BiomarkerStatus, number> = {
   optimal: 100,
@@ -63,6 +69,7 @@ export function buildReportSections(input: {
   for (const marker of input.markers) {
     const biomarkerId = marker.biomarkerId;
     if (!biomarkerId) continue;
+    if (!includeOnReport(biomarkerId, input.demographic)) continue;
     seenIds.add(biomarkerId);
 
     const entry = buildMeasuredEntry(marker, input.demographic, rangesById);
@@ -83,6 +90,7 @@ export function buildReportSections(input: {
   // Fill expected panel markers that were not in the upload (gray "not tested").
   for (const slot of PANEL_CATALOG) {
     if (seenIds.has(slot.biomarkerId)) continue;
+    if (!includeOnReport(slot.biomarkerId, input.demographic)) continue;
     const meta = rangesById.get(slot.biomarkerId);
     if (!meta) continue;
 

@@ -22,9 +22,11 @@ See also: [`SOURCES.md`](./SOURCES.md), `reference-data.test.ts`.
 Sodium, potassium, chloride, calcium, magnesium, phosphorus, bicarbonate,
 LDH, reticulocytes, MPV — see SOURCES.md.
 Total protein and direct bilirubin now have Mayo-cited intervals. Still
-unsourced: remaining calculated ratios (LDL:ApoB, TG:HDL, AST:ALT, and
-hormone/thyroid ratios except FAI), and female cycle-phase estradiol /
-FSH / LH (Mayo intervals require cycle day or menopausal status). VLDL
+unsourced: remaining calculated ratios (T:C, cortisol:DHEA-S, free T3:T4,
+TSH:T4) and female cycle-phase estradiol / FSH / LH (Mayo intervals require
+cycle day or menopausal status). AST:ALT and female PSA were removed (v1.3.6).
+TG:HDL (McLaughlin 2005), LDL-C:ApoB (Taneva 2024 <1.2), and % free
+testosterone (Labcorp 081786 adults) are sourced as of v1.3.6. VLDL
 (Quest 319 / Mayo LMPP), UIBC (Labcorp 18–60), FAI (Labcorp 146688),
 BUN:creatinine (Quest 296 adults), and transferrin (Mayo TRSF) are sourced
 as of v1.3.5. ApoB:ApoA1 is Mayo APOAB-sourced (v1.3.2). TSH, morning

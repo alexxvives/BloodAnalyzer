@@ -159,8 +159,6 @@ const ALIASES: Record<string, string> = {
   "conjugated bilirubin": "bilirubin-direct",
   "total protein": "total-protein",
   "protein total": "total-protein",
-  "ast alt ratio": "ast-alt-ratio",
-
   // CBC
   hemoglobin: "hemoglobin",
   haemoglobin: "hemoglobin",
@@ -454,7 +452,6 @@ export const CANONICAL_MARKER_NAMES: Record<string, string> = {
   "bilirubin-direct": "Direct Bilirubin",
   albumin: "Albumin",
   "total-protein": "Total Protein",
-  "ast-alt-ratio": "AST:ALT Ratio",
   hemoglobin: "Hemoglobin",
   hematocrit: "Hematocrit",
   rbc: "Red Blood Cells",
@@ -544,7 +541,6 @@ export const KNOWN_BIOMARKER_IDS = [
   "bilirubin-direct",
   "albumin",
   "total-protein",
-  "ast-alt-ratio",
   "hemoglobin",
   "hematocrit",
   "rbc",
