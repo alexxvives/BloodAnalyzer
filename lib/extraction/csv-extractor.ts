@@ -1,3 +1,4 @@
+import { canonicalizeUreaMarker } from "./canonicalize";
 import { resolveBiomarkerId } from "./name-map";
 import type { ExtractedMarker, ExtractionResult, Extractor } from "./types";
 
@@ -104,7 +105,7 @@ function collectFromColumns(
       warnings.push(`Row ${i + 1}: could not map “${name}” to a known marker.`);
     }
 
-    markers.push({
+    const canonicalized = canonicalizeUreaMarker({
       biomarkerId,
       name,
       value: parsed.value,
@@ -112,6 +113,8 @@ function collectFromColumns(
       unit,
       confidence: biomarkerId && parsed.value != null ? 0.95 : 0.5,
     });
+    if (canonicalized.warning) warnings.push(canonicalized.warning);
+    markers.push(canonicalized.marker);
   }
 
   if (markers.length === 0) {

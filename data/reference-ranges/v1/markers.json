@@ -1,7 +1,7 @@
 {
-  "version": "1.2.3",
+  "version": "1.3.0",
   "reviewStatus": "provisional",
-  "notes": "Educational seed. NOT clinician-reviewed. Prefer printed lab intervals when available. Do not treat as diagnosis. v1.2.3: replaced the European urea 19–44 seed with Mayo sex-specific BUN intervals (male 8–24 / female 6–21 mg/dL) so US BUN uploads are not graded as low urea. v1.2.2: added EasyDraw coverage markers (ApoA1, iron saturation, and C-peptide sourced from Mayo; remaining calculated ratios as unsourced placeholders). v1.2.1: enforced sourced-boundaries-only band policy for reference-interval markers (hematocrit, rbc, creatinine, uric-acid, ggt, hemoglobin, serum-iron) — attention / good / attention at the primary interval endpoints; no invented fair/optimal interiors; serum iron grades on the Mayo interval with an explicit lab-specific caveat. v1.2.0: replaced nine male-derived ranges with sex-specific rows; rebuilt ferritin; removed invented total-cholesterol 180; aligned female HDL; collapsed vitamin D. 26 markers still carry 'NEEDS CLINICIAN REVIEW' citations; see data/SOURCES.md and data/reference-ranges/reference-data.test.ts.",
+  "notes": "Educational seed. NOT clinician-reviewed. Prefer printed lab intervals when available. Do not treat as diagnosis. v1.3.0: sourced the next PANEL_CATALOG batch from Mayo (insulin, ALP, bilirubin, albumin, free T3/T4, testosterone, free testosterone, SHBG, DHEA-S, prolactin, PSA, TIBC, TPO/TgAb, male estradiol/FSH/LH), ADA+Mayo HbA1c, Mayo+ACC ApoB, KDIGO eGFR, and Harris 2004 Omega-3 Index. Female cycle-phase estradiol/FSH/LH stay unsourced. Calculated ratios, UIBC, VLDL, and eAG remain placeholders. v1.2.3: Mayo BUN for urea id. See data/SOURCES.md.",
   "markers": [
     {
       "biomarkerId": "total-cholesterol",
@@ -2476,384 +2476,6 @@
       }
     },
     {
-      "biomarkerId": "apo-b",
-      "name": "ApoB",
-      "subtitle": "Apolipoprotein B — atherogenic particle count",
-      "sectionId": "lipid",
-      "unit": "mg/dL",
-      "loincCode": "1884-6",
-      "sourced": false,
-      "labLow": null,
-      "labHigh": null,
-      "bands": [],
-      "sourceRefs": [
-        {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
-        }
-      ]
-    },
-    {
-      "biomarkerId": "hba1c",
-      "name": "HbA1c",
-      "subtitle": "Average blood sugar over ~3 months",
-      "sectionId": "metabolic",
-      "unit": "%",
-      "loincCode": "4548-4",
-      "sourced": false,
-      "labLow": null,
-      "labHigh": null,
-      "bands": [],
-      "sourceRefs": [
-        {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
-        }
-      ]
-    },
-    {
-      "biomarkerId": "insulin",
-      "name": "Insulin",
-      "subtitle": "Fasting insulin",
-      "sectionId": "metabolic",
-      "unit": "uIU/mL",
-      "loincCode": "20448-7",
-      "sourced": false,
-      "labLow": null,
-      "labHigh": null,
-      "bands": [],
-      "sourceRefs": [
-        {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
-        }
-      ]
-    },
-    {
-      "biomarkerId": "egfr",
-      "name": "eGFR",
-      "subtitle": "Estimated glomerular filtration rate",
-      "sectionId": "kidney",
-      "unit": "mL/min/1.73m²",
-      "loincCode": "98979-8",
-      "sourced": false,
-      "labLow": null,
-      "labHigh": null,
-      "bands": [],
-      "sourceRefs": [
-        {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
-        }
-      ]
-    },
-    {
-      "biomarkerId": "alp",
-      "name": "Alkaline Phosphatase",
-      "subtitle": "Liver and bone enzyme",
-      "sectionId": "liver",
-      "unit": "U/L",
-      "loincCode": "6768-6",
-      "sourced": false,
-      "labLow": null,
-      "labHigh": null,
-      "bands": [],
-      "sourceRefs": [
-        {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
-        }
-      ]
-    },
-    {
-      "biomarkerId": "bilirubin-total",
-      "name": "Total Bilirubin",
-      "subtitle": "Liver pigment from heme breakdown",
-      "sectionId": "liver",
-      "unit": "mg/dL",
-      "loincCode": "1975-2",
-      "sourced": false,
-      "labLow": null,
-      "labHigh": null,
-      "bands": [],
-      "sourceRefs": [
-        {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
-        }
-      ]
-    },
-    {
-      "biomarkerId": "albumin",
-      "name": "Albumin",
-      "subtitle": "Major blood protein",
-      "sectionId": "liver",
-      "unit": "g/dL",
-      "loincCode": "1751-7",
-      "sourced": false,
-      "labLow": null,
-      "labHigh": null,
-      "bands": [],
-      "sourceRefs": [
-        {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
-        }
-      ]
-    },
-    {
-      "biomarkerId": "free-t3",
-      "name": "Free T3",
-      "subtitle": "Unbound triiodothyronine",
-      "sectionId": "thyroid",
-      "unit": "pg/mL",
-      "loincCode": "3051-0",
-      "sourced": false,
-      "labLow": null,
-      "labHigh": null,
-      "bands": [],
-      "sourceRefs": [
-        {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
-        }
-      ]
-    },
-    {
-      "biomarkerId": "free-t4",
-      "name": "Free T4",
-      "subtitle": "Unbound thyroxine",
-      "sectionId": "thyroid",
-      "unit": "ng/dL",
-      "loincCode": "3024-7",
-      "sourced": false,
-      "labLow": null,
-      "labHigh": null,
-      "bands": [],
-      "sourceRefs": [
-        {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
-        }
-      ]
-    },
-    {
-      "biomarkerId": "testosterone",
-      "name": "Testosterone",
-      "subtitle": "Total testosterone",
-      "sectionId": "hormones",
-      "unit": "ng/dL",
-      "loincCode": "2986-8",
-      "sourced": false,
-      "labLow": null,
-      "labHigh": null,
-      "bands": [],
-      "sourceRefs": [
-        {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
-        }
-      ]
-    },
-    {
-      "biomarkerId": "free-testosterone",
-      "name": "Free Testosterone",
-      "subtitle": "Unbound testosterone",
-      "sectionId": "hormones",
-      "unit": "pg/mL",
-      "sourced": false,
-      "labLow": null,
-      "labHigh": null,
-      "bands": [],
-      "sourceRefs": [
-        {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
-        }
-      ]
-    },
-    {
-      "biomarkerId": "shbg",
-      "name": "SHBG",
-      "subtitle": "Sex hormone-binding globulin",
-      "sectionId": "hormones",
-      "unit": "nmol/L",
-      "loincCode": "13967-5",
-      "sourced": false,
-      "labLow": null,
-      "labHigh": null,
-      "bands": [],
-      "sourceRefs": [
-        {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
-        }
-      ]
-    },
-    {
-      "biomarkerId": "estradiol",
-      "name": "Estradiol",
-      "subtitle": "Primary estrogen",
-      "sectionId": "hormones",
-      "unit": "pg/mL",
-      "loincCode": "2243-4",
-      "sourced": false,
-      "labLow": null,
-      "labHigh": null,
-      "bands": [],
-      "sourceRefs": [
-        {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
-        }
-      ]
-    },
-    {
-      "biomarkerId": "dhea-s",
-      "name": "DHEA-S",
-      "subtitle": "Dehydroepiandrosterone sulfate",
-      "sectionId": "hormones",
-      "unit": "ug/dL",
-      "loincCode": "2191-5",
-      "sourced": false,
-      "labLow": null,
-      "labHigh": null,
-      "bands": [],
-      "sourceRefs": [
-        {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
-        }
-      ]
-    },
-    {
-      "biomarkerId": "fsh",
-      "name": "FSH",
-      "subtitle": "Follicle-stimulating hormone",
-      "sectionId": "hormones",
-      "unit": "mIU/mL",
-      "loincCode": "15067-2",
-      "sourced": false,
-      "labLow": null,
-      "labHigh": null,
-      "bands": [],
-      "sourceRefs": [
-        {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
-        }
-      ]
-    },
-    {
-      "biomarkerId": "lh",
-      "name": "LH",
-      "subtitle": "Luteinizing hormone",
-      "sectionId": "hormones",
-      "unit": "mIU/mL",
-      "loincCode": "10501-5",
-      "sourced": false,
-      "labLow": null,
-      "labHigh": null,
-      "bands": [],
-      "sourceRefs": [
-        {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
-        }
-      ]
-    },
-    {
-      "biomarkerId": "prolactin",
-      "name": "Prolactin",
-      "subtitle": "Pituitary hormone",
-      "sectionId": "hormones",
-      "unit": "ng/mL",
-      "loincCode": "2842-3",
-      "sourced": false,
-      "labLow": null,
-      "labHigh": null,
-      "bands": [],
-      "sourceRefs": [
-        {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
-        }
-      ]
-    },
-    {
-      "biomarkerId": "psa",
-      "name": "PSA",
-      "subtitle": "Prostate-specific antigen",
-      "sectionId": "prostate",
-      "unit": "ng/mL",
-      "loincCode": "2857-1",
-      "sourced": false,
-      "labLow": null,
-      "labHigh": null,
-      "bands": [],
-      "sourceRefs": [
-        {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
-        }
-      ]
-    },
-    {
-      "biomarkerId": "tibc",
-      "name": "TIBC",
-      "subtitle": "Total iron-binding capacity",
-      "sectionId": "vitamins",
-      "unit": "ug/dL",
-      "loincCode": "2500-7",
-      "sourced": false,
-      "labLow": null,
-      "labHigh": null,
-      "bands": [],
-      "sourceRefs": [
-        {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
-        }
-      ]
-    },
-    {
-      "biomarkerId": "omega-3-index",
-      "name": "Omega-3 Index",
-      "subtitle": "EPA + DHA in red blood cells",
-      "sectionId": "vitamins",
-      "unit": "%",
-      "sourced": false,
-      "labLow": null,
-      "labHigh": null,
-      "bands": [],
-      "sourceRefs": [
-        {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown as not-tested when absent from an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
-        }
-      ]
-    },
-    {
       "biomarkerId": "apo-a1",
       "name": "ApoA1",
       "subtitle": "Apolipoprotein A1 — main HDL protein",
@@ -3034,88 +2656,12 @@
       ]
     },
     {
-      "biomarkerId": "bilirubin-direct",
-      "name": "Direct Bilirubin",
-      "subtitle": "Conjugated bilirubin",
-      "sectionId": "liver",
-      "unit": "mg/dL",
-      "loincCode": "1968-7",
-      "sourced": false,
-      "labLow": null,
-      "labHigh": null,
-      "bands": [],
-      "sourceRefs": [
-        {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
-        }
-      ]
-    },
-    {
-      "biomarkerId": "total-protein",
-      "name": "Total Protein",
-      "subtitle": "Serum total protein",
-      "sectionId": "liver",
-      "unit": "g/dL",
-      "loincCode": "2885-2",
-      "sourced": false,
-      "labLow": null,
-      "labHigh": null,
-      "bands": [],
-      "sourceRefs": [
-        {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
-        }
-      ]
-    },
-    {
       "biomarkerId": "uibc",
       "name": "UIBC",
       "subtitle": "Unsaturated iron-binding capacity",
       "sectionId": "vitamins",
       "unit": "ug/dL",
       "loincCode": "2501-5",
-      "sourced": false,
-      "labLow": null,
-      "labHigh": null,
-      "bands": [],
-      "sourceRefs": [
-        {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
-        }
-      ]
-    },
-    {
-      "biomarkerId": "tpoab",
-      "name": "TPO Antibodies",
-      "subtitle": "Thyroperoxidase antibodies",
-      "sectionId": "thyroid",
-      "unit": "IU/mL",
-      "loincCode": "8099-4",
-      "sourced": false,
-      "labLow": null,
-      "labHigh": null,
-      "bands": [],
-      "sourceRefs": [
-        {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
-        }
-      ]
-    },
-    {
-      "biomarkerId": "tgab",
-      "name": "Thyroglobulin Antibodies",
-      "subtitle": "Thyroglobulin antibodies",
-      "sectionId": "thyroid",
-      "unit": "IU/mL",
-      "loincCode": "8098-6",
       "sourced": false,
       "labLow": null,
       "labHigh": null,
@@ -3359,6 +2905,2567 @@
           "label": "Panel catalog placeholder — range not yet sourced",
           "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
           "verifiedAt": null
+        }
+      ]
+    },
+    {
+      "biomarkerId": "apo-b",
+      "name": "ApoB",
+      "subtitle": "Apolipoprotein B — atherogenic particle count",
+      "sectionId": "lipid",
+      "unit": "mg/dL",
+      "loincCode": "1884-6",
+      "sourced": true,
+      "labLow": 48,
+      "labHigh": 89.999,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 47.999
+        },
+        {
+          "status": "optimal",
+          "min": 48,
+          "max": 89.999
+        },
+        {
+          "status": "good",
+          "min": 90,
+          "max": 99.999
+        },
+        {
+          "status": "fair",
+          "min": 100,
+          "max": 119.999
+        },
+        {
+          "status": "attention",
+          "min": 120,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories APOLB — adult ApoB desirable <90, above desirable 90-99, borderline high 100-119, high 120-139, very high >=140; very low <48",
+          "citation": "Mayo Clinic Laboratories, test APOLB (Apolipoprotein B, Serum), adults >=18 years: Desirable <90 mg/dL; Above Desirable 90-99; Borderline high 100-119; High 120-139; Very high >=140. Values <48 mg/dL are considered very low (<2.5th percentile). Mapped here as attention <48 / optimal 48-89 / good 90-99 / fair 100-119 / attention >=120. ACC/AHA 2018 treats ApoB >=130 mg/dL as a risk-enhancing factor, which sits inside Mayo's High band.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/614544",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "2018 AHA/ACC cholesterol guideline — ApoB >=130 mg/dL is a risk-enhancing factor (corresponds to LDL-C >=160)",
+          "citation": "Grundy SM et al. 2018 AHA/ACC/Multisociety Guideline on the Management of Blood Cholesterol. Circulation. 2019. ApoB >=130 mg/dL is listed as a risk-enhancing factor; it does not by itself define the interior bands, which come from Mayo APOLB.",
+          "url": "https://www.ahajournals.org/doi/10.1161/CIR.0000000000000625",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "NLA 2024 Expert Clinical Consensus — ApoB intensification thresholds 60 / 70 / 90 mg/dL by ASCVD risk category (citation only; does not redefine Mayo bands)",
+          "citation": "Soffer DE, Marston NA, Maki KC, et al. Role of apolipoprotein B in the clinical management of cardiovascular risk in adults: An Expert Clinical Consensus from the National Lipid Association. J Clin Lipidol. 2024;18(5):e647-e663. Key point 8 and Table 4: suggested apoB thresholds for initiating or intensifying lipid-lowering therapy are 60, 70, and 90 mg/dL for very-high, high, and borderline-to-intermediate ASCVD risk, corresponding to LDL-C thresholds of 55, 70, and 100 mg/dL. These are risk-stratified treatment prompts, not a single healthy-adult interval, so they are not mapped onto this row's optimal/good/fair/attention bands. Interior bands remain Mayo APOLB desirable/borderline/high categories.",
+          "url": "https://www.lipidjournal.com/article/S1933-2874(24)00240-X/fulltext",
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "ageMin": 18
+      }
+    },
+    {
+      "biomarkerId": "hba1c",
+      "name": "HbA1c",
+      "subtitle": "Average blood sugar over ~3 months",
+      "sectionId": "metabolic",
+      "unit": "%",
+      "loincCode": "4548-4",
+      "sourced": true,
+      "labLow": 4,
+      "labHigh": 5.6,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 3.999
+        },
+        {
+          "status": "optimal",
+          "min": 4,
+          "max": 5.6
+        },
+        {
+          "status": "fair",
+          "min": 5.601,
+          "max": 6.4
+        },
+        {
+          "status": "attention",
+          "min": 6.401,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo HBA1C reference 4.0-5.6% plus ADA diagnostic categories (prediabetes 5.7-6.4, diabetes >=6.5)",
+          "citation": "Mayo Clinic Laboratories, test HBA1C (Hemoglobin A1c, Blood): reference interval 4.0-5.6%. For adults >=18 years Mayo also reports ADA interpretive cutoffs: increased risk for diabetes (prediabetes) 5.7-6.4%; diabetes >=6.5%. Bands map those published cutpoints: attention <4.0 / optimal 4.0-5.6 / fair 5.7-6.4 / attention >=6.5. No unpublished interior (e.g. <5.0) is claimed. ADA treatment targets for diagnosed diabetes (<7%) are a separate clinical goal and are not used as the optimization grade here.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/82080",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "ADA Standards of Care — Diagnosis and Classification of Diabetes (A1C 5.7-6.4 prediabetes, >=6.5 diabetes)",
+          "citation": "American Diabetes Association. 2. Diagnosis and Classification of Diabetes: Standards of Care in Diabetes. Diabetes Care (annual). Prediabetes A1C 5.7-6.4% (39-47 mmol/mol); diabetes >=6.5% (48 mmol/mol).",
+          "url": "https://diabetesjournals.org/care/article/49/Supplement_1/S27/163926/2-Diagnosis-and-Classification-of-Diabetes",
+          "verifiedAt": "2026-08-23"
+        }
+      ]
+    },
+    {
+      "biomarkerId": "insulin",
+      "name": "Insulin",
+      "subtitle": "Fasting insulin",
+      "sectionId": "metabolic",
+      "unit": "uIU/mL",
+      "loincCode": "20448-7",
+      "sourced": true,
+      "labLow": 2.6,
+      "labHigh": 24.9,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 2.599
+        },
+        {
+          "status": "good",
+          "min": 2.6,
+          "max": 24.9
+        },
+        {
+          "status": "attention",
+          "min": 24.901,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories INS — fasting insulin 2.6-24.9 mcIU/mL",
+          "citation": "Mayo Clinic Laboratories, test INS (Insulin, Serum). Fasting reference interval 2.6-24.9 mcIU/mL (≡ uIU/mL). 8-hour fast required. Bands are attention / good / attention at those endpoints; Mayo does not define an interior optimum or HOMA-IR cutpoint.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/800257",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ]
+    },
+    {
+      "biomarkerId": "egfr",
+      "name": "eGFR",
+      "subtitle": "Estimated glomerular filtration rate",
+      "sectionId": "kidney",
+      "unit": "mL/min/1.73m²",
+      "loincCode": "98979-8",
+      "sourced": true,
+      "labLow": 60,
+      "labHigh": null,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 29.999
+        },
+        {
+          "status": "fair",
+          "min": 30,
+          "max": 59.999
+        },
+        {
+          "status": "good",
+          "min": 60,
+          "max": 89.999
+        },
+        {
+          "status": "optimal",
+          "min": 90,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "KDIGO 2024 CKD Guideline Table 2 — G1 >=90 normal or high, G2 60-89 mildly decreased, G3 30-59, G4-G5 <30",
+          "citation": "Kidney Disease: Improving Global Outcomes (KDIGO) CKD Work Group. KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease. Kidney Int. 2024. GFR categories: G1 >=90 (normal or high); G2 60-89 (mildly decreased); G3a 45-59 / G3b 30-44 (mapped together as fair); G4 15-29 / G5 <15 (mapped together as attention). Lab flag uses <60, the GFR threshold that with duration >3 months indicates CKD in the absence of other kidney-damage markers. G1/G2 alone do not fulfill CKD criteria without markers of kidney damage.",
+          "url": "https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf",
+          "verifiedAt": "2026-08-23"
+        }
+      ]
+    },
+    {
+      "biomarkerId": "alp",
+      "name": "Alkaline Phosphatase",
+      "subtitle": "Liver and bone enzyme",
+      "sectionId": "liver",
+      "unit": "U/L",
+      "loincCode": "6768-6",
+      "sourced": true,
+      "labLow": 40,
+      "labHigh": 129,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 39.999
+        },
+        {
+          "status": "good",
+          "min": 40,
+          "max": 129
+        },
+        {
+          "status": "attention",
+          "min": 129.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories ALP — adult male >=19 years 40-129 U/L",
+          "citation": "Mayo Clinic Laboratories, test ALP (Alkaline Phosphatase, Serum). Males >=19 years: 40-129 U/L. Pediatric intervals differ and are not used here. Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/8340",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 19
+      }
+    },
+    {
+      "biomarkerId": "alp",
+      "name": "Alkaline Phosphatase",
+      "subtitle": "Liver and bone enzyme",
+      "sectionId": "liver",
+      "unit": "U/L",
+      "loincCode": "6768-6",
+      "sourced": true,
+      "labLow": 35,
+      "labHigh": 104,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 34.999
+        },
+        {
+          "status": "good",
+          "min": 35,
+          "max": 104
+        },
+        {
+          "status": "attention",
+          "min": 104.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories ALP — adult female >=17 years 35-104 U/L",
+          "citation": "Mayo Clinic Laboratories, test ALP (Alkaline Phosphatase, Serum). Females >=17 years: 35-104 U/L. Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/8340",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "female",
+        "ageMin": 17
+      }
+    },
+    {
+      "biomarkerId": "bilirubin-total",
+      "name": "Total Bilirubin",
+      "subtitle": "Liver pigment from heme breakdown",
+      "sectionId": "liver",
+      "unit": "mg/dL",
+      "loincCode": "1975-2",
+      "sourced": true,
+      "labLow": 0,
+      "labHigh": 1.2,
+      "bands": [
+        {
+          "status": "good",
+          "min": null,
+          "max": 1.2
+        },
+        {
+          "status": "attention",
+          "min": 1.201,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories BILIT — adults >=18 years total bilirubin 0.0-1.2 mg/dL",
+          "citation": "Mayo Clinic Laboratories, test BILIT (Bilirubin, Total, Serum). Adults >=18 years: 0.0-1.2 mg/dL. Lower values are not flagged; bands are good through 1.2 / attention above. Neonatal intervals are excluded.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/81785",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "ageMin": 18
+      }
+    },
+    {
+      "biomarkerId": "albumin",
+      "name": "Albumin",
+      "subtitle": "Major blood protein",
+      "sectionId": "liver",
+      "unit": "g/dL",
+      "loincCode": "1751-7",
+      "sourced": true,
+      "labLow": 3.5,
+      "labHigh": 5,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 3.499
+        },
+        {
+          "status": "good",
+          "min": 3.5,
+          "max": 5
+        },
+        {
+          "status": "attention",
+          "min": 5.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories ALB — >=12 months albumin 3.5-5.0 g/dL",
+          "citation": "Mayo Clinic Laboratories, test ALB (Albumin, Serum). >=12 months: 3.5-5.0 g/dL. Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/8436",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "ageMin": 1
+      }
+    },
+    {
+      "biomarkerId": "free-t3",
+      "name": "Free T3",
+      "subtitle": "Unbound triiodothyronine",
+      "sectionId": "thyroid",
+      "unit": "pg/mL",
+      "loincCode": "3051-0",
+      "sourced": true,
+      "labLow": 2,
+      "labHigh": 4.4,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 1.999
+        },
+        {
+          "status": "good",
+          "min": 2,
+          "max": 4.4
+        },
+        {
+          "status": "attention",
+          "min": 4.401,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories T3FR — adult >=19 years free T3 2.0-4.4 pg/mL",
+          "citation": "Mayo Clinic Laboratories, test T3FR (T3 Free, Serum). Adult (>=19 years): 2.0-4.4 pg/mL. Pediatric intervals differ and are not used here. Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/621321",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "ageMin": 19
+      }
+    },
+    {
+      "biomarkerId": "free-t4",
+      "name": "Free T4",
+      "subtitle": "Unbound thyroxine",
+      "sectionId": "thyroid",
+      "unit": "ng/dL",
+      "loincCode": "3024-7",
+      "sourced": true,
+      "labLow": 0.9,
+      "labHigh": 1.7,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 0.899
+        },
+        {
+          "status": "good",
+          "min": 0.9,
+          "max": 1.7
+        },
+        {
+          "status": "attention",
+          "min": 1.701,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories FRT4 — adult >=20 years free T4 0.9-1.7 ng/dL",
+          "citation": "Mayo Clinic Laboratories, test FRT4 (T4 Free, Serum). Adult (>=20 years): 0.9-1.7 ng/dL. Pediatric intervals differ and are not used here. Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/8725",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "ageMin": 20
+      }
+    },
+    {
+      "biomarkerId": "testosterone",
+      "name": "Testosterone",
+      "subtitle": "Total testosterone",
+      "sectionId": "hormones",
+      "unit": "ng/dL",
+      "loincCode": "2986-8",
+      "sourced": true,
+      "labLow": 240,
+      "labHigh": 950,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 239.999
+        },
+        {
+          "status": "good",
+          "min": 240,
+          "max": 950
+        },
+        {
+          "status": "attention",
+          "min": 950.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories TTST — adult male >=19 years total testosterone 240-950 ng/dL",
+          "citation": "Mayo Clinic Laboratories, test TTST (Testosterone, Total, Mass Spectrometry, Serum). Males >=19 years: 240-950 ng/dL. Pediatric and Tanner-stage intervals are not used here. Bands are attention / good / attention at those endpoints; Mayo does not define an interior optimum.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/8533",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 19
+      }
+    },
+    {
+      "biomarkerId": "testosterone",
+      "name": "Testosterone",
+      "subtitle": "Total testosterone",
+      "sectionId": "hormones",
+      "unit": "ng/dL",
+      "loincCode": "2986-8",
+      "sourced": true,
+      "labLow": 8,
+      "labHigh": 60,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 7.999
+        },
+        {
+          "status": "good",
+          "min": 8,
+          "max": 60
+        },
+        {
+          "status": "attention",
+          "min": 60.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories TTST — adult female >=19 years total testosterone 8-60 ng/dL",
+          "citation": "Mayo Clinic Laboratories, test TTST (Testosterone, Total, Mass Spectrometry, Serum). Females >=19 years: 8-60 ng/dL. Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/8533",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "female",
+        "ageMin": 19
+      }
+    },
+    {
+      "biomarkerId": "free-testosterone",
+      "name": "Free Testosterone",
+      "subtitle": "Unbound testosterone",
+      "sectionId": "hormones",
+      "unit": "pg/mL",
+      "sourced": true,
+      "labLow": 52.5,
+      "labHigh": 207,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 52.499
+        },
+        {
+          "status": "good",
+          "min": 52.5,
+          "max": 207
+        },
+        {
+          "status": "attention",
+          "min": 207.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories TGRP — male 20-<25 years free testosterone 5.25-20.7 ng/dL (52.5-207 pg/mL)",
+          "citation": "Mayo Clinic Laboratories, test TGRP / FRTST (Testosterone, Total and Free, Serum), equilibrium dialysis. Males 20-<25 years: 5.25-20.7 ng/dL. Converted to pg/mL (×10) to match this catalog's unit. Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/8508",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 20,
+        "ageMax": 24
+      }
+    },
+    {
+      "biomarkerId": "free-testosterone",
+      "name": "Free Testosterone",
+      "subtitle": "Unbound testosterone",
+      "sectionId": "hormones",
+      "unit": "pg/mL",
+      "sourced": true,
+      "labLow": 50.5,
+      "labHigh": 198,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 50.499
+        },
+        {
+          "status": "good",
+          "min": 50.5,
+          "max": 198
+        },
+        {
+          "status": "attention",
+          "min": 198.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories TGRP — male 25-<30 years free testosterone 5.05-19.8 ng/dL (50.5-198 pg/mL)",
+          "citation": "Mayo Clinic Laboratories, test TGRP / FRTST (Testosterone, Total and Free, Serum), equilibrium dialysis. Males 25-<30 years: 5.05-19.8 ng/dL. Converted to pg/mL (×10) to match this catalog's unit. Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/8508",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 25,
+        "ageMax": 29
+      }
+    },
+    {
+      "biomarkerId": "free-testosterone",
+      "name": "Free Testosterone",
+      "subtitle": "Unbound testosterone",
+      "sectionId": "hormones",
+      "unit": "pg/mL",
+      "sourced": true,
+      "labLow": 48.5,
+      "labHigh": 190,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 48.499
+        },
+        {
+          "status": "good",
+          "min": 48.5,
+          "max": 190
+        },
+        {
+          "status": "attention",
+          "min": 190.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories TGRP — male 30-<35 years free testosterone 4.85-19 ng/dL (48.5-190 pg/mL)",
+          "citation": "Mayo Clinic Laboratories, test TGRP / FRTST (Testosterone, Total and Free, Serum), equilibrium dialysis. Males 30-<35 years: 4.85-19 ng/dL. Converted to pg/mL (×10) to match this catalog's unit. Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/8508",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 30,
+        "ageMax": 34
+      }
+    },
+    {
+      "biomarkerId": "free-testosterone",
+      "name": "Free Testosterone",
+      "subtitle": "Unbound testosterone",
+      "sectionId": "hormones",
+      "unit": "pg/mL",
+      "sourced": true,
+      "labLow": 46.5,
+      "labHigh": 181,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 46.499
+        },
+        {
+          "status": "good",
+          "min": 46.5,
+          "max": 181
+        },
+        {
+          "status": "attention",
+          "min": 181.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories TGRP — male 35-<40 years free testosterone 4.65-18.1 ng/dL (46.5-181 pg/mL)",
+          "citation": "Mayo Clinic Laboratories, test TGRP / FRTST (Testosterone, Total and Free, Serum), equilibrium dialysis. Males 35-<40 years: 4.65-18.1 ng/dL. Converted to pg/mL (×10) to match this catalog's unit. Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/8508",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 35,
+        "ageMax": 39
+      }
+    },
+    {
+      "biomarkerId": "free-testosterone",
+      "name": "Free Testosterone",
+      "subtitle": "Unbound testosterone",
+      "sectionId": "hormones",
+      "unit": "pg/mL",
+      "sourced": true,
+      "labLow": 44.6,
+      "labHigh": 171,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 44.599
+        },
+        {
+          "status": "good",
+          "min": 44.6,
+          "max": 171
+        },
+        {
+          "status": "attention",
+          "min": 171.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories TGRP — male 40-<45 years free testosterone 4.46-17.1 ng/dL (44.6-171 pg/mL)",
+          "citation": "Mayo Clinic Laboratories, test TGRP / FRTST (Testosterone, Total and Free, Serum), equilibrium dialysis. Males 40-<45 years: 4.46-17.1 ng/dL. Converted to pg/mL (×10) to match this catalog's unit. Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/8508",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 40,
+        "ageMax": 44
+      }
+    },
+    {
+      "biomarkerId": "free-testosterone",
+      "name": "Free Testosterone",
+      "subtitle": "Unbound testosterone",
+      "sectionId": "hormones",
+      "unit": "pg/mL",
+      "sourced": true,
+      "labLow": 42.6,
+      "labHigh": 164,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 42.599
+        },
+        {
+          "status": "good",
+          "min": 42.6,
+          "max": 164
+        },
+        {
+          "status": "attention",
+          "min": 164.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories TGRP — male 45-<50 years free testosterone 4.26-16.4 ng/dL (42.6-164 pg/mL)",
+          "citation": "Mayo Clinic Laboratories, test TGRP / FRTST (Testosterone, Total and Free, Serum), equilibrium dialysis. Males 45-<50 years: 4.26-16.4 ng/dL. Converted to pg/mL (×10) to match this catalog's unit. Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/8508",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 45,
+        "ageMax": 49
+      }
+    },
+    {
+      "biomarkerId": "free-testosterone",
+      "name": "Free Testosterone",
+      "subtitle": "Unbound testosterone",
+      "sectionId": "hormones",
+      "unit": "pg/mL",
+      "sourced": true,
+      "labLow": 40.6,
+      "labHigh": 156,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 40.599
+        },
+        {
+          "status": "good",
+          "min": 40.6,
+          "max": 156
+        },
+        {
+          "status": "attention",
+          "min": 156.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories TGRP — male 50-<55 years free testosterone 4.06-15.6 ng/dL (40.6-156 pg/mL)",
+          "citation": "Mayo Clinic Laboratories, test TGRP / FRTST (Testosterone, Total and Free, Serum), equilibrium dialysis. Males 50-<55 years: 4.06-15.6 ng/dL. Converted to pg/mL (×10) to match this catalog's unit. Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/8508",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 50,
+        "ageMax": 54
+      }
+    },
+    {
+      "biomarkerId": "free-testosterone",
+      "name": "Free Testosterone",
+      "subtitle": "Unbound testosterone",
+      "sectionId": "hormones",
+      "unit": "pg/mL",
+      "sourced": true,
+      "labLow": 38.7,
+      "labHigh": 147,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 38.699
+        },
+        {
+          "status": "good",
+          "min": 38.7,
+          "max": 147
+        },
+        {
+          "status": "attention",
+          "min": 147.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories TGRP — male 55-<60 years free testosterone 3.87-14.7 ng/dL (38.7-147 pg/mL)",
+          "citation": "Mayo Clinic Laboratories, test TGRP / FRTST (Testosterone, Total and Free, Serum), equilibrium dialysis. Males 55-<60 years: 3.87-14.7 ng/dL. Converted to pg/mL (×10) to match this catalog's unit. Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/8508",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 55,
+        "ageMax": 59
+      }
+    },
+    {
+      "biomarkerId": "free-testosterone",
+      "name": "Free Testosterone",
+      "subtitle": "Unbound testosterone",
+      "sectionId": "hormones",
+      "unit": "pg/mL",
+      "sourced": true,
+      "labLow": 36.7,
+      "labHigh": 139,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 36.699
+        },
+        {
+          "status": "good",
+          "min": 36.7,
+          "max": 139
+        },
+        {
+          "status": "attention",
+          "min": 139.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories TGRP — male 60-<65 years free testosterone 3.67-13.9 ng/dL (36.7-139 pg/mL)",
+          "citation": "Mayo Clinic Laboratories, test TGRP / FRTST (Testosterone, Total and Free, Serum), equilibrium dialysis. Males 60-<65 years: 3.67-13.9 ng/dL. Converted to pg/mL (×10) to match this catalog's unit. Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/8508",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 60,
+        "ageMax": 64
+      }
+    },
+    {
+      "biomarkerId": "free-testosterone",
+      "name": "Free Testosterone",
+      "subtitle": "Unbound testosterone",
+      "sectionId": "hormones",
+      "unit": "pg/mL",
+      "sourced": true,
+      "labLow": 34.7,
+      "labHigh": 130,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 34.699
+        },
+        {
+          "status": "good",
+          "min": 34.7,
+          "max": 130
+        },
+        {
+          "status": "attention",
+          "min": 130.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories TGRP — male 65-<70 years free testosterone 3.47-13 ng/dL (34.7-130 pg/mL)",
+          "citation": "Mayo Clinic Laboratories, test TGRP / FRTST (Testosterone, Total and Free, Serum), equilibrium dialysis. Males 65-<70 years: 3.47-13 ng/dL. Converted to pg/mL (×10) to match this catalog's unit. Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/8508",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 65,
+        "ageMax": 69
+      }
+    },
+    {
+      "biomarkerId": "free-testosterone",
+      "name": "Free Testosterone",
+      "subtitle": "Unbound testosterone",
+      "sectionId": "hormones",
+      "unit": "pg/mL",
+      "sourced": true,
+      "labLow": null,
+      "labHigh": 10.8,
+      "bands": [
+        {
+          "status": "good",
+          "min": null,
+          "max": 10.8
+        },
+        {
+          "status": "attention",
+          "min": 10.801,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories TGRP — adult female 20-<25 years free testosterone <0.13-1.08 ng/dL (lab high 10.8 pg/mL)",
+          "citation": "Mayo Clinic Laboratories, test TGRP / FRTST. Adult females 20-<25 years: <0.13-1.08 ng/dL. Converted to pg/mL (×10). The lower bound is an assay limit, not a clinical low, so only the high side is graded. Adjacent adult female 5-year highs decline slowly (to ~0.95 ng/dL by 45-49); this row is used for adult females 18-49.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/8508",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "female",
+        "ageMin": 18,
+        "ageMax": 49
+      }
+    },
+    {
+      "biomarkerId": "shbg",
+      "name": "SHBG",
+      "subtitle": "Sex hormone-binding globulin",
+      "sectionId": "hormones",
+      "unit": "nmol/L",
+      "loincCode": "13967-5",
+      "sourced": true,
+      "labLow": 13.3,
+      "labHigh": 89.5,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 13.299
+        },
+        {
+          "status": "good",
+          "min": 13.3,
+          "max": 89.5
+        },
+        {
+          "status": "attention",
+          "min": 89.501,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories SHBG1 — adult male >=18 years 13.3-89.5 nmol/L",
+          "citation": "Mayo Clinic Laboratories, test SHBG1 (Sex Hormone-Binding Globulin, Serum). Adult males >=18 years: 13.3-89.5 nmol/L. Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/608102",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 18
+      }
+    },
+    {
+      "biomarkerId": "shbg",
+      "name": "SHBG",
+      "subtitle": "Sex hormone-binding globulin",
+      "sectionId": "hormones",
+      "unit": "nmol/L",
+      "loincCode": "13967-5",
+      "sourced": true,
+      "labLow": 18.2,
+      "labHigh": 135.5,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 18.199
+        },
+        {
+          "status": "good",
+          "min": 18.2,
+          "max": 135.5
+        },
+        {
+          "status": "attention",
+          "min": 135.501,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories SHBG1 — female 18-46 years 18.2-135.5 nmol/L",
+          "citation": "Mayo Clinic Laboratories, test SHBG1. Adult females 18-46 years: 18.2-135.5 nmol/L. Pregnancy intervals are not established. Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/608102",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "female",
+        "ageMin": 18,
+        "ageMax": 46
+      }
+    },
+    {
+      "biomarkerId": "shbg",
+      "name": "SHBG",
+      "subtitle": "Sex hormone-binding globulin",
+      "sectionId": "hormones",
+      "unit": "nmol/L",
+      "loincCode": "13967-5",
+      "sourced": true,
+      "labLow": 16.8,
+      "labHigh": 125.2,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 16.799
+        },
+        {
+          "status": "good",
+          "min": 16.8,
+          "max": 125.2
+        },
+        {
+          "status": "attention",
+          "min": 125.201,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories SHBG1 — female 47-91 years (post-menopausal table) 16.8-125.2 nmol/L",
+          "citation": "Mayo Clinic Laboratories, test SHBG1. Females 47-91 years, labeled post-menopausal: 16.8-125.2 nmol/L. Applied here by age, not by confirmed menopausal status. Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/608102",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "female",
+        "ageMin": 47,
+        "ageMax": 91
+      }
+    },
+    {
+      "biomarkerId": "estradiol",
+      "name": "Estradiol",
+      "subtitle": "Primary estrogen",
+      "sectionId": "hormones",
+      "unit": "pg/mL",
+      "loincCode": "2243-4",
+      "sourced": true,
+      "labLow": 10,
+      "labHigh": 40,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 9.999
+        },
+        {
+          "status": "good",
+          "min": 10,
+          "max": 40
+        },
+        {
+          "status": "attention",
+          "min": 40.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories EEST — adult male estradiol 10-40 pg/mL",
+          "citation": "Mayo Clinic Laboratories, test EEST (Estradiol, Serum). Adult males: 10-40 pg/mL. Female premenopausal values vary by cycle phase (15-350 pg/mL) and are not graded without cycle day — see the unsourced female placeholder row.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/81816",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 18
+      }
+    },
+    {
+      "biomarkerId": "estradiol",
+      "name": "Estradiol",
+      "subtitle": "Primary estrogen",
+      "sectionId": "hormones",
+      "unit": "pg/mL",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Female estradiol not graded without cycle phase",
+          "citation": "Mayo EEST lists premenopausal 15-350 pg/mL spanning follicular through luteal peaks, and postmenopausal <10 pg/mL. This product does not collect cycle day or menopausal status, so a female row cannot be graded without inventing a phase. Male adults are graded separately.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/81816",
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "loincCode": "2243-4",
+      "demographic": {
+        "sex": "female"
+      }
+    },
+    {
+      "biomarkerId": "dhea-s",
+      "name": "DHEA-S",
+      "subtitle": "Dehydroepiandrosterone sulfate",
+      "sectionId": "hormones",
+      "unit": "ug/dL",
+      "loincCode": "2191-5",
+      "sourced": true,
+      "labLow": 105,
+      "labHigh": 728,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 104.999
+        },
+        {
+          "status": "good",
+          "min": 105,
+          "max": 728
+        },
+        {
+          "status": "attention",
+          "min": 728.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories DHES1 — male 18-30 years 105-728 mcg/dL",
+          "citation": "Mayo Clinic Laboratories, test DHES1 (Dehydroepiandrosterone Sulfate, Serum). Males 18-30 years: 105-728 mcg/dL (≡ ug/dL). Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/113594",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 18,
+        "ageMax": 30
+      }
+    },
+    {
+      "biomarkerId": "dhea-s",
+      "name": "DHEA-S",
+      "subtitle": "Dehydroepiandrosterone sulfate",
+      "sectionId": "hormones",
+      "unit": "ug/dL",
+      "loincCode": "2191-5",
+      "sourced": true,
+      "labLow": 57,
+      "labHigh": 522,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 56.999
+        },
+        {
+          "status": "good",
+          "min": 57,
+          "max": 522
+        },
+        {
+          "status": "attention",
+          "min": 522.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories DHES1 — male 31-40 years 57-522 mcg/dL",
+          "citation": "Mayo Clinic Laboratories, test DHES1 (Dehydroepiandrosterone Sulfate, Serum). Males 31-40 years: 57-522 mcg/dL (≡ ug/dL). Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/113594",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 31,
+        "ageMax": 40
+      }
+    },
+    {
+      "biomarkerId": "dhea-s",
+      "name": "DHEA-S",
+      "subtitle": "Dehydroepiandrosterone sulfate",
+      "sectionId": "hormones",
+      "unit": "ug/dL",
+      "loincCode": "2191-5",
+      "sourced": true,
+      "labLow": 34,
+      "labHigh": 395,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 33.999
+        },
+        {
+          "status": "good",
+          "min": 34,
+          "max": 395
+        },
+        {
+          "status": "attention",
+          "min": 395.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories DHES1 — male 41-50 years 34-395 mcg/dL",
+          "citation": "Mayo Clinic Laboratories, test DHES1 (Dehydroepiandrosterone Sulfate, Serum). Males 41-50 years: 34-395 mcg/dL (≡ ug/dL). Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/113594",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 41,
+        "ageMax": 50
+      }
+    },
+    {
+      "biomarkerId": "dhea-s",
+      "name": "DHEA-S",
+      "subtitle": "Dehydroepiandrosterone sulfate",
+      "sectionId": "hormones",
+      "unit": "ug/dL",
+      "loincCode": "2191-5",
+      "sourced": true,
+      "labLow": 20,
+      "labHigh": 299,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 19.999
+        },
+        {
+          "status": "good",
+          "min": 20,
+          "max": 299
+        },
+        {
+          "status": "attention",
+          "min": 299.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories DHES1 — male 51-60 years 20-299 mcg/dL",
+          "citation": "Mayo Clinic Laboratories, test DHES1 (Dehydroepiandrosterone Sulfate, Serum). Males 51-60 years: 20-299 mcg/dL (≡ ug/dL). Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/113594",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 51,
+        "ageMax": 60
+      }
+    },
+    {
+      "biomarkerId": "dhea-s",
+      "name": "DHEA-S",
+      "subtitle": "Dehydroepiandrosterone sulfate",
+      "sectionId": "hormones",
+      "unit": "ug/dL",
+      "loincCode": "2191-5",
+      "sourced": true,
+      "labLow": 12,
+      "labHigh": 227,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 11.999
+        },
+        {
+          "status": "good",
+          "min": 12,
+          "max": 227
+        },
+        {
+          "status": "attention",
+          "min": 227.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories DHES1 — male 61-70 years 12-227 mcg/dL",
+          "citation": "Mayo Clinic Laboratories, test DHES1 (Dehydroepiandrosterone Sulfate, Serum). Males 61-70 years: 12-227 mcg/dL (≡ ug/dL). Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/113594",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 61,
+        "ageMax": 70
+      }
+    },
+    {
+      "biomarkerId": "dhea-s",
+      "name": "DHEA-S",
+      "subtitle": "Dehydroepiandrosterone sulfate",
+      "sectionId": "hormones",
+      "unit": "ug/dL",
+      "loincCode": "2191-5",
+      "sourced": true,
+      "labLow": 6.6,
+      "labHigh": 162,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 6.599
+        },
+        {
+          "status": "good",
+          "min": 6.6,
+          "max": 162
+        },
+        {
+          "status": "attention",
+          "min": 162.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories DHES1 — male >=71 years 6.6-162 mcg/dL",
+          "citation": "Mayo Clinic Laboratories, test DHES1 (Dehydroepiandrosterone Sulfate, Serum). Males >=71 years: 6.6-162 mcg/dL (≡ ug/dL). Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/113594",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 71
+      }
+    },
+    {
+      "biomarkerId": "dhea-s",
+      "name": "DHEA-S",
+      "subtitle": "Dehydroepiandrosterone sulfate",
+      "sectionId": "hormones",
+      "unit": "ug/dL",
+      "loincCode": "2191-5",
+      "sourced": true,
+      "labLow": 83,
+      "labHigh": 377,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 82.999
+        },
+        {
+          "status": "good",
+          "min": 83,
+          "max": 377
+        },
+        {
+          "status": "attention",
+          "min": 377.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories DHES1 — female 18-30 years 83-377 mcg/dL",
+          "citation": "Mayo Clinic Laboratories, test DHES1 (Dehydroepiandrosterone Sulfate, Serum). Females 18-30 years: 83-377 mcg/dL (≡ ug/dL). Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/113594",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "female",
+        "ageMin": 18,
+        "ageMax": 30
+      }
+    },
+    {
+      "biomarkerId": "dhea-s",
+      "name": "DHEA-S",
+      "subtitle": "Dehydroepiandrosterone sulfate",
+      "sectionId": "hormones",
+      "unit": "ug/dL",
+      "loincCode": "2191-5",
+      "sourced": true,
+      "labLow": 45,
+      "labHigh": 295,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 44.999
+        },
+        {
+          "status": "good",
+          "min": 45,
+          "max": 295
+        },
+        {
+          "status": "attention",
+          "min": 295.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories DHES1 — female 31-40 years 45-295 mcg/dL",
+          "citation": "Mayo Clinic Laboratories, test DHES1 (Dehydroepiandrosterone Sulfate, Serum). Females 31-40 years: 45-295 mcg/dL (≡ ug/dL). Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/113594",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "female",
+        "ageMin": 31,
+        "ageMax": 40
+      }
+    },
+    {
+      "biomarkerId": "dhea-s",
+      "name": "DHEA-S",
+      "subtitle": "Dehydroepiandrosterone sulfate",
+      "sectionId": "hormones",
+      "unit": "ug/dL",
+      "loincCode": "2191-5",
+      "sourced": true,
+      "labLow": 27,
+      "labHigh": 240,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 26.999
+        },
+        {
+          "status": "good",
+          "min": 27,
+          "max": 240
+        },
+        {
+          "status": "attention",
+          "min": 240.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories DHES1 — female 41-50 years 27-240 mcg/dL",
+          "citation": "Mayo Clinic Laboratories, test DHES1 (Dehydroepiandrosterone Sulfate, Serum). Females 41-50 years: 27-240 mcg/dL (≡ ug/dL). Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/113594",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "female",
+        "ageMin": 41,
+        "ageMax": 50
+      }
+    },
+    {
+      "biomarkerId": "dhea-s",
+      "name": "DHEA-S",
+      "subtitle": "Dehydroepiandrosterone sulfate",
+      "sectionId": "hormones",
+      "unit": "ug/dL",
+      "loincCode": "2191-5",
+      "sourced": true,
+      "labLow": 16,
+      "labHigh": 195,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 15.999
+        },
+        {
+          "status": "good",
+          "min": 16,
+          "max": 195
+        },
+        {
+          "status": "attention",
+          "min": 195.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories DHES1 — female 51-60 years 16-195 mcg/dL",
+          "citation": "Mayo Clinic Laboratories, test DHES1 (Dehydroepiandrosterone Sulfate, Serum). Females 51-60 years: 16-195 mcg/dL (≡ ug/dL). Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/113594",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "female",
+        "ageMin": 51,
+        "ageMax": 60
+      }
+    },
+    {
+      "biomarkerId": "dhea-s",
+      "name": "DHEA-S",
+      "subtitle": "Dehydroepiandrosterone sulfate",
+      "sectionId": "hormones",
+      "unit": "ug/dL",
+      "loincCode": "2191-5",
+      "sourced": true,
+      "labLow": 9.7,
+      "labHigh": 159,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 9.699
+        },
+        {
+          "status": "good",
+          "min": 9.7,
+          "max": 159
+        },
+        {
+          "status": "attention",
+          "min": 159.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories DHES1 — female 61-70 years 9.7-159 mcg/dL",
+          "citation": "Mayo Clinic Laboratories, test DHES1 (Dehydroepiandrosterone Sulfate, Serum). Females 61-70 years: 9.7-159 mcg/dL (≡ ug/dL). Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/113594",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "female",
+        "ageMin": 61,
+        "ageMax": 70
+      }
+    },
+    {
+      "biomarkerId": "dhea-s",
+      "name": "DHEA-S",
+      "subtitle": "Dehydroepiandrosterone sulfate",
+      "sectionId": "hormones",
+      "unit": "ug/dL",
+      "loincCode": "2191-5",
+      "sourced": true,
+      "labLow": 5.3,
+      "labHigh": 124,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 5.299
+        },
+        {
+          "status": "good",
+          "min": 5.3,
+          "max": 124
+        },
+        {
+          "status": "attention",
+          "min": 124.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories DHES1 — female >=71 years 5.3-124 mcg/dL",
+          "citation": "Mayo Clinic Laboratories, test DHES1 (Dehydroepiandrosterone Sulfate, Serum). Females >=71 years: 5.3-124 mcg/dL (≡ ug/dL). Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/113594",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "female",
+        "ageMin": 71
+      }
+    },
+    {
+      "biomarkerId": "fsh",
+      "name": "FSH",
+      "subtitle": "Follicle-stimulating hormone",
+      "sectionId": "hormones",
+      "unit": "mIU/mL",
+      "loincCode": "15067-2",
+      "sourced": true,
+      "labLow": 1.2,
+      "labHigh": 15.8,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 1.199
+        },
+        {
+          "status": "good",
+          "min": 1.2,
+          "max": 15.8
+        },
+        {
+          "status": "attention",
+          "min": 15.801,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories FSH — adult male >18 years 1.2-15.8 IU/L",
+          "citation": "Mayo Clinic Laboratories, test FSH (Follicle-Stimulating Hormone, Serum). Males >18 years: 1.2-15.8 IU/L (≡ mIU/mL). Female cycle-phase intervals are not graded without cycle day — see the unsourced female placeholder row.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/602753",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 19
+      }
+    },
+    {
+      "biomarkerId": "fsh",
+      "name": "FSH",
+      "subtitle": "Follicle-stimulating hormone",
+      "sectionId": "hormones",
+      "unit": "mIU/mL",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Female FSH not graded without cycle phase",
+          "citation": "Mayo FSH publishes separate follicular, midcycle, luteal, and postmenopausal female intervals. This product does not collect cycle day or menopausal status, so a female row cannot be graded without inventing a phase. Male adults are graded separately.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/602753",
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "loincCode": "15067-2",
+      "demographic": {
+        "sex": "female"
+      }
+    },
+    {
+      "biomarkerId": "lh",
+      "name": "LH",
+      "subtitle": "Luteinizing hormone",
+      "sectionId": "hormones",
+      "unit": "mIU/mL",
+      "loincCode": "10501-5",
+      "sourced": true,
+      "labLow": 1.3,
+      "labHigh": 9.6,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 1.299
+        },
+        {
+          "status": "good",
+          "min": 1.3,
+          "max": 9.6
+        },
+        {
+          "status": "attention",
+          "min": 9.601,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories LH — adult male >18 years 1.3-9.6 IU/L",
+          "citation": "Mayo Clinic Laboratories, test LH (Luteinizing Hormone, Serum). Males >18 years: 1.3-9.6 IU/L (≡ mIU/mL). Female cycle-phase intervals (follicular 1.9-14.6, midcycle 12.2-118.0, luteal 0.7-12.9, postmenopausal 5.3-65.4 IU/L) are not graded without cycle day.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/602752",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 19
+      }
+    },
+    {
+      "biomarkerId": "lh",
+      "name": "LH",
+      "subtitle": "Luteinizing hormone",
+      "sectionId": "hormones",
+      "unit": "mIU/mL",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "Female LH not graded without cycle phase",
+          "citation": "Mayo LH publishes follicular, midcycle, luteal, and postmenopausal female intervals. This product does not collect cycle day or menopausal status, so a female row cannot be graded without inventing a phase. Male adults are graded separately.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/602752",
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "loincCode": "10501-5",
+      "demographic": {
+        "sex": "female"
+      }
+    },
+    {
+      "biomarkerId": "prolactin",
+      "name": "Prolactin",
+      "subtitle": "Pituitary hormone",
+      "sectionId": "hormones",
+      "unit": "ng/mL",
+      "loincCode": "2842-3",
+      "sourced": true,
+      "labLow": 4,
+      "labHigh": 15.2,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 3.999
+        },
+        {
+          "status": "good",
+          "min": 4,
+          "max": 15.2
+        },
+        {
+          "status": "attention",
+          "min": 15.201,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories PRL — adult male >=18 years 4.0-15.2 ng/mL",
+          "citation": "Mayo Clinic Laboratories, test PRL (Prolactin, Serum). Males >=18 years: 4.0-15.2 ng/mL. Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/85670",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 18
+      }
+    },
+    {
+      "biomarkerId": "prolactin",
+      "name": "Prolactin",
+      "subtitle": "Pituitary hormone",
+      "sectionId": "hormones",
+      "unit": "ng/mL",
+      "loincCode": "2842-3",
+      "sourced": true,
+      "labLow": 4.8,
+      "labHigh": 23.3,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 4.799
+        },
+        {
+          "status": "good",
+          "min": 4.8,
+          "max": 23.3
+        },
+        {
+          "status": "attention",
+          "min": 23.301,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories PRL — adult female >=18 years 4.8-23.3 ng/mL",
+          "citation": "Mayo Clinic Laboratories, test PRL (Prolactin, Serum). Females >=18 years: 4.8-23.3 ng/mL. Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/85670",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "female",
+        "ageMin": 18
+      }
+    },
+    {
+      "biomarkerId": "psa",
+      "name": "PSA",
+      "subtitle": "Prostate-specific antigen",
+      "sectionId": "prostate",
+      "unit": "ng/mL",
+      "loincCode": "2857-1",
+      "sourced": true,
+      "labLow": null,
+      "labHigh": 2,
+      "bands": [
+        {
+          "status": "good",
+          "min": null,
+          "max": 2
+        },
+        {
+          "status": "attention",
+          "min": 2.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories PSAFT — male <40 years total PSA <=2 ng/mL",
+          "citation": "Mayo Clinic Laboratories, test PSAFT (PSA, Total and Free, Serum). Males <40 years: <=2 ng/mL. Females: not applicable. Lower values are not flagged. This is a screening interval, not a diagnosis of prostate disease.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/81944",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMax": 39
+      }
+    },
+    {
+      "biomarkerId": "psa",
+      "name": "PSA",
+      "subtitle": "Prostate-specific antigen",
+      "sectionId": "prostate",
+      "unit": "ng/mL",
+      "loincCode": "2857-1",
+      "sourced": true,
+      "labLow": null,
+      "labHigh": 2.5,
+      "bands": [
+        {
+          "status": "good",
+          "min": null,
+          "max": 2.5
+        },
+        {
+          "status": "attention",
+          "min": 2.501,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories PSAFT — male 40-49 years total PSA <=2.5 ng/mL",
+          "citation": "Mayo Clinic Laboratories, test PSAFT (PSA, Total and Free, Serum). Males 40-49 years: <=2.5 ng/mL. Females: not applicable. Lower values are not flagged. This is a screening interval, not a diagnosis of prostate disease.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/81944",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 40,
+        "ageMax": 49
+      }
+    },
+    {
+      "biomarkerId": "psa",
+      "name": "PSA",
+      "subtitle": "Prostate-specific antigen",
+      "sectionId": "prostate",
+      "unit": "ng/mL",
+      "loincCode": "2857-1",
+      "sourced": true,
+      "labLow": null,
+      "labHigh": 3.5,
+      "bands": [
+        {
+          "status": "good",
+          "min": null,
+          "max": 3.5
+        },
+        {
+          "status": "attention",
+          "min": 3.501,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories PSAFT — male 50-59 years total PSA <=3.5 ng/mL",
+          "citation": "Mayo Clinic Laboratories, test PSAFT (PSA, Total and Free, Serum). Males 50-59 years: <=3.5 ng/mL. Females: not applicable. Lower values are not flagged. This is a screening interval, not a diagnosis of prostate disease.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/81944",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 50,
+        "ageMax": 59
+      }
+    },
+    {
+      "biomarkerId": "psa",
+      "name": "PSA",
+      "subtitle": "Prostate-specific antigen",
+      "sectionId": "prostate",
+      "unit": "ng/mL",
+      "loincCode": "2857-1",
+      "sourced": true,
+      "labLow": null,
+      "labHigh": 4.5,
+      "bands": [
+        {
+          "status": "good",
+          "min": null,
+          "max": 4.5
+        },
+        {
+          "status": "attention",
+          "min": 4.501,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories PSAFT — male 60-69 years total PSA <=4.5 ng/mL",
+          "citation": "Mayo Clinic Laboratories, test PSAFT (PSA, Total and Free, Serum). Males 60-69 years: <=4.5 ng/mL. Females: not applicable. Lower values are not flagged. This is a screening interval, not a diagnosis of prostate disease.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/81944",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 60,
+        "ageMax": 69
+      }
+    },
+    {
+      "biomarkerId": "psa",
+      "name": "PSA",
+      "subtitle": "Prostate-specific antigen",
+      "sectionId": "prostate",
+      "unit": "ng/mL",
+      "loincCode": "2857-1",
+      "sourced": true,
+      "labLow": null,
+      "labHigh": 6.5,
+      "bands": [
+        {
+          "status": "good",
+          "min": null,
+          "max": 6.5
+        },
+        {
+          "status": "attention",
+          "min": 6.501,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories PSAFT — male 70-79 years total PSA <=6.5 ng/mL",
+          "citation": "Mayo Clinic Laboratories, test PSAFT (PSA, Total and Free, Serum). Males 70-79 years: <=6.5 ng/mL. Females: not applicable. Lower values are not flagged. This is a screening interval, not a diagnosis of prostate disease.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/81944",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 70,
+        "ageMax": 79
+      }
+    },
+    {
+      "biomarkerId": "psa",
+      "name": "PSA",
+      "subtitle": "Prostate-specific antigen",
+      "sectionId": "prostate",
+      "unit": "ng/mL",
+      "loincCode": "2857-1",
+      "sourced": true,
+      "labLow": null,
+      "labHigh": 7.2,
+      "bands": [
+        {
+          "status": "good",
+          "min": null,
+          "max": 7.2
+        },
+        {
+          "status": "attention",
+          "min": 7.201,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories PSAFT — male >=80 years total PSA <=7.2 ng/mL",
+          "citation": "Mayo Clinic Laboratories, test PSAFT (PSA, Total and Free, Serum). Males >=80 years: <=7.2 ng/mL. Females: not applicable. Lower values are not flagged. This is a screening interval, not a diagnosis of prostate disease.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/81944",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 80
+      }
+    },
+    {
+      "biomarkerId": "psa",
+      "name": "PSA",
+      "subtitle": "Prostate-specific antigen",
+      "sectionId": "prostate",
+      "unit": "ng/mL",
+      "loincCode": "2857-1",
+      "sourced": false,
+      "labLow": null,
+      "labHigh": null,
+      "bands": [],
+      "sourceRefs": [
+        {
+          "label": "PSA is not graded for female reports",
+          "citation": "Mayo PSAFT lists females as not applicable. No female reference interval is attached, so the UI shows range not available rather than applying a male cutoff.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/81944",
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "female"
+      }
+    },
+    {
+      "biomarkerId": "tibc",
+      "name": "TIBC",
+      "subtitle": "Total iron-binding capacity",
+      "sectionId": "vitamins",
+      "unit": "ug/dL",
+      "loincCode": "2500-7",
+      "sourced": true,
+      "labLow": 250,
+      "labHigh": 400,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 249.999
+        },
+        {
+          "status": "good",
+          "min": 250,
+          "max": 400
+        },
+        {
+          "status": "attention",
+          "min": 400.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories SFEC/TIBC — total iron-binding capacity 250-400 mcg/dL",
+          "citation": "Mayo Clinic Laboratories, test TIBC as part of SFEC (Iron and Total Iron-Binding Capacity, Serum). Reference interval 250-400 mcg/dL (≡ ug/dL). TIBC = transferrin × 1.18. Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/2501",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ]
+    },
+    {
+      "biomarkerId": "omega-3-index",
+      "name": "Omega-3 Index",
+      "subtitle": "EPA + DHA in red blood cells",
+      "sectionId": "vitamins",
+      "unit": "%",
+      "sourced": true,
+      "labLow": 4,
+      "labHigh": null,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 4
+        },
+        {
+          "status": "fair",
+          "min": 4.001,
+          "max": 7.999
+        },
+        {
+          "status": "optimal",
+          "min": 8,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Harris & von Schacky 2004 — Omega-3 Index <=4% least cardioprotection, >=8% greatest (intermediate 4-8%)",
+          "citation": "Harris WS, von Schacky C. The Omega-3 Index: a new risk factor for death from coronary heart disease? Prev Med. 2004;39:212-220. An Omega-3 Index >=8% was associated with the greatest cardioprotection, whereas <=4% was associated with the least. The 4-8% zone is the published intermediate band. Mapped here as attention <=4 / fair 4-8 / optimal >=8. This is a proposed risk marker, not a CLSI reference interval.",
+          "url": "https://doi.org/10.1016/j.ypmed.2004.02.030",
+          "verifiedAt": "2026-08-23"
+        }
+      ]
+    },
+    {
+      "biomarkerId": "bilirubin-direct",
+      "name": "Direct Bilirubin",
+      "subtitle": "Conjugated bilirubin",
+      "sectionId": "liver",
+      "unit": "mg/dL",
+      "loincCode": "1968-7",
+      "sourced": true,
+      "labLow": 0,
+      "labHigh": 0.3,
+      "bands": [
+        {
+          "status": "good",
+          "min": null,
+          "max": 0.3
+        },
+        {
+          "status": "attention",
+          "min": 0.301,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories BILID — >=12 months direct bilirubin 0.0-0.3 mg/dL",
+          "citation": "Mayo Clinic Laboratories, test BILID (Bilirubin, Direct, Serum). >=12 months: 0.0-0.3 mg/dL. Lower values are not flagged; bands are good through 0.3 / attention above.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/8452",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "ageMin": 1
+      }
+    },
+    {
+      "biomarkerId": "total-protein",
+      "name": "Total Protein",
+      "subtitle": "Serum total protein",
+      "sectionId": "liver",
+      "unit": "g/dL",
+      "loincCode": "2885-2",
+      "sourced": true,
+      "labLow": 6.3,
+      "labHigh": 7.9,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 6.299
+        },
+        {
+          "status": "good",
+          "min": 6.3,
+          "max": 7.9
+        },
+        {
+          "status": "attention",
+          "min": 7.901,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories TP — >=1 year total protein 6.3-7.9 g/dL",
+          "citation": "Mayo Clinic Laboratories, test TP (Protein, Total, Serum). >=1 year: 6.3-7.9 g/dL. Bands are attention / good / attention at those endpoints.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/8520",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "ageMin": 1
+      }
+    },
+    {
+      "biomarkerId": "tpoab",
+      "name": "TPO Antibodies",
+      "subtitle": "Thyroperoxidase antibodies",
+      "sectionId": "thyroid",
+      "unit": "IU/mL",
+      "loincCode": "8099-4",
+      "sourced": true,
+      "labLow": null,
+      "labHigh": 8.999,
+      "bands": [
+        {
+          "status": "good",
+          "min": null,
+          "max": 8.999
+        },
+        {
+          "status": "attention",
+          "min": 9,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories TPO — thyroperoxidase antibodies <9.0 IU/mL (Access TPO assay)",
+          "citation": "Mayo Clinic Laboratories, test TPO (Thyroperoxidase Antibodies, Serum). Reference value <9.0 IU/mL on the Beckman Access TPO assay (WHO 66/387). Antibody cutoffs are assay-specific; this interval does not transfer to other methods. Bands are good through 9.0 / attention above. Not a diagnosis of autoimmune thyroid disease.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/81765",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ]
+    },
+    {
+      "biomarkerId": "tgab",
+      "name": "Thyroglobulin Antibodies",
+      "subtitle": "Thyroglobulin antibodies",
+      "sectionId": "thyroid",
+      "unit": "IU/mL",
+      "loincCode": "8098-6",
+      "sourced": true,
+      "labLow": null,
+      "labHigh": 3.999,
+      "bands": [
+        {
+          "status": "good",
+          "min": null,
+          "max": 3.999
+        },
+        {
+          "status": "attention",
+          "min": 4,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Mayo Clinic Laboratories TAB — thyroglobulin antibody <4.0 IU/mL (thyroid autoantibodies profile)",
+          "citation": "Mayo Clinic Laboratories, test TAB (Thyroid Autoantibodies Profile, Serum). Thyroglobulin antibody <4.0 IU/mL. A separate Mayo thyroglobulin-antibody method (TGABI) uses <1.8 IU/mL — cutoffs are assay-specific and this row cites the TAB screening profile only. Bands are good through 4.0 / attention above.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/Overview/82041",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. No source defines an optimum inside this interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
         }
       ]
     }

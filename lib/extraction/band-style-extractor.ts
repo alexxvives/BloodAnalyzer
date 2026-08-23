@@ -1,3 +1,4 @@
+import { canonicalizeUreaMarker } from "./canonicalize";
 import {
   CANONICAL_MARKER_NAMES,
   resolveBiomarkerId,
@@ -34,6 +35,7 @@ export function extractMarkersFromBandStyleText(
 
   const markers: ExtractedMarker[] = [];
   const seen = new Set<string>();
+  const warnings: string[] = [];
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i]!;
@@ -76,11 +78,9 @@ export function extractMarkersFromBandStyleText(
     if (seen.has(key)) continue;
     seen.add(key);
 
-    markers.push({
+    const canonicalized = canonicalizeUreaMarker({
       biomarkerId,
-      name: biomarkerId
-        ? (CANONICAL_MARKER_NAMES[biomarkerId] ?? header.name)
-        : header.name,
+      name: header.name,
       value: parsed.value,
       valueDisplay:
         parsed.valueDisplay ??
@@ -88,9 +88,19 @@ export function extractMarkersFromBandStyleText(
       unit: header.unit,
       confidence: biomarkerId ? 0.88 : 0.6,
     });
+
+    if (canonicalized.warning) warnings.push(canonicalized.warning);
+
+    markers.push({
+      ...canonicalized.marker,
+      name: canonicalized.marker.biomarkerId
+        ? (CANONICAL_MARKER_NAMES[canonicalized.marker.biomarkerId] ??
+          canonicalized.marker.name)
+        : canonicalized.marker.name,
+    });
   }
 
-  return { markers, warnings: [], method: "text-lab" };
+  return { markers, warnings, method: "text-lab" };
 }
 
 function parseAssayHeader(

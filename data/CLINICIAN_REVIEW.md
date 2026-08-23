@@ -21,9 +21,9 @@ See also: [`SOURCES.md`](./SOURCES.md), `reference-data.test.ts`.
 
 Sodium, potassium, chloride, calcium, magnesium, phosphorus, bicarbonate,
 LDH, reticulocytes, MPV — see SOURCES.md.
-Total protein and direct bilirubin are catalog placeholders (`sourced: false`)
-until a cited interval is attached. These are **not** to be invented in
-components.
+Total protein and direct bilirubin now have Mayo-cited intervals. Still
+unsourced: calculated ratios, VLDL, eAG, UIBC, and female cycle-phase
+estradiol / FSH / LH (Mayo intervals require cycle day or menopausal status).
 
 ## Population benchmarks
 

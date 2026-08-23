@@ -235,4 +235,64 @@ describe("scoreBiomarker", () => {
       }).status,
     ).toBe("attention");
   });
+
+  it("scores ADA/Mayo HbA1c and Mayo/ACC ApoB with published interiors", () => {
+    expect(scoreBiomarker({ biomarkerId: "hba1c", value: 5.4 }).status).toBe(
+      "optimal",
+    );
+    expect(scoreBiomarker({ biomarkerId: "hba1c", value: 6.0 }).status).toBe(
+      "fair",
+    );
+    expect(scoreBiomarker({ biomarkerId: "hba1c", value: 6.7 }).status).toBe(
+      "attention",
+    );
+
+    const apo = scoreBiomarker({
+      biomarkerId: "apo-b",
+      value: 80,
+      demographic: { sex: "male", ageYears: 40 },
+    });
+    expect(apo.rangeAvailable).toBe(true);
+    expect(apo.status).toBe("optimal");
+    expect(
+      scoreBiomarker({
+        biomarkerId: "apo-b",
+        value: 110,
+        demographic: { sex: "male", ageYears: 40 },
+      }).status,
+    ).toBe("fair");
+  });
+
+  it("scores KDIGO eGFR and Mayo adult chemistry placeholders", () => {
+    expect(scoreBiomarker({ biomarkerId: "egfr", value: 95 }).status).toBe(
+      "optimal",
+    );
+    expect(scoreBiomarker({ biomarkerId: "egfr", value: 70 }).status).toBe(
+      "good",
+    );
+    expect(scoreBiomarker({ biomarkerId: "egfr", value: 50 }).status).toBe(
+      "fair",
+    );
+    expect(
+      scoreBiomarker({
+        biomarkerId: "alp",
+        value: 70,
+        demographic: { sex: "male", ageYears: 40 },
+      }).status,
+    ).toBe("good");
+    expect(
+      scoreBiomarker({
+        biomarkerId: "testosterone",
+        value: 500,
+        demographic: { sex: "male", ageYears: 27 },
+      }).status,
+    ).toBe("good");
+    expect(
+      scoreBiomarker({
+        biomarkerId: "estradiol",
+        value: 80,
+        demographic: { sex: "female", ageYears: 30 },
+      }).rangeAvailable,
+    ).toBe(false);
+  });
 });

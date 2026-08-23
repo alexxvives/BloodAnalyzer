@@ -1,3 +1,4 @@
+import { canonicalizeUreaMarker } from "./canonicalize";
 import { CANONICAL_MARKER_NAMES, resolveBiomarkerId } from "./name-map";
 import type { ExtractedMarker, ExtractionResult } from "./types";
 
@@ -55,7 +56,7 @@ export function extractMarkersFromLabText(text: string): ExtractionResult {
     if (resultado) {
       const name = pendingTest ?? "Resultado";
       if (!isNoiseName(name) && name.toLowerCase() !== "resultado") {
-        pushMarker(markers, seen, {
+        pushMarker(markers, seen, warnings, {
           name,
           ...resultado,
           confidenceBoost: 0.15,
@@ -74,7 +75,7 @@ export function extractMarkersFromLabText(text: string): ExtractionResult {
     if (inline) {
       const name = resolveContextualName(inline.name, pendingTest);
       if (isNoiseName(name) && !resolveBiomarkerId(name)) continue;
-      pushMarker(markers, seen, {
+      pushMarker(markers, seen, warnings, {
         name,
         value: inline.value,
         valueDisplay: inline.valueDisplay,
@@ -107,6 +108,7 @@ export function extractMarkersFromLabText(text: string): ExtractionResult {
 function pushMarker(
   markers: ExtractedMarker[],
   seen: Set<string>,
+  warnings: string[],
   input: {
     name: string;
     value: number;
@@ -128,13 +130,19 @@ function pushMarker(
   seen.add(key);
 
   const base = biomarkerId ? 0.75 : 0.45;
-  markers.push({
+  const canonicalized = canonicalizeUreaMarker({
     biomarkerId,
-    name: displayNameFor(name, biomarkerId),
+    name,
     value: input.value,
     valueDisplay: input.valueDisplay,
     unit: normalizeUnit(input.unit),
     confidence: Math.min(0.95, base + input.confidenceBoost),
+  });
+  if (canonicalized.warning) warnings.push(canonicalized.warning);
+
+  markers.push({
+    ...canonicalized.marker,
+    name: displayNameFor(canonicalized.marker.name, biomarkerId),
   });
 }
 

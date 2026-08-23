@@ -7,7 +7,7 @@ versioned and cited. **Do not ship invented numbers to real users.**
 
 | Dataset | Location | Citation status |
 |---|---|---|
-| Reference ranges v1.2.3 | `/data/reference-ranges/v1/markers.json` | **Mixed** — Mayo-cited BUN (urea), ApoA1, iron saturation, and C-peptide; 26 rows still awaiting clinician review; calculated ratios remain unsourced placeholders |
+| Reference ranges v1.3.0 | `/data/reference-ranges/v1/markers.json` | **Mixed** — Mayo/ADA/ACC/KDIGO/Harris cited for the PANEL_CATALOG batch (ApoB, HbA1c, insulin, eGFR, ALP, bilirubin, albumin, free T3/T4, testosterone, SHBG, DHEA-S, prolactin, PSA, TIBC, TPO/TgAb, Omega-3 Index, male estradiol/FSH/LH); 26 CBC/chem rows still awaiting clinician review; calculated ratios and female cycle-phase hormones remain unsourced |
 | Population stats v1.8.1 | `/data/population-stats/v1/stats.json` | **Partial NHANES load** — see below |
 
 Until an entry is marked `sourced: true` **and** reviewed for production, treat
@@ -81,6 +81,46 @@ Notes on the ones that are not straightforward:
   men, (age+10)/2 for women) is a 98th-percentile rule of thumb from 1983 that
   overestimates in the elderly; the four-cell sex × age-50 table is lab
   convention. Graded, but not on the same statistical footing as the rest.
+
+## BUN vs urea (v1.3.0)
+
+They are the same molecule reported two ways. The **right** product behavior is
+not “pick Mayo or pick Europe” — it is **detect the printed assay, convert to
+one canonical scale, then grade**.
+
+| Lab prints | Typical unit | What to do |
+|---|---|---|
+| BUN / blood urea nitrogen / nitrógeno ureico | mg/dL | Already BUN. Grade on Mayo (men 8–24, women 6–21). |
+| Urea (not “urea nitrogen”) | mg/dL | European urea mass. Convert BUN = urea ÷ 2.14, then grade. |
+| Urea or BUN | mmol/L | SI amount of substance. Convert BUN mg/dL = mmol/L × 2.8, then grade. |
+
+Canonical storage is BUN mg/dL because Mayo, NHANES, and US at-home panels use
+it. A Spanish “Urea 34 mg/dL” and a US “BUN 16 mg/dL” are the same physiology.
+Grading 34 on the BUN scale would falsely flag attention; grading 16 on a
+European urea interval (≈19–44) would falsely flag low. Conversion is wired in
+`lib/extraction/canonicalize.ts` from the **printed name**, because the two
+mg/dL scales overlap and cannot be told apart from the number alone.
+
+## Optimal interiors (v1.3.0)
+
+SiPhox-style extra-green wellness bands are unpublished and still not copied.
+**Optimal is added only where a named source publishes extra cutpoints:**
+
+| Marker | Extra sourced tiers | Source |
+|---|---|---|
+| `hba1c` | optimal 4.0–5.6 / fair 5.7–6.4 / attention ≥6.5 | Mayo reference + ADA diagnostic categories |
+| `apo-b` | optimal 48–89 / good 90–99 / fair 100–119 / attention ≥120 (and <48) | Mayo APOLB adult categories; ACC/AHA 2018 flags ≥130 as risk-enhancing |
+| `egfr` | optimal ≥90 / good 60–89 / fair 30–59 / attention <30 | KDIGO 2024 G1–G5 |
+| `omega-3-index` | attention ≤4 / fair 4–8 / optimal ≥8 | Harris & von Schacky 2004 |
+| Lipids, glucose, HDL, ferritin, vitamin D, … | already had guideline interiors | ATP III, ADA, WHO/EASL, Holick |
+
+CBC, BUN, ALP, bilirubin, albumin, enzymes, TSH, most hormones: still
+**attention / good / attention** at the Mayo (or other) reference interval.
+Inventing “optimal BUN 10–18” would be the unpublished wellness scale we
+refused to copy from SiPhox.
+
+Female estradiol, FSH, and LH stay **unsourced**: Mayo intervals are
+cycle-phase and menopausal, and this product does not collect cycle day.
 
 ## Corrected citations (v1.2.0)
 
@@ -186,9 +226,9 @@ findings rather than range bugs. They are listed as explicit exceptions in
 
 Also missing from the catalog entirely: sodium, potassium, chloride, calcium,
 magnesium, phosphorus, bicarbonate, LDH, reticulocytes, MPV. Total protein and
-direct bilirubin are now in the catalog as **unsourced placeholders** (shown
-when uploaded, graded only after a citation). These are exactly the markers
-where a low value is dangerous, so remaining gaps are still worth closing.
+direct bilirubin are now Mayo-sourced. Remaining unsourced placeholders are
+calculated ratios, VLDL, eAG, UIBC, and female cycle-phase estradiol/FSH/LH.
+Electrolytes are still the dangerous-when-low gap.
 
 ## Biological age (educational)
 

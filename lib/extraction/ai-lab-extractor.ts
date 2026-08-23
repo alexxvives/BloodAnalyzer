@@ -1,3 +1,4 @@
+import { canonicalizeUreaMarker } from "./canonicalize";
 import {
   CANONICAL_MARKER_NAMES,
   KNOWN_BIOMARKER_IDS,
@@ -257,15 +258,20 @@ export function normalizeAiMarkers(raw: unknown): ExtractedMarker[] {
       (suggestedId && known.has(suggestedId) ? suggestedId : null) ??
       resolveBiomarkerId(name);
 
-    out.push({
+    const canonicalized = canonicalizeUreaMarker({
       biomarkerId,
-      name: biomarkerId
-        ? (CANONICAL_MARKER_NAMES[biomarkerId] ?? name)
-        : name,
+      name,
       value,
       valueDisplay,
       unit: normalizeAiUnit(unit),
       confidence: biomarkerId ? 0.82 : 0.55,
+    });
+    out.push({
+      ...canonicalized.marker,
+      name: canonicalized.marker.biomarkerId
+        ? (CANONICAL_MARKER_NAMES[canonicalized.marker.biomarkerId] ??
+          canonicalized.marker.name)
+        : canonicalized.marker.name,
     });
   }
   return out;
@@ -331,6 +337,7 @@ Rules:
 - Prefer biomarkerId from the allowlist when confident; else null (still include the row).
 - Skip patient identifiers, page numbers, narrative advice.
 - Never invent values. Missing a real result is worse than an unmapped name.
+- Keep the printed assay name: "Urea" is not the same as "BUN" / "Blood Urea Nitrogen" (same molecule, different unit scale).
 
 Allowlist biomarkerId values:
 ${known}`;
