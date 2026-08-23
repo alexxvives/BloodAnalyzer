@@ -7,7 +7,7 @@ versioned and cited. **Do not ship invented numbers to real users.**
 
 | Dataset | Location | Citation status |
 |---|---|---|
-| Reference ranges v1.3.0 | `/data/reference-ranges/v1/markers.json` | **Mixed** — Mayo/ADA/ACC/KDIGO/Harris cited for the PANEL_CATALOG batch (ApoB, HbA1c, insulin, eGFR, ALP, bilirubin, albumin, free T3/T4, testosterone, SHBG, DHEA-S, prolactin, PSA, TIBC, TPO/TgAb, Omega-3 Index, male estradiol/FSH/LH); 26 CBC/chem rows still awaiting clinician review; calculated ratios and female cycle-phase hormones remain unsourced |
+| Reference ranges v1.3.1 | `/data/reference-ranges/v1/markers.json` | **Mixed** — Mayo/ADA/ACC/KDIGO/Harris plus the v1.3.1 Mayo CBC/liver/B12 batch (ALT, AST, WBC, platelets, MCV, RDW, vitamin B12); 19 CBC/chem rows still awaiting clinician review; calculated ratios and female cycle-phase hormones remain unsourced |
 | Population stats v1.8.1 | `/data/population-stats/v1/stats.json` | **Partial NHANES load** — see below |
 
 Until an entry is marked `sourced: true` **and** reviewed for production, treat
@@ -101,6 +101,51 @@ European urea interval (≈19–44) would falsely flag low. Conversion is wired 
 `lib/extraction/canonicalize.ts` from the **printed name**, because the two
 mg/dL scales overlap and cannot be told apart from the number alone.
 
+## Mayo CBC / liver / B12 batch (v1.3.1)
+
+These rows were marked sourced but still said "NEEDS CLINICIAN REVIEW". They
+now use Mayo Clinic Laboratories catalog intervals, with invented interiors
+removed:
+
+| biomarkerId | Interval used for bands | Catalog |
+|---|---|---|
+| `alt` | men 7–55 / women 7–45 U/L | [Mayo 8362](https://www.mayocliniclabs.com/test-catalog/Overview/8362) |
+| `ast` | men 8–48 / women 8–43 U/L | [Mayo 8360](https://www.mayocliniclabs.com/test-catalog/Overview/8360) |
+| `wbc` | 3.4–9.6 ×10⁹/L (3400–9600 /µL) | [Mayo CBC 9109](https://www.mayocliniclabs.com/test-catalog/Overview/9109) |
+| `platelets` | men 135–317 / women 157–371 ×10⁹/L | [Mayo CBC 9109](https://www.mayocliniclabs.com/test-catalog/Overview/9109) |
+| `mcv` | 78.2–97.9 fL | [Mayo CBC 9109](https://www.mayocliniclabs.com/test-catalog/Overview/9109) |
+| `rdw` | men 11.8–14.5% / women 12.2–16.1% | [Mayo CBC 9109](https://www.mayocliniclabs.com/test-catalog/Overview/9109) |
+| `vitamin-b12` | 180–914 ng/L (= pg/mL) | [Mayo 9154](https://www.mayocliniclabs.com/test-catalog/Overview/9154) |
+
+Still unverified (no matching Mayo page in this pass, or unit mismatch): TSH,
+folate, CRP vs hs-CRP, cortisol, transferrin, Lp(a), PDW, MCH/MCHC, and
+percentage differentials (Mayo CBC publishes absolute counts, not %).
+
+## Why US and European numbers differ
+
+Neither side is "more true." They are often answering different questions:
+
+1. **Units.** US labs report conventional units (mg/dL, g/dL, ng/mL). European
+   labs report SI units (mmol/L, g/L, nmol/L). Glucose 100 mg/dL = 5.6 mmol/L;
+   cholesterol 200 mg/dL = 5.17 mmol/L. Same physiology, different scale.
+2. **Same analyte, different name.** BUN vs urea is the textbook case (above).
+3. **Reference interval vs clinical decision limit.** A Mayo/NORIP interval is
+   the central 95% of a local healthy sample (CLSI EP28 / IFCC). ATP III, ADA,
+   ESC/EAS, and KDIGO publish *treatment* cutpoints. ESC/EAS 2019 LDL goals for
+   very-high-risk patients (<55 mg/dL / 1.4 mmol/L) are much tighter than ATP
+   III's "optimal <100" — they are risk targets, not "normal."
+4. **Assay.** Enzymes (ALT, AST, ALP, GGT) move with reagent, IFCC vs older
+   methods, and pyridoxal-5-phosphate. Mayo's ALT 7–55 is *that analyzer*.
+5. **Population.** Altitude, diet, BMI, and genetics shift the 95% window.
+   NORIP (Nordic) and Mayo (Rochester, MN) are both legitimate and will not
+   match.
+
+**Trust order for this product:** (1) the interval printed on the report that
+produced the number, (2) named guidelines for decision limits (ADA, KDIGO,
+ATP III / ACC, ESC/EAS, WHO), (3) named lab catalogs (Mayo, NORIP) as a
+fallback, (4) never an unsourced "common lab" guess. Europe is not more
+trustworthy than the US, or vice versa. The printed assay wins.
+
 ## Optimal interiors (v1.3.0)
 
 SiPhox-style extra-green wellness bands are unpublished and still not copied.
@@ -146,7 +191,7 @@ Three markers cited a guideline that did not contain the numbers attached to it:
 ### Review checklist before real user data
 
 - [ ] Clinician or qualified reviewer signs off on each band
-- [ ] Resolve the 27 rows still marked `sourced: true` with a "NEEDS CLINICIAN
+- [ ] Resolve the 19 rows still marked `sourced: true` with a "NEEDS CLINICIAN
       REVIEW" citation — each must gain a real citation or flip to
       `sourced: false`. The list is pinned in `reference-data.test.ts`; the test
       fails if it grows.

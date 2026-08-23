@@ -25,8 +25,6 @@ const BOUNDARY_TOLERANCE = 0.0011;
  * flip to `sourced: false`.
  */
 const AWAITING_CLINICIAN_REVIEW = new Set([
-  "alt",
-  "ast",
   "atypical-lymphs",
   "bands",
   "basophils",
@@ -39,18 +37,13 @@ const AWAITING_CLINICIAN_REVIEW = new Set([
   "lymphocytes",
   "mch",
   "mchc",
-  "mcv",
   "metamyelocytes",
   "monocytes",
   "myelocytes",
   "neutrophils",
   "pdw",
-  "platelets",
-  "rdw",
   "transferrin",
   "tsh",
-  "vitamin-b12",
-  "wbc",
 ]);
 
 function describeRow(range: ReferenceRange): string {
@@ -204,7 +197,9 @@ describe("reference-range data integrity", () => {
   const REFERENCE_INTERVAL_ONLY = new Set([
     "albumin",
     "alp",
+    "alt",
     "apo-a1",
+    "ast",
     "bilirubin-direct",
     "bilirubin-total",
     "c-peptide",
@@ -221,9 +216,12 @@ describe("reference-range data integrity", () => {
     "insulin",
     "iron-saturation",
     "lh",
+    "mcv",
+    "platelets",
     "prolactin",
     "psa",
     "rbc",
+    "rdw",
     "serum-iron",
     "shbg",
     "testosterone",
@@ -233,6 +231,8 @@ describe("reference-range data integrity", () => {
     "tpoab",
     "urea",
     "uric-acid",
+    "vitamin-b12",
+    "wbc",
   ]);
 
   it("uses only attention/good bands for reference-interval markers", () => {
@@ -265,6 +265,15 @@ describe("reference-range data integrity", () => {
         /lab-specific, not population-derived/i.test(r.label ?? ""),
       ),
     ).toBe(true);
+  });
+
+  it("grades ALT on sex-specific Mayo intervals", () => {
+    const female = getReferenceRange("alt", { sex: "female", ageYears: 40 });
+    const male = getReferenceRange("alt", { sex: "male", ageYears: 40 });
+    expect(female?.labHigh).toBe(45);
+    expect(male?.labHigh).toBe(55);
+    expect(female?.sourceRefs[0]?.label).toMatch(/Mayo/i);
+    expect(male?.sourceRefs[0]?.label).toMatch(/Mayo/i);
   });
 });
 

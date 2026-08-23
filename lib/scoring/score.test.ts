@@ -236,6 +236,41 @@ describe("scoreBiomarker", () => {
     ).toBe("attention");
   });
 
+  it("scores Mayo-sourced ALT, AST, and CBC counts", () => {
+    expect(
+      scoreBiomarker({
+        biomarkerId: "alt",
+        value: 28,
+        demographic: { sex: "male", ageYears: 40 },
+      }).status,
+    ).toBe("good");
+    expect(
+      scoreBiomarker({
+        biomarkerId: "alt",
+        value: 50,
+        demographic: { sex: "female", ageYears: 40 },
+      }).status,
+    ).toBe("attention");
+    expect(
+      scoreBiomarker({
+        biomarkerId: "wbc",
+        value: 6700,
+      }).status,
+    ).toBe("good");
+    expect(
+      scoreBiomarker({
+        biomarkerId: "wbc",
+        value: 11000,
+      }).status,
+    ).toBe("attention");
+    expect(
+      scoreBiomarker({
+        biomarkerId: "vitamin-b12",
+        value: 450,
+      }).status,
+    ).toBe("good");
+  });
+
   it("scores ADA/Mayo HbA1c and Mayo/ACC ApoB with published interiors", () => {
     expect(scoreBiomarker({ biomarkerId: "hba1c", value: 5.4 }).status).toBe(
       "optimal",
