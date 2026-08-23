@@ -1,3 +1,4 @@
+import { extractText, getDocumentProxy } from "unpdf";
 import { extractMarkersFromLabTextWithAi } from "./ai-lab-extractor";
 import type { Extractor } from "./types";
 
@@ -69,7 +70,6 @@ export const pdfTextExtractor: Extractor = {
 };
 
 async function extractPdfText(data: Uint8Array): Promise<string> {
-  const { extractText, getDocumentProxy } = await import("unpdf");
   const pdf = await getDocumentProxy(data);
   const { text } = await extractText(pdf, { mergePages: true });
   // unpdf types `text` as string when mergePages is true; tolerate arrays at runtime.

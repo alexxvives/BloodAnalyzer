@@ -41,6 +41,38 @@ describe("memoryReportRepository", () => {
     expect(own?.markers[0].userId).toBe("user-a");
   });
 
+  it("keeps earlier reports when another is saved for the same user", async () => {
+    const first = await memoryReportRepository.saveReport({
+      userId: "user-keep",
+      sourceFileName: "first.pdf",
+      markers: [
+        {
+          biomarkerId: "ldl-cholesterol",
+          name: "LDL",
+          value: 100,
+          unit: "mg/dL",
+        },
+      ],
+    });
+    const second = await memoryReportRepository.saveReport({
+      userId: "user-keep",
+      sourceFileName: "second.pdf",
+      markers: [
+        {
+          biomarkerId: "hdl-cholesterol",
+          name: "HDL",
+          value: 50,
+          unit: "mg/dL",
+        },
+      ],
+    });
+
+    const listed = await memoryReportRepository.listReportsForUser("user-keep");
+    expect(listed.map((r) => r.id).sort()).toEqual(
+      [first.id, second.id].sort(),
+    );
+  });
+
   it("deletes only the owner's report", async () => {
     const a = await memoryReportRepository.saveReport({
       userId: "user-del-a",
