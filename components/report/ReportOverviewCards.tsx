@@ -8,7 +8,6 @@ import { sectionPercentStatus } from "@/components/ui/SectionScoreRing";
 import {
   sectionOptimizationPercent,
   type ReportSection,
-  type SectionPopulationSummary,
 } from "@/lib/report/build-report";
 import type { ReportViewModel } from "@/lib/report/report-dto";
 import type { BiologicalAgeEstimate } from "@/lib/scoring/biological-age";
@@ -32,7 +31,6 @@ export function ReportOverviewCards({
     overview,
     bioAge,
     actionMarkers,
-    overallPopulation,
   } = model;
 
   return (
@@ -42,11 +40,7 @@ export function ReportOverviewCards({
         overview={overview}
         sectionHref={sectionHref}
       />
-      <OverallScoreCard
-        overview={overview}
-        bioAge={bioAge}
-        population={overallPopulation}
-      />
+      <OverallScoreCard overview={overview} bioAge={bioAge} />
       <ActionPlanCard demographic={demographic} markers={actionMarkers} />
     </div>
   );
@@ -137,11 +131,9 @@ function BiomarkerSummaryCard({
 function OverallScoreCard({
   overview,
   bioAge,
-  population,
 }: {
   overview: ReportViewModel["overview"];
   bioAge: BiologicalAgeEstimate;
-  population: SectionPopulationSummary;
 }) {
   const younger =
     bioAge.available && bioAge.deltaYears != null && bioAge.deltaYears < 0;
@@ -206,32 +198,9 @@ function OverallScoreCard({
             {overview.pct != null ? `${overview.pct}%` : "—"}
           </span>
         </div>
-        {population.available &&
-        population.userPercent != null &&
-        population.populationPercent != null &&
-        population.scoreDelta != null ? (
-          <div className="flex items-center justify-between gap-3">
-            <span className="text-muted">Vs average score</span>
-            <span className="tabular-nums text-foreground">
-              {population.userPercent}% vs {population.populationPercent}%
-              <span className="ml-2 text-xs text-muted">
-                ({scoreDeltaLabel(population)})
-              </span>
-            </span>
-          </div>
-        ) : null}
       </div>
     </div>
   );
-}
-
-function scoreDeltaLabel(summary: SectionPopulationSummary): string {
-  if (summary.scoreDelta == null || summary.direction === "equal") {
-    return "at average";
-  }
-  const abs = Math.abs(summary.scoreDelta);
-  const sign = summary.scoreDelta > 0 ? "+" : "−";
-  return `${sign}${abs} pts vs average`;
 }
 
 function SearchIcon() {

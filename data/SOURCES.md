@@ -7,7 +7,7 @@ versioned and cited. **Do not ship invented numbers to real users.**
 
 | Dataset | Location | Citation status |
 |---|---|---|
-| Reference ranges v1.3.3 | `/data/reference-ranges/v1/markers.json` | **Mixed** — Mayo/ADA/ACC/KDIGO/Harris/AHA plus v1.3.3 TSH, morning cortisol, folate, hs-CRP, Lp(a); 14 CBC/chem rows still awaiting clinician review; remaining calculated ratios and female cycle-phase hormones stay unsourced |
+| Reference ranges v1.3.4 | `/data/reference-ranges/v1/markers.json` | **Mixed** — Mayo/ADA/ACC/KDIGO/Harris/AHA plus Quest TC:HDL and LDL:HDL, ADA/ADAG eAG; 14 CBC/chem rows still awaiting clinician review; remaining calculated ratios and female cycle-phase hormones stay unsourced |
 | Population stats v1.8.1 | `/data/population-stats/v1/stats.json` | **Partial NHANES load** — see below |
 
 Until an entry is marked `sourced: true` **and** reviewed for production, treat
@@ -120,6 +120,24 @@ are visual references only and are not copied into the data layer.
 Still no NHANES demographic median for this ratio — the UI keeps
 **benchmark data not yet available** for population comparison.
 
+## Total cholesterol:HDL, LDL:HDL, and eAG (v1.3.4)
+
+| biomarkerId | Interval / cutpoints | Source |
+|---|---|---|
+| `tc-hdl-ratio` | adults <5.0 good / ≥5.0 attention (both sexes) | [Quest 7600](https://testdirectory.questdiagnostics.com/test/test-detail/7600/lipid-panel-standard) Cholesterol/HDL Ratio (calc) <5.0. No interior 3.5 band — Quest does not print one. |
+| `ldl-hdl-ratio` | sex-specific Quest 19543 risk tiers (Below Average / Average / Moderate / High Risk) | [Quest 19543](https://testdirectory.questdiagnostics.com/test/test-detail/19543/lipid-panel-with-ratios). Men: <2.28 / 2.29–4.90 / 4.91–7.12 / >7.13. Women: <2.34 / 2.35–4.12 / 4.13–5.56 / >5.57. Mapped optimal / good / fair / attention. |
+| `eag` | ADA/ADAG formula 28.7 × A1C − 46.7 mapped onto existing HbA1c bands | [ADA calculator](https://professional.diabetes.org/glucose_calc) + [Nathan 2008](https://doi.org/10.2337/dc08-0545). ~68–114 mg/dL ≡ A1C 4.0–5.6; then fair through A1C 6.4; attention from A1C ≥6.5. eAG is not an independent assay. |
+
+Still cannot grade without inventing or mixing disagreeing papers:
+
+- **`tg-hdl-ratio`** — McLaughlin-style insulin-resistance cutpoints disagree (~3.0 vs ~3.5 in mg/dL, and they differ by sex and SI vs conventional units). Shown with an explanation; not graded.
+- **`ldl-apo-b-ratio`** — particle-size research proxy; no Mayo/Quest/ACC interval.
+- **`bun-creatinine-ratio`**, **`ast-alt-ratio`** — teaching patterns, not catalog reference intervals. Grade BUN, creatinine, AST, and ALT instead.
+- **Hormone/thyroid calculated ratios** (FAI, % free T, T:C, cortisol:DHEA-S, free T3:T4, TSH:T4) — no named catalog interval; units and draw time are not standardized in this product.
+- **`vldl-cholesterol`**, **`uibc`** — still no matching Mayo page in this pass.
+
+Female cycle-phase estradiol / FSH / LH and female PSA stay unsourced (need cycle day / N/A).
+
 ## TSH, morning cortisol, folate, hs-CRP, Lp(a) (v1.3.3)
 
 These rows were `sourced: true` with "NEEDS CLINICIAN REVIEW" citations.
@@ -156,7 +174,7 @@ removed:
 Still unverified (no matching Mayo page in this pass, or unit mismatch):
 transferrin, PDW, MCH/MCHC, and percentage differentials (Mayo CBC 9109
 publishes absolute counts, not %). TSH, folate, cortisol, hs-CRP, and Lp(a)
-moved to v1.3.3.
+moved to v1.3.3. TC:HDL, LDL:HDL, and eAG moved to v1.3.4.
 
 ## Why US and European numbers differ
 
@@ -312,8 +330,9 @@ findings rather than range bugs. They are listed as explicit exceptions in
 Also missing from the catalog entirely: sodium, potassium, chloride, calcium,
 magnesium, phosphorus, bicarbonate, LDH, reticulocytes, MPV. Total protein and
 direct bilirubin are now Mayo-sourced. Remaining unsourced placeholders are
-other calculated ratios, VLDL, eAG, UIBC, and female cycle-phase
-estradiol/FSH/LH. ApoB:ApoA1 is Mayo APOAB-sourced (v1.3.2).
+LDL:ApoB, TG:HDL, hormone/thyroid calculated ratios, VLDL, UIBC, and female
+cycle-phase estradiol/FSH/LH. TC:HDL, LDL:HDL, and eAG are sourced as of
+v1.3.4. ApoB:ApoA1 is Mayo APOAB-sourced (v1.3.2).
 Electrolytes are still the dangerous-when-low gap.
 
 ## Biological age (educational)

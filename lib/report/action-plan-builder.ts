@@ -39,6 +39,29 @@ const KIDNEY_NAME_HINTS = [
   "gfr",
   "uric",
 ];
+const HORMONE_IDS = [
+  "estradiol",
+  "free-testosterone",
+  "testosterone",
+  "shbg",
+  "dhea",
+  "fsh",
+  "lh",
+  "prolactin",
+  "fai",
+  "progesterone",
+];
+const HORMONE_NAME_HINTS = [
+  "estradiol",
+  "estrogen",
+  "testosterone",
+  "shbg",
+  "dhea",
+  "fsh",
+  "lh",
+  "prolactin",
+  "androgen",
+];
 
 function needsAttention(m: ActionPlanMarkerInput): boolean {
   return (
@@ -75,6 +98,14 @@ function matchAny(m: ActionPlanMarkerInput, ids: string[], nameHints: string[]) 
 
 function isKidneyMarker(m: ActionPlanMarkerInput): boolean {
   return matchAny(m, KIDNEY_IDS, KIDNEY_NAME_HINTS);
+}
+
+function isHormoneMarker(m: ActionPlanMarkerInput): boolean {
+  return matchAny(m, HORMONE_IDS, HORMONE_NAME_HINTS);
+}
+
+function isHydrationFood(food: string): boolean {
+  return /\b(water|liter|litre|ml|fluids?)\b/i.test(food);
 }
 
 function opt(
@@ -509,6 +540,55 @@ function themeForMarkers(markers: ActionPlanMarkerInput[]): FocusTheme[] {
     });
   }
 
+  const hormones = pool.filter(isHormoneMarker);
+  if (hormones.length) {
+    const cs = cuesFor(hormones);
+    themes.push({
+      id: "hormones",
+      label: "Hormone-aware rhythm",
+      priority: hormones.some(
+        (m) => m.status === "attention" || m.labStatus === "out_of_range",
+      )
+        ? "high"
+        : "medium",
+      breakfast: [
+        opt(
+          "Eat a protein-forward breakfast within about an hour of waking: eggs or Greek yogurt with fruit, OR tofu scramble with vegetables",
+          "Steady morning protein is a practical habit people often pair with sex-hormone markers — not a treatment",
+          cueAt(cs, 0),
+        ),
+      ],
+      lunch: [
+        opt(
+          "Build lunch around protein plus plants: fish/beans/chicken with a large salad and olive oil, OR a lentil–veg bowl",
+          "A balanced midday plate supports energy while you keep an eye on hormone-related markers",
+          cueAt(cs, 1),
+        ),
+      ],
+      dinner: [
+        opt(
+          "Keep dinner earlier when you can: baked fish or legumes with vegetables — skip a late heavy takeaway",
+          "Earlier, lighter dinners are commonly discussed alongside sleep quality and hormone-related markers",
+          cueAt(cs, 2),
+        ),
+      ],
+      snack: [
+        opt(
+          "If you need a snack, choose yogurt with berries or an apple with a small handful of nuts — skip sugary drinks",
+          "A protein-plus-fiber snack is easier to repeat than grazing on sweets",
+          cueAt(cs, 0),
+        ),
+      ],
+      habits: [
+        opt(
+          "Do 20–30 minutes of resistance work (bodyweight, bands, or weights) or a brisk walk today, not late at night",
+          "Daytime movement and strength work are lifestyle habits often discussed with testosterone and estradiol context — not a diagnosis",
+          cueAt(cs, 1),
+        ),
+      ],
+    });
+  }
+
   const cortisol = pool.filter((m) =>
     matchAny(m, ["cortisol", "tsh"], ["cortisol", "tsh", "thyroid"]),
   );
@@ -648,7 +728,6 @@ function buildHydrationItems(
 ): HydrationPlan {
   const kidneyFlagged = rankMarkers(flagged.filter(isKidneyMarker));
   const kidneyOnPanel = markers.filter(isKidneyMarker);
-  const primaryOther = rankMarkers(flagged).find((m) => !isKidneyMarker);
 
   if (kidneyFlagged.length > 0) {
     const names = kidneyFlagged
@@ -701,25 +780,19 @@ function buildHydrationItems(
     };
   }
 
-  // No kidney markers on this panel — still recommend hydration, but be honest.
-  const fallbackCue = primaryOther
-    ? cue(primaryOther)
-    : undefined;
+  // No kidney markers — recommend water without pinning it to a sex-hormone cue.
   return {
     wake: opt(
       "Drink 300–400 ml of water before coffee or tea",
       "Hydration supports overall day-to-day health; this panel doesn’t include kidney markers (urea, creatinine, eGFR) — worth adding on a future draw",
-      fallbackCue,
     ),
     morning: opt(
       "Sip toward about 1 liter by lunchtime (roughly a glass every 60–90 minutes)",
       "Spreading water through the morning beats one late chug — useful generally, and especially relevant if you later track kidney markers",
-      fallbackCue,
     ),
     dayFluid: opt(
       "Aim for about 2–2.5 liters of fluids across the whole day (more if you exercise or it’s hot)",
       "A concrete daily fluid target for overall health; consider asking your clinician about urea and creatinine if kidney context is missing",
-      fallbackCue,
     ),
   };
 }
@@ -747,10 +820,9 @@ export function buildPersonalizedActionPlan(
           .join(", ")}${flagged.length > 3 ? ", and related markers" : ""}. Discuss lasting changes with your clinician.`
       : `Markers look broadly steady for a ${input.demographic.sex}, age ${input.demographic.ageYears} profile — a balanced maintenance routine to discuss with your clinician as needed.`;
 
-  const windDownCue =
-    flagged[0] != null
-      ? cue(flagged[0])
-      : top[0]?.habits[0]?.marker;
+  const spreadPool = flagged.length > 0 ? flagged : rankMarkers(input.markers);
+  const spreadCues = cuesFor(spreadPool);
+  const windDownCue = cueAt(spreadCues, 3, cueAt(spreadCues, 0));
 
   const routine: ActionPlanBlock[] = [
     {
@@ -766,8 +838,10 @@ export function buildPersonalizedActionPlan(
           "Spend 10–15 minutes outside or by a bright window with easy mobility/stretching",
           top.some((t) => t.id === "vitamins")
             ? "Short morning daylight and movement help set the day’s rhythm — often discussed with vitamin D"
-            : "Short morning daylight and movement help set the day’s rhythm",
-          top[0]?.habits[0]?.marker ?? (flagged[0] ? cue(flagged[0]) : undefined),
+            : top.some((t) => t.id === "hormones")
+              ? "Morning daylight and light movement help set daily rhythm around hormone-related markers"
+              : "Short morning daylight and movement help set the day’s rhythm",
+          cueAt(spreadCues, 2, cueAt(spreadCues, 0)),
         ),
       ],
     },
@@ -810,12 +884,42 @@ export function buildPersonalizedActionPlan(
           "Screens down by 22:00; 5–10 minutes of stretch, reading, or breathwork before sleep",
           top.some((t) => t.id === "inflammation" || t.id === "rhythm")
             ? "Protecting sleep makes tomorrow’s routine easier — especially with inflammation or rhythm markers in focus"
-            : "Protecting sleep makes tomorrow’s routine easier to keep",
+            : top.some((t) => t.id === "hormones")
+              ? "Protecting sleep is a practical habit alongside hormone-related markers — not a treatment"
+              : "Protecting sleep makes tomorrow’s routine easier to keep",
           windDownCue,
         ),
       ],
     },
   ].filter((b) => b.items.length > 0);
 
-  return { summary, routine, focus };
+  return {
+    summary,
+    routine: spreadRoutineCues(routine, spreadCues, input.markers.some(isKidneyMarker)),
+    focus,
+  };
+}
+
+/**
+ * Rotate "given your …" cues across the day so one flagged marker
+ * (e.g. estradiol) cannot own every line. Hydration stays kidney-only.
+ */
+function spreadRoutineCues(
+  routine: ActionPlanBlock[],
+  cues: string[],
+  kidneyOnPanel: boolean,
+): ActionPlanBlock[] {
+  if (cues.length === 0) return routine;
+  let i = 0;
+  return routine.map((block) => ({
+    ...block,
+    items: block.items.map((item) => {
+      if (isHydrationFood(item.food) && !kidneyOnPanel) {
+        return { food: item.food, why: item.why };
+      }
+      const marker = cues[i % cues.length];
+      i += 1;
+      return { ...item, marker };
+    }),
+  }));
 }

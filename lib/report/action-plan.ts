@@ -5,12 +5,14 @@ import {
 } from "@/lib/ai/groq";
 import {
   cueHasStatusDetail,
+  foodLooksGlued,
   givenMarkerPhrase,
   isVagueMarkerCue,
   plainMarkerCue,
   priorityMarkers,
   resolveCanonicalMarkerCue,
   splitGluedMarkerCue,
+  stripGivenClauseFromFood,
   stripLabValues,
 } from "@/lib/report/action-plan-language";
 import type { Demographic } from "@/lib/types";
@@ -83,17 +85,19 @@ Action style (critical):
 - Good: "Drink about 2–2.5 liters of water across the day (a glass with each meal and between)"
 - Good: "Build breakfast around protein + fiber: Greek yogurt with berries, OR eggs with avocado toast"
 - Bad: vague "eat healthy" / "stay active" / chef-precise recipes with no times
+- Bad: stuffing the marker cue into food ("…coffee — given your out-of-range Estradiol…")
 
 Marker language (critical):
-- "marker" must be a plain-language phrase starting with "given …" (no numbers).
+- Copy each item's "marker" from the seed, OR pick from the cue list in the user message. Do not invent new cue wording.
 - EVERY cue MUST include a grade or direction word: higher, lower, optimal, good, above-optimal, below-optimal, running high, running low.
-- Good: "given your higher creatinine", "given your above-optimal urea", "given your optimal creatinine", "given your below-optimal HDL"
+- Good: "given your higher creatinine", "given your above-optimal urea"
 - Bad: "given your creatinine" (missing higher/lower/optimal/good)
-- Use the cue phrases provided in the user message — do not invent diagnoses.
-- ALWAYS name a specific biomarker (LDL, HDL, glucose, A1C, ferritin, urea, creatinine, eGFR, ALT, vitamin D, etc.).
-- FORBIDDEN vague cues: "given your overall nutritional balance", "given your overall health", "given your overall markers", "given your wellness".
-- "why" is a SEPARATE field (never glued onto "marker"). It must also name the biomarker AND its direction/grade.
-- Hydration: tie water goals to urea / creatinine / eGFR / uric acid when present, with their grade words. If absent, say overall health and that kidney markers are worth adding later.
+- Bad: concatenating the name twice ("given your out-of-range EstradiolEstradiol is out-of-range")
+- ALWAYS name a specific biomarker. FORBIDDEN vague cues: "overall nutritional balance", "overall health", "wellness".
+- "why" is a SEPARATE field (never glued onto "marker").
+- Rotate cues across the day when 2+ priority markers exist. NEVER hang every line on one marker (e.g. estradiol on water, breakfast, lunch, snack, dinner, and sleep).
+- Hydration (water / liters) must NOT use sex-hormone cues. Tie water to urea / creatinine / eGFR when present; otherwise omit "marker" on water lines.
+- Hormone-flagged panels: vary meals, movement, sleep, and protein. Do not claim water "balances estradiol".
 
 Sentence shape:
 - Rendered UI is: "{food} — {marker}" with marker hover showing "why".
@@ -138,13 +142,13 @@ Other markers (context only):
 ${others.join("\n") || "(none)"}
 
 Rewrite the seed into a DISTINCT daily routine tailored to THIS user's flagged markers:
+- Rewrite food actions so they stay specific, but KEEP each seed item's "marker" unless you are rotating among the cue list.
 - Different users with different flagged markers must get different meals/habits — do not emit a generic one-size-fits-all plan.
 - Keep timeline: wake → movement → breakfast → hydration → lunch → snack → dinner → habits → wind-down.
-- Every item "food" is a specific action (minutes, liters/glasses, meal pattern with / or OR swaps).
-- Every item has "marker" = one of the cue strings above (must keep the grade/direction words — never bare "given your creatinine").
-- Every item has "why" as its own sentence naming the same biomarker + grade (never glue why onto marker).
+- Every item "food" is a specific action (minutes, liters/glasses, meal pattern with / or OR swaps) with NO "given your" text inside it.
 - Rotate cues across items when multiple priority markers exist (do not hang every line on one marker).
-- summary: 1–2 sentences naming the focus biomarkers with grade words (e.g. "higher LDL", "urea running high") — NO lab values.
+- Hydration lines: no sex-hormone marker field.
+- summary: 1–2 sentences naming the focus biomarkers with grade words — NO lab values.
 - focus: up to 3 short coach-style labels without values.
 
 Schema:
@@ -173,11 +177,16 @@ function asFoodItems(raw: unknown): ActionPlanFoodItem[] {
   return raw
     .map((item) => {
       if (typeof item === "string") {
-        return { food: stripLabValues(item.trim()), why: "" };
+        return {
+          food: stripGivenClauseFromFood(stripLabValues(item.trim())),
+          why: "",
+        };
       }
       if (item && typeof item === "object") {
         const o = item as Record<string, unknown>;
-        const food = stripLabValues(String(o.food ?? o.text ?? "").trim());
+        const food = stripGivenClauseFromFood(
+          stripLabValues(String(o.food ?? o.text ?? "").trim()),
+        );
         const why = stripLabValues(String(o.why ?? o.reason ?? "").trim());
         const markerRaw = o.marker ?? o.markerRef ?? o.linkedMarker;
         const marker =
@@ -288,6 +297,7 @@ export function alignActionPlanCues(
   const routine = plan.routine.map((block) => ({
     ...block,
     items: block.items.map((item) => {
+      let food = stripGivenClauseFromFood(stripLabValues(item.food));
       let marker = item.marker ? stripLabValues(item.marker) : undefined;
       let why = item.why ? stripLabValues(item.why) : "";
 
@@ -309,7 +319,7 @@ export function alignActionPlanCues(
         why = `Lifestyle habit paired with ${plain} — discuss lasting changes with your clinician, not a diagnosis.`;
       }
 
-      return { ...item, marker, why };
+      return { ...item, food, marker, why };
     }),
   }));
 
@@ -322,6 +332,33 @@ export function alignActionPlanCues(
   }
 
   return { ...plan, summary, routine };
+}
+
+/** True when Groq output is still collapsed onto one marker or glued together. */
+export function actionPlanFailsQuality(
+  plan: ActionPlanResult,
+  markers: ActionPlanMarkerInput[],
+): boolean {
+  const items = plan.routine.flatMap((b) => b.items);
+  if (items.some((i) => foodLooksGlued(i.food))) return true;
+  if (items.some((i) => i.marker && /([A-Za-z]{4,})\1/.test(i.marker))) {
+    return true;
+  }
+
+  const flagged = priorityMarkers(markers).filter(
+    (m) =>
+      m.status === "attention" ||
+      m.status === "fair" ||
+      m.labStatus === "out_of_range",
+  );
+  if (flagged.length < 2) return false;
+
+  const cueNames = items
+    .map((i) => i.marker?.toLowerCase() ?? "")
+    .filter((m) => m.startsWith("given "));
+  if (cueNames.length < 3) return false;
+  const unique = new Set(cueNames);
+  return unique.size < 2;
 }
 
 export { SYSTEM_PROMPT };
@@ -343,7 +380,7 @@ export async function generateActionPlanWithGroq(
         groqJsonChatBody({
           system: SYSTEM_PROMPT,
           user: buildActionPlanUserPrompt(input, seed),
-          temperature: 0.7,
+          temperature: 0.4,
         }),
       ),
     },
@@ -357,8 +394,12 @@ export async function generateActionPlanWithGroq(
   }
 
   const data: unknown = await response.json();
-  return alignActionPlanCues(
+  const rewritten = alignActionPlanCues(
     parseActionPlanJson(readGroqJsonText(data)),
     input.markers,
   );
+  if (actionPlanFailsQuality(rewritten, input.markers)) {
+    return alignActionPlanCues(seed, input.markers);
+  }
+  return rewritten;
 }

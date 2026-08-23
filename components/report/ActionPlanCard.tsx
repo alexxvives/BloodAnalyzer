@@ -118,8 +118,7 @@ export function ActionPlanCard({ demographic, markers }: ActionPlanCardProps) {
           <div className="mt-4 flex flex-1 flex-col">
             <p className="text-sm leading-relaxed text-muted">{error}</p>
             <p className="mt-2 text-xs text-muted">
-              We only show an AI-written routine when generation succeeds — no
-              placeholder plan.
+              Lifestyle suggestions only — not medical advice.
             </p>
           </div>
         ) : null}

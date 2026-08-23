@@ -16,6 +16,7 @@ Read [`knowledge/index.md`](knowledge/index.md) first. Append notable
 decisions to [`knowledge/log.md`](knowledge/log.md). Sourcing or filling
 biomarker gaps: follow [`.cursor/skills/source-biomarker/SKILL.md`](.cursor/skills/source-biomarker/SKILL.md)
 and finish every sourceable marker in the backlog, not one example.
+Daily-routine / Groq plan work: follow [`.cursor/skills/action-plan/SKILL.md`](.cursor/skills/action-plan/SKILL.md).
 
 ## Project
 

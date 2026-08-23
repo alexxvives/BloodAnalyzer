@@ -1,5 +1,6 @@
 import { requireUser } from "@/lib/auth/session";
 import {
+  alignActionPlanCues,
   generateActionPlanWithGroq,
   type ActionPlanRequestBody,
 } from "@/lib/report/action-plan";
@@ -9,8 +10,9 @@ import { NextResponse } from "next/server";
 export const runtime = "nodejs";
 
 /**
- * Lifestyle-only action plan via Groq.
- * Requires GROQ_API_KEY — no seed/fallback plan when the model is unavailable.
+ * Lifestyle-only action plan.
+ * Prefers a Groq rewrite of the biomarker-aware seed; ships the seed when
+ * Groq is missing, errors, or produces glued/one-marker copy.
  * Educational suggestions — not medical advice / diagnosis.
  */
 export async function POST(request: Request) {
@@ -39,17 +41,6 @@ export async function POST(request: Request) {
     );
   }
 
-  const apiKey = process.env.GROQ_API_KEY;
-  if (!apiKey) {
-    return NextResponse.json(
-      {
-        error:
-          "Action plan unavailable — Groq is not configured. Set GROQ_API_KEY to enable personalized routines.",
-      },
-      { status: 503 },
-    );
-  }
-
   const markers = body.markers.slice(0, 40).map((m) => ({
     id: String(m.id ?? ""),
     name: String(m.name ?? "Marker"),
@@ -63,22 +54,21 @@ export async function POST(request: Request) {
   }));
 
   const input = { demographic: body.demographic, markers };
-  const seed = buildPersonalizedActionPlan(input);
+  const seed = alignActionPlanCues(buildPersonalizedActionPlan(input), markers);
+
+  const apiKey = process.env.GROQ_API_KEY;
+  if (!apiKey) {
+    return NextResponse.json({ plan: seed, source: "seed" });
+  }
 
   try {
     const plan = await generateActionPlanWithGroq(input, apiKey, seed);
     return NextResponse.json({ plan, source: "groq" });
   } catch (err) {
     console.error(
-      "[action-plan] Groq failed",
+      "[action-plan] Groq failed; using seed",
       err instanceof Error ? err.message : err,
     );
-    return NextResponse.json(
-      {
-        error:
-          "Action plan unavailable — the AI routine generator failed. Try again in a moment.",
-      },
-      { status: 502 },
-    );
+    return NextResponse.json({ plan: seed, source: "seed" });
   }
 }

@@ -2,6 +2,8 @@ import { describe, expect, it } from "vitest";
 import {
   givenMarkerPhrase,
   plainMarkerCue,
+  splitGluedMarkerCue,
+  stripGivenClauseFromFood,
   stripLabValues,
 } from "./action-plan-language";
 
@@ -95,5 +97,20 @@ describe("action-plan-language", () => {
       status: "optimal",
       labStatus: "in_range",
     })).toBe("given your optimal creatinine");
+  });
+
+  it("splits concatenated marker names glued to a why sentence", () => {
+    const split = splitGluedMarkerCue(
+      "given your out-of-range EstradiolEstradiol is out-of-range, and starting the day hydrated helps hormone balance.",
+    );
+    expect(split.marker).toMatch(/given your out-of-range Estradiol$/i);
+    expect(split.marker).not.toMatch(/EstradiolEstradiol/);
+    expect(split.spilledWhy).toMatch(/is out-of-range/i);
+
+    expect(
+      stripGivenClauseFromFood(
+        "Drink a 300-ml glass of water before your morning coffee — given your out-of-range EstradiolEstradiol is out-of-range, and starting the day hydrated helps hormone balance.",
+      ),
+    ).toBe("Drink a 300-ml glass of water before your morning coffee");
   });
 });

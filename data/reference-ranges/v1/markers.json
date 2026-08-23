@@ -1,7 +1,7 @@
 {
-  "version": "1.3.3",
+  "version": "1.3.4",
   "reviewStatus": "provisional",
-  "notes": "Educational seed. NOT clinician-reviewed. Prefer printed lab intervals when available. Do not treat as diagnosis. v1.3.3: sourced TSH (Mayo STSH 0.3-4.2), morning cortisol (Mayo CORT a.m. 7-25), folate (Mayo FOL >=4), hs-CRP (AHA/CDC 2003 tertiles), and Lp(a) (ACC/AHA 2018 >=50). v1.3.2: Mayo APOAB ApoB:ApoA1. Remaining calculated ratios, UIBC, VLDL, eAG, female cycle-phase hormones, and analyzer-specific CBC indices stay unsourced or in the review backlog. See data/SOURCES.md.",
+  "notes": "Educational seed. NOT clinician-reviewed. Prefer printed lab intervals when available. Do not treat as diagnosis. v1.3.4: sourced TC:HDL (Quest 7600 <5.0), LDL:HDL (Quest 19543 sex-specific risk tiers), and eAG (ADA/ADAG formula mapped onto existing HbA1c bands). Remaining calculated ratios (LDL:ApoB, TG:HDL, hormone/thyroid ratios), UIBC, VLDL, female cycle-phase hormones, and analyzer-specific CBC indices stay unsourced or in the review backlog. See data/SOURCES.md.",
   "markers": [
     {
       "biomarkerId": "total-cholesterol",
@@ -2655,15 +2655,43 @@
       "sectionId": "metabolic",
       "unit": "mg/dL",
       "loincCode": "27353-2",
-      "sourced": false,
-      "labLow": null,
-      "labHigh": null,
-      "bands": [],
+      "sourced": true,
+      "labLow": 68.1,
+      "labHigh": 114.02,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 68.099
+        },
+        {
+          "status": "optimal",
+          "min": 68.1,
+          "max": 114.02
+        },
+        {
+          "status": "fair",
+          "min": 114.021,
+          "max": 136.98
+        },
+        {
+          "status": "attention",
+          "min": 136.981,
+          "max": null
+        }
+      ],
       "sourceRefs": [
         {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
+          "label": "ADA eAG/A1C calculator — eAG mg/dL = 28.7 × A1C − 46.7, mapped onto this catalog's HbA1c bands",
+          "citation": "American Diabetes Association eAG/A1C Conversion Calculator. Formula from Nathan DM et al., ADAG Study Group. Translating the A1C assay into estimated average glucose values. Diabetes Care. 2008;31:1473-1478: eAG (mg/dL) = 28.7 × A1C − 46.7. Cutpoints here are that formula applied to the already-sourced HbA1c bands (Mayo HBA1C 4.0-5.6 plus ADA prediabetes 5.7-6.4 / diabetes >=6.5): A1C 4.0 → 68.1; 5.6 → 114.02; 6.4 → 136.98; 6.5 → 139.85. Bands: attention <68.1 / optimal 68.1-114.02 / fair 114.021-136.98 / attention >=136.981. eAG is not an independent assay — it restates A1C in glucose units.",
+          "url": "https://professional.diabetes.org/glucose_calc",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "Nathan et al. 2008 — ADAG formula (Diabetes Care)",
+          "citation": "Nathan DM, Kuenen J, Borg R, Zheng H, Schoenfeld D, Heine RJ; A1c-Derived Average Glucose Study Group. Translating the A1C assay into estimated average glucose values. Diabetes Care. 2008;31(8):1473-1478. doi:10.2337/dc08-0545.",
+          "url": "https://doi.org/10.2337/dc08-0545",
+          "verifiedAt": "2026-08-23"
         }
       ]
     },
@@ -2692,15 +2720,28 @@
       "subtitle": "Calculated total cholesterol / HDL",
       "sectionId": "lipid",
       "unit": "ratio",
-      "sourced": false,
+      "loincCode": "9830-1",
+      "sourced": true,
       "labLow": null,
-      "labHigh": null,
-      "bands": [],
+      "labHigh": 5,
+      "bands": [
+        {
+          "status": "good",
+          "min": null,
+          "max": 4.999
+        },
+        {
+          "status": "attention",
+          "min": 5,
+          "max": null
+        }
+      ],
       "sourceRefs": [
         {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
+          "label": "Quest Diagnostics Lipid Panel, Standard (7600) — Cholesterol/HDL Ratio (calc) <5.0 (both sexes)",
+          "citation": "Quest Diagnostics test 7600 (Lipid Panel, Standard), Reference Range(s): Cholesterol/HDL Ratio (calc) <5.0 for adult males and females. That is the only named cutpoint on the page; no interior 'ideal 3.5' band is published there, so none is claimed here. Lab in-range is <5.0. Lower is on the more favorable side of this catalog flag.",
+          "url": "https://testdirectory.questdiagnostics.com/test/test-detail/7600/lipid-panel-standard",
+          "verifiedAt": "2026-08-23"
         }
       ]
     },
@@ -2710,17 +2751,89 @@
       "subtitle": "Calculated LDL / HDL",
       "sectionId": "lipid",
       "unit": "ratio",
-      "sourced": false,
+      "loincCode": "11054-4",
+      "sourced": true,
       "labLow": null,
-      "labHigh": null,
-      "bands": [],
+      "labHigh": 4.9,
+      "bands": [
+        {
+          "status": "optimal",
+          "min": null,
+          "max": 2.279
+        },
+        {
+          "status": "good",
+          "min": 2.28,
+          "max": 4.9
+        },
+        {
+          "status": "fair",
+          "min": 4.901,
+          "max": 7.12
+        },
+        {
+          "status": "attention",
+          "min": 7.121,
+          "max": null
+        }
+      ],
       "sourceRefs": [
         {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
+          "label": "Quest Diagnostics Lipid Panel with Ratios (19543) — male LDL/HDL Below Average <2.28, Average 2.29-4.90, Moderate 4.91-7.12, High Risk >7.13",
+          "citation": "Quest Diagnostics test 19543 (Lipid Panel with Ratios). Adult male LDL/HDL Ratio (Calc): Below Average Risk <2.28; Average Risk 2.29-4.90; Moderate Risk 4.91-7.12; High Risk >7.13. Mapped as optimal <2.28 / good through Average / fair through Moderate / attention at High Risk. 0.01 holes in Quest's printed table are closed to 0.001 so scoring has no gap. Lab in-range is through Average Risk (<=4.90).",
+          "url": "https://testdirectory.questdiagnostics.com/test/test-detail/19543/lipid-panel-with-ratios",
+          "verifiedAt": "2026-08-23"
         }
-      ]
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 18
+      }
+    },
+    {
+      "biomarkerId": "ldl-hdl-ratio",
+      "name": "LDL-C:HDL-C Ratio",
+      "subtitle": "Calculated LDL / HDL",
+      "sectionId": "lipid",
+      "unit": "ratio",
+      "loincCode": "11054-4",
+      "sourced": true,
+      "labLow": null,
+      "labHigh": 4.12,
+      "bands": [
+        {
+          "status": "optimal",
+          "min": null,
+          "max": 2.339
+        },
+        {
+          "status": "good",
+          "min": 2.34,
+          "max": 4.12
+        },
+        {
+          "status": "fair",
+          "min": 4.121,
+          "max": 5.56
+        },
+        {
+          "status": "attention",
+          "min": 5.561,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Quest Diagnostics Lipid Panel with Ratios (19543) — female LDL/HDL Below Average <2.34, Average 2.35-4.12, Moderate 4.13-5.56, High Risk >5.57",
+          "citation": "Quest Diagnostics test 19543 (Lipid Panel with Ratios). Adult female LDL/HDL Ratio (Calc): Below Average Risk <2.34; Average Risk 2.35-4.12; Moderate Risk 4.13-5.56; High Risk >5.57. Mapped as optimal <2.34 / good through Average / fair through Moderate / attention at High Risk. 0.01 holes in Quest's printed table are closed to 0.001 so scoring has no gap. Lab in-range is through Average Risk (<=4.12).",
+          "url": "https://testdirectory.questdiagnostics.com/test/test-detail/19543/lipid-panel-with-ratios",
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "female",
+        "ageMin": 18
+      }
     },
     {
       "biomarkerId": "apo-b-apo-a1-ratio",

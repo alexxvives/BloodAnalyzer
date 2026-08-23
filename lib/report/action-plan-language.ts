@@ -52,6 +52,14 @@ const VAGUE_CUE =
 function friendlyName(m: ActionPlanMarkerInput): string {
   const id = m.id.toLowerCase();
   const name = m.name.trim();
+  if (id.includes("ldl") && id.includes("hdl")) return "LDL to HDL ratio";
+  if (id.includes("ldl") && id.includes("apo")) return "LDL to ApoB ratio";
+  if (id.includes("tg-hdl") || (id.includes("triglyceride") && id.includes("hdl"))) {
+    return "triglycerides to HDL ratio";
+  }
+  if (id.includes("tc-hdl") || (id.includes("total-cholesterol") && id.includes("hdl"))) {
+    return "total cholesterol to HDL ratio";
+  }
   if (id.includes("ldl")) return "LDL cholesterol";
   if (id.includes("hdl")) return "HDL cholesterol";
   if (id.includes("triglyceride")) return "triglycerides";
@@ -64,6 +72,9 @@ function friendlyName(m: ActionPlanMarkerInput): string {
   if (id.includes("uric")) return "uric acid";
   if (id.includes("vitamin-d")) return "vitamin D";
   if (id.includes("vitamin-b12") || id.includes("b12")) return "vitamin B12";
+  if (id.includes("free-testosterone")) return "free testosterone";
+  if (id.includes("estradiol")) return "estradiol";
+  if (id.includes("testosterone")) return "testosterone";
   if (id.includes("lp-a") || name.toLowerCase().includes("lp(a)")) {
     return "Lp(a)";
   }
@@ -146,13 +157,24 @@ export function isVagueMarkerCue(cue: string): boolean {
 
 /**
  * Groq sometimes glues the why sentence onto the marker cue
- * ("given your creatinineMorning hydration…"). Split that apart.
+ * ("given your creatinineMorning hydration…") or concatenates the
+ * marker name twice ("EstradiolEstradiol is out-of-range…").
  */
 export function splitGluedMarkerCue(raw: string): {
   marker: string;
   spilledWhy?: string;
 } {
   const trimmed = raw.trim();
+
+  const duplicatedName = trimmed.match(
+    /^(given\s+your\s+.+?\b)([A-Za-z][A-Za-z0-9().%-]{2,})\2\b([\s\S]*)$/,
+  );
+  if (duplicatedName) {
+    const marker = `${duplicatedName[1]}${duplicatedName[2]}`.trim();
+    const spilled = duplicatedName[3]?.trim();
+    return spilled ? { marker, spilledWhy: spilled } : { marker };
+  }
+
   const glued = trimmed.match(
     /^(given\s+your\s+.+?)([A-Z][a-z].{12,})$/,
   );
@@ -160,6 +182,18 @@ export function splitGluedMarkerCue(raw: string): {
     return { marker: glued[1]!.trim(), spilledWhy: glued[2]!.trim() };
   }
   return { marker: trimmed };
+}
+
+/** Model often stuffs " — given your …" into the action text. */
+export function stripGivenClauseFromFood(food: string): string {
+  return food
+    .replace(/\s*[—–-]\s*given\s+your\b[\s\S]*$/i, "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
+export function foodLooksGlued(food: string): boolean {
+  return /\bgiven\s+your\b/i.test(food) || /([A-Za-z]{4,})\1/i.test(food);
 }
 
 /** Pick the best canonical cue for a free-text marker label. */

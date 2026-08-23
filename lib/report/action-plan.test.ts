@@ -125,4 +125,53 @@ describe("parseActionPlanJson", () => {
     expect(item?.why).toMatch(/above-optimal creatinine/i);
     expect(plan.summary).toMatch(/above-optimal creatinine/i);
   });
+
+  it("strips glued given-your clauses from food and splits EstradiolEstradiol", () => {
+    const plan = alignActionPlanCues(
+      {
+        summary: "Focus on hormones.",
+        focus: ["Rhythm"],
+        routine: [
+          {
+            time: "7:00",
+            title: "Wake",
+            items: [
+              {
+                food: "Drink a 300-ml glass of water before coffee — given your out-of-range EstradiolEstradiol is out-of-range, and starting the day hydrated helps hormone balance.",
+                marker:
+                  "given your out-of-range EstradiolEstradiol is out-of-range, and starting the day hydrated helps hormone balance.",
+                why: "",
+              },
+            ],
+          },
+        ],
+      },
+      [
+        {
+          id: "estradiol",
+          name: "Estradiol",
+          section: "Hormones",
+          value: 55,
+          unit: "pg/mL",
+          status: "attention",
+          labStatus: "out_of_range",
+        },
+        {
+          id: "free-testosterone",
+          name: "Free Testosterone",
+          section: "Hormones",
+          value: 4,
+          unit: "pg/mL",
+          status: "attention",
+          labStatus: "out_of_range",
+        },
+      ],
+    );
+
+    const item = plan.routine[0]?.items[0];
+    expect(item?.food).not.toMatch(/given your/i);
+    expect(item?.food).toMatch(/water/i);
+    expect(item?.marker).not.toMatch(/EstradiolEstradiol/);
+    expect(item?.marker).toMatch(/given your/i);
+  });
 });

@@ -203,7 +203,38 @@ describe("scoreBiomarker", () => {
     ).toBe("good");
     expect(
       scoreBiomarker({ biomarkerId: "tc-hdl-ratio", value: 2.4 }).rangeAvailable,
-    ).toBe(false);
+    ).toBe(true);
+    expect(scoreBiomarker({ biomarkerId: "tc-hdl-ratio", value: 2.4 }).status).toBe(
+      "good",
+    );
+    expect(scoreBiomarker({ biomarkerId: "tc-hdl-ratio", value: 5.4 }).status).toBe(
+      "attention",
+    );
+
+    const ldlHdlMale = scoreBiomarker({
+      biomarkerId: "ldl-hdl-ratio",
+      value: 2.0,
+      demographic: { sex: "male", ageYears: 40 },
+    });
+    expect(ldlHdlMale.rangeAvailable).toBe(true);
+    expect(ldlHdlMale.status).toBe("optimal");
+    expect(
+      scoreBiomarker({
+        biomarkerId: "ldl-hdl-ratio",
+        value: 8.0,
+        demographic: { sex: "male", ageYears: 40 },
+      }).status,
+    ).toBe("attention");
+
+    expect(scoreBiomarker({ biomarkerId: "eag", value: 100 }).status).toBe(
+      "optimal",
+    );
+    expect(scoreBiomarker({ biomarkerId: "eag", value: 125 }).status).toBe(
+      "fair",
+    );
+    expect(scoreBiomarker({ biomarkerId: "eag", value: 155 }).status).toBe(
+      "attention",
+    );
   });
 
   it("grades TSH, morning cortisol, folate, hs-CRP, and Lp(a) on cited cutpoints", () => {

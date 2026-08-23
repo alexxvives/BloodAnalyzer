@@ -165,4 +165,46 @@ describe("buildPersonalizedActionPlan", () => {
     expect(plan.summary.toLowerCase()).toMatch(/steady|maintenance|balanced/);
     expect(plan.routine.length).toBeGreaterThanOrEqual(6);
   });
+
+  it("builds a hormone-aware plan that rotates estradiol and free testosterone", () => {
+    const plan = buildPersonalizedActionPlan({
+      demographic: { sex: "male", ageYears: 34 },
+      markers: [
+        {
+          id: "estradiol",
+          name: "Estradiol",
+          section: "Hormones",
+          value: 55,
+          unit: "pg/mL",
+          status: "attention",
+          labStatus: "out_of_range",
+        },
+        {
+          id: "free-testosterone",
+          name: "Free Testosterone",
+          section: "Hormones",
+          value: 4,
+          unit: "pg/mL",
+          status: "attention",
+          labStatus: "out_of_range",
+        },
+      ],
+    });
+
+    expect(plan.focus.some((f) => /hormone/i.test(f))).toBe(true);
+    expect(plan.summary).toMatch(/estradiol/i);
+    expect(plan.summary).toMatch(/testosterone/i);
+
+    const hydrationMarkers = plan.routine
+      .filter((b) => /hydration/i.test(b.title))
+      .flatMap((b) => b.items.map((i) => i.marker ?? ""));
+    expect(hydrationMarkers.join(" ")).not.toMatch(/estradiol|testosterone/i);
+
+    const cues = plan.routine
+      .flatMap((b) => b.items.map((i) => i.marker ?? ""))
+      .filter((m) => m.startsWith("given "));
+    const unique = new Set(cues.map((c) => c.toLowerCase()));
+    expect(unique.size).toBeGreaterThanOrEqual(2);
+    expect(cues.join(" ")).not.toMatch(/EstradiolEstradiol/);
+  });
 });
