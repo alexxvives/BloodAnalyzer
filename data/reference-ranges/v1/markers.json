@@ -1,7 +1,7 @@
 {
-  "version": "1.3.4",
+  "version": "1.3.5",
   "reviewStatus": "provisional",
-  "notes": "Educational seed. NOT clinician-reviewed. Prefer printed lab intervals when available. Do not treat as diagnosis. v1.3.4: sourced TC:HDL (Quest 7600 <5.0), LDL:HDL (Quest 19543 sex-specific risk tiers), and eAG (ADA/ADAG formula mapped onto existing HbA1c bands). Remaining calculated ratios (LDL:ApoB, TG:HDL, hormone/thyroid ratios), UIBC, VLDL, female cycle-phase hormones, and analyzer-specific CBC indices stay unsourced or in the review backlog. See data/SOURCES.md.",
+  "notes": "Educational seed. NOT clinician-reviewed. Prefer printed lab intervals when available. Do not treat as diagnosis. v1.3.5: sourced VLDL (Quest 319 / Mayo LMPP <30 mg/dL), UIBC (Labcorp 18-60 sex-specific), FAI (Labcorp 146688 sex/age), BUN:creatinine (Quest 296 adults 6-22), and transferrin (Mayo TRSF 200-360). Still unsourced after catalog search: LDL:ApoB, TG:HDL (Quest 37848 is See Laboratory Report; papers disagree), AST:ALT, % free T, remaining hormone/thyroid ratios, female cycle-phase estradiol/FSH/LH. See data/SOURCES.md.",
   "markers": [
     {
       "biomarkerId": "total-cholesterol",
@@ -2148,9 +2148,22 @@
       ],
       "sourceRefs": [
         {
-          "label": "Common adult transferrin interval (provisional)",
-          "citation": "NEEDS CLINICIAN REVIEW: Transferrin ranges are lab-specific.",
-          "verifiedAt": null
+          "label": "Mayo Clinic Laboratories TRSF — transferrin 200-360 mg/dL",
+          "citation": "Mayo Clinic Laboratories, test TRSF (Transferrin, Serum). Reference Values: 200-360 mg/dL. Bands are attention / good / attention at those endpoints. Quest 891 prints 188-341 mg/dL; that disagreement is not painted as a fair tier — Mayo defines the bands.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/34623",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "Quest Diagnostics 891 — adult transferrin 188-341 mg/dL (disagreement only)",
+          "citation": "Quest Diagnostics, test 891 (Transferrin). Reference range 188-341 mg/dL. Cited to document that named catalogs disagree; not used for band boundaries.",
+          "url": "https://testdirectory.questdiagnostics.com/test/test-detail/891/?cc=MASTER",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. Secondary published intervals are cited for corroboration but do not invent a fair or optimal tier. No source defines an optimum inside a reference interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
         }
       ]
     },
@@ -2636,15 +2649,39 @@
       "sectionId": "lipid",
       "unit": "mg/dL",
       "loincCode": "13458-5",
-      "sourced": false,
+      "sourced": true,
       "labLow": null,
-      "labHigh": null,
-      "bands": [],
+      "labHigh": 30,
+      "bands": [
+        {
+          "status": "good",
+          "min": null,
+          "max": 29.999
+        },
+        {
+          "status": "attention",
+          "min": 30,
+          "max": null
+        }
+      ],
       "sourceRefs": [
         {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
+          "label": "Quest Diagnostics 319 — Cholesterol, VLDL <30 mg/dL (calc)",
+          "citation": "Quest Diagnostics, test 319 (VLDL Cholesterol). Reference Range(s): Cholesterol, VLDL <30 mg/dL (calc). Calculated VLDL is the result printed on most routine lipid panels (typically triglycerides/5 when TG are in mg/dL). Bands: good <30 / attention >=30. No interior optimum is claimed.",
+          "url": "https://testdirectory.questdiagnostics.com/test/test-detail/319/vldl-cholesterol?p=r&cc=MASTER",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "Mayo Clinic Laboratories LMPP — VLDL cholesterol <30 mg/dL (corroboration)",
+          "citation": "Mayo Clinic Laboratories, test LMPP (Lipoprotein Metabolism Profile, Serum). Very low-density lipoprotein (VLDL) cholesterol: <30 mg/dL. Same upper flag as Quest 319; Mayo LMPP measures lipoprotein fractions rather than the Friedewald TG/5 estimate. Used here as a second named catalog, not to invent extra tiers.",
+          "url": "https://www.mayocliniclabs.com/test-catalog/overview/83673/lipoprotein-metabolism-profile-serum",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the catalog publishes only an upper flag, bands are good below that cutpoint and attention at or above it. No interior optimum is claimed.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
         }
       ]
     },
@@ -2702,17 +2739,92 @@
       "sectionId": "vitamins",
       "unit": "ug/dL",
       "loincCode": "2501-5",
-      "sourced": false,
-      "labLow": null,
-      "labHigh": null,
-      "bands": [],
+      "sourced": true,
+      "labLow": 111,
+      "labHigh": 343,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 110.999
+        },
+        {
+          "status": "good",
+          "min": 111,
+          "max": 343
+        },
+        {
+          "status": "attention",
+          "min": 343.001,
+          "max": null
+        }
+      ],
       "sourceRefs": [
         {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
+          "label": "Labcorp pediatric/adult iron table — male UIBC 18-60 years 111-343 ug/dL",
+          "citation": "Labcorp, Pediatric Testing Reference Ranges (document 178250), Iron and TIBC, result 001348 UIBC, ug/dL. Males 18 years-60 years: 111-343. Labcorp test 001321 (Iron and TIBC) reports UIBC as result 001348 but does not print an adult interval on the test-menu page; this table is the named Labcorp interval. Not graded above age 60 (no interval in that table). Mayo TIBC/SFEC pages do not publish a separate UIBC interval.",
+          "url": "https://www.labcorp.com/content/dam/labcorp/drupal/178250_DX_TL_PediatricTestRef_Final.pdf",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. Secondary published intervals are cited for corroboration but do not invent a fair or optimal tier. No source defines an optimum inside a reference interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
         }
-      ]
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 18,
+        "ageMax": 60
+      }
+    },
+    {
+      "biomarkerId": "uibc",
+      "name": "UIBC",
+      "subtitle": "Unsaturated iron-binding capacity",
+      "sectionId": "vitamins",
+      "unit": "ug/dL",
+      "loincCode": "2501-5",
+      "sourced": true,
+      "labLow": 131,
+      "labHigh": 425,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 130.999
+        },
+        {
+          "status": "good",
+          "min": 131,
+          "max": 425
+        },
+        {
+          "status": "attention",
+          "min": 425.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Labcorp pediatric/adult iron table — female UIBC 18-60 years 131-425 ug/dL",
+          "citation": "Labcorp, Pediatric Testing Reference Ranges (document 178250), Iron and TIBC, result 001348 UIBC, ug/dL. Females 18 years-60 years: 131-425. Same document as the male row. Not graded above age 60.",
+          "url": "https://www.labcorp.com/content/dam/labcorp/drupal/178250_DX_TL_PediatricTestRef_Final.pdf",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. Secondary published intervals are cited for corroboration but do not invent a fair or optimal tier. No source defines an optimum inside a reference interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "female",
+        "ageMin": 18,
+        "ageMax": 60
+      }
     },
     {
       "biomarkerId": "tc-hdl-ratio",
@@ -2939,9 +3051,9 @@
       "bands": [],
       "sourceRefs": [
         {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
+          "label": "Catalog search 2026-08-23 — no named interval",
+          "citation": "Shown when present in an upload. Deep catalog search 2026-08-23: no Mayo, Quest, or Labcorp reference interval for LDL-C/ApoB. Particle-size papers are not a named lab catalog. ApoB itself is graded.",
+          "verifiedAt": "2026-08-23"
         }
       ]
     },
@@ -2957,9 +3069,9 @@
       "bands": [],
       "sourceRefs": [
         {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
+          "label": "Catalog search 2026-08-23 — no named interval",
+          "citation": "Shown when present in an upload. Quest 37848 (Lipid Panel with Triglycerides/HDL-Cholesterol) prints See Laboratory Report, not a cutpoint. McLaughlin-style insulin-resistance papers disagree (~3.0 vs ~3.5 in mg/dL, and they differ by sex and SI vs conventional units). Not graded.",
+          "verifiedAt": "2026-08-23"
         }
       ]
     },
@@ -2969,17 +3081,273 @@
       "subtitle": "Calculated (total testosterone / SHBG) × 100",
       "sectionId": "hormones",
       "unit": "index",
-      "sourced": false,
-      "labLow": null,
-      "labHigh": null,
-      "bands": [],
+      "sourced": true,
+      "labLow": 30,
+      "labHigh": 128,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 29.999
+        },
+        {
+          "status": "good",
+          "min": 30,
+          "max": 128
+        },
+        {
+          "status": "attention",
+          "min": 128.001,
+          "max": null
+        }
+      ],
       "sourceRefs": [
         {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
+          "label": "Labcorp 146688 — males 0-29 years (applied here as adults 18-29) FAI 30.0-128.0",
+          "citation": "Labcorp test 146688 (Free Androgen Index, FAI). FAI = (total testosterone / SHBG) × 100. males 0-29 years (applied here as adults 18-29): 30.0-128.0. This grades a lab-printed FAI; it does not recalculate from testosterone and SHBG in this app. Sex- and age-specific. No interior optimum is claimed.",
+          "url": "https://www.labcorp.com/tests/146688/free-androgen-index-fai",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. Secondary published intervals are cited for corroboration but do not invent a fair or optimal tier. No source defines an optimum inside a reference interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
         }
-      ]
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 18,
+        "ageMax": 29
+      }
+    },
+    {
+      "biomarkerId": "fai",
+      "name": "Free Androgen Index",
+      "subtitle": "Calculated (total testosterone / SHBG) × 100",
+      "sectionId": "hormones",
+      "unit": "index",
+      "sourced": true,
+      "labLow": 24,
+      "labHigh": 122,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 23.999
+        },
+        {
+          "status": "good",
+          "min": 24,
+          "max": 122
+        },
+        {
+          "status": "attention",
+          "min": 122.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Labcorp 146688 — males 30-39 years FAI 24.0-122.0",
+          "citation": "Labcorp test 146688 (Free Androgen Index, FAI). FAI = (total testosterone / SHBG) × 100. males 30-39 years: 24.0-122.0. This grades a lab-printed FAI; it does not recalculate from testosterone and SHBG in this app. Sex- and age-specific. No interior optimum is claimed.",
+          "url": "https://www.labcorp.com/tests/146688/free-androgen-index-fai",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. Secondary published intervals are cited for corroboration but do not invent a fair or optimal tier. No source defines an optimum inside a reference interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 30,
+        "ageMax": 39
+      }
+    },
+    {
+      "biomarkerId": "fai",
+      "name": "Free Androgen Index",
+      "subtitle": "Calculated (total testosterone / SHBG) × 100",
+      "sectionId": "hormones",
+      "unit": "index",
+      "sourced": true,
+      "labLow": 14,
+      "labHigh": 126,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 13.999
+        },
+        {
+          "status": "good",
+          "min": 14,
+          "max": 126
+        },
+        {
+          "status": "attention",
+          "min": 126.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Labcorp 146688 — males 40-49 years FAI 14.0-126.0",
+          "citation": "Labcorp test 146688 (Free Androgen Index, FAI). FAI = (total testosterone / SHBG) × 100. males 40-49 years: 14.0-126.0. This grades a lab-printed FAI; it does not recalculate from testosterone and SHBG in this app. Sex- and age-specific. No interior optimum is claimed.",
+          "url": "https://www.labcorp.com/tests/146688/free-androgen-index-fai",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. Secondary published intervals are cited for corroboration but do not invent a fair or optimal tier. No source defines an optimum inside a reference interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 40,
+        "ageMax": 49
+      }
+    },
+    {
+      "biomarkerId": "fai",
+      "name": "Free Androgen Index",
+      "subtitle": "Calculated (total testosterone / SHBG) × 100",
+      "sectionId": "hormones",
+      "unit": "index",
+      "sourced": true,
+      "labLow": 18,
+      "labHigh": 82,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 17.999
+        },
+        {
+          "status": "good",
+          "min": 18,
+          "max": 82
+        },
+        {
+          "status": "attention",
+          "min": 82.001,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Labcorp 146688 — males >49 years FAI 18.0-82.0",
+          "citation": "Labcorp test 146688 (Free Androgen Index, FAI). FAI = (total testosterone / SHBG) × 100. males >49 years: 18.0-82.0. This grades a lab-printed FAI; it does not recalculate from testosterone and SHBG in this app. Sex- and age-specific. No interior optimum is claimed.",
+          "url": "https://www.labcorp.com/tests/146688/free-androgen-index-fai",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. Secondary published intervals are cited for corroboration but do not invent a fair or optimal tier. No source defines an optimum inside a reference interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "male",
+        "ageMin": 50
+      }
+    },
+    {
+      "biomarkerId": "fai",
+      "name": "Free Androgen Index",
+      "subtitle": "Calculated (total testosterone / SHBG) × 100",
+      "sectionId": "hormones",
+      "unit": "index",
+      "sourced": true,
+      "labLow": 0.4,
+      "labHigh": 8.4,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 0.399
+        },
+        {
+          "status": "good",
+          "min": 0.4,
+          "max": 8.4
+        },
+        {
+          "status": "attention",
+          "min": 8.401,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Labcorp 146688 — females 0-49 years (applied here as adults 18-49) FAI 0.4-8.4",
+          "citation": "Labcorp test 146688 (Free Androgen Index, FAI). FAI = (total testosterone / SHBG) × 100. females 0-49 years (applied here as adults 18-49): 0.4-8.4. This grades a lab-printed FAI; it does not recalculate from testosterone and SHBG in this app. Sex- and age-specific. No interior optimum is claimed.",
+          "url": "https://www.labcorp.com/tests/146688/free-androgen-index-fai",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. Secondary published intervals are cited for corroboration but do not invent a fair or optimal tier. No source defines an optimum inside a reference interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "female",
+        "ageMin": 18,
+        "ageMax": 49
+      }
+    },
+    {
+      "biomarkerId": "fai",
+      "name": "Free Androgen Index",
+      "subtitle": "Calculated (total testosterone / SHBG) × 100",
+      "sectionId": "hormones",
+      "unit": "index",
+      "sourced": true,
+      "labLow": 0.4,
+      "labHigh": 6.6,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 0.399
+        },
+        {
+          "status": "good",
+          "min": 0.4,
+          "max": 6.6
+        },
+        {
+          "status": "attention",
+          "min": 6.601,
+          "max": null
+        }
+      ],
+      "sourceRefs": [
+        {
+          "label": "Labcorp 146688 — females >49 years FAI 0.4-6.6",
+          "citation": "Labcorp test 146688 (Free Androgen Index, FAI). FAI = (total testosterone / SHBG) × 100. females >49 years: 0.4-6.6. This grades a lab-printed FAI; it does not recalculate from testosterone and SHBG in this app. Sex- and age-specific. No interior optimum is claimed.",
+          "url": "https://www.labcorp.com/tests/146688/free-androgen-index-fai",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. Secondary published intervals are cited for corroboration but do not invent a fair or optimal tier. No source defines an optimum inside a reference interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
+        }
+      ],
+      "demographic": {
+        "sex": "female",
+        "ageMin": 50
+      }
     },
     {
       "biomarkerId": "testosterone-cortisol-ratio",
@@ -2993,9 +3361,9 @@
       "bands": [],
       "sourceRefs": [
         {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
+          "label": "Catalog search 2026-08-23 — no named interval",
+          "citation": "Shown when present in an upload. No Mayo/Quest/Labcorp interval. Draw time and testosterone units are not standardized for this ratio in this product.",
+          "verifiedAt": "2026-08-23"
         }
       ]
     },
@@ -3011,9 +3379,9 @@
       "bands": [],
       "sourceRefs": [
         {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
+          "label": "Catalog search 2026-08-23 — no named interval",
+          "citation": "Shown when present in an upload. No Mayo/Quest/Labcorp interval. Morning vs afternoon cortisol would change the number; draw time is not collected.",
+          "verifiedAt": "2026-08-23"
         }
       ]
     },
@@ -3029,9 +3397,9 @@
       "bands": [],
       "sourceRefs": [
         {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
+          "label": "Catalog search 2026-08-23 — no named interval",
+          "citation": "Shown when present in an upload. Mayo TGRP and Quest 18944 publish free testosterone as a concentration (ng/dL or pg/mL), not a percent-of-total interval. Grade free testosterone and total testosterone instead.",
+          "verifiedAt": "2026-08-23"
         }
       ]
     },
@@ -3041,17 +3409,44 @@
       "subtitle": "Calculated urea nitrogen / creatinine",
       "sectionId": "kidney",
       "unit": "ratio",
-      "sourced": false,
-      "labLow": null,
-      "labHigh": null,
-      "bands": [],
+      "loincCode": "3097-3",
+      "sourced": true,
+      "labLow": 6,
+      "labHigh": 22,
+      "bands": [
+        {
+          "status": "attention",
+          "min": null,
+          "max": 5.999
+        },
+        {
+          "status": "good",
+          "min": 6,
+          "max": 22
+        },
+        {
+          "status": "attention",
+          "min": 22.001,
+          "max": null
+        }
+      ],
       "sourceRefs": [
         {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
+          "label": "Quest Diagnostics 296 — BUN/Creatinine Ratio ≥17 years 6-22 (calc)",
+          "citation": "Quest Diagnostics, test 296 (BUN/Creatinine Ratio). Reference Range(s): ≥17 years 6-22 calc. Pediatric rows on that page (1-5 years 16-50, 6-10 years 13-36, 11-16 years 9-25) are not applied here; this product grades the adult interval. <1 year is Not Established. This is a calculated ratio, not a separate assay. Grade BUN and creatinine on their own sourced rows as well.",
+          "url": "https://testdirectory.questdiagnostics.com/test/test-detail/296/buncreatinine-ratio?cc=MASTER",
+          "verifiedAt": "2026-08-23"
+        },
+        {
+          "label": "How these bands were built",
+          "citation": "Band policy (sourced boundaries only): when the only sourced numbers are a reference interval's two endpoints, bands are attention / good / attention. Secondary published intervals are cited for corroboration but do not invent a fair or optimal tier. No source defines an optimum inside a reference interval.",
+          "url": null,
+          "verifiedAt": "2026-08-23"
         }
-      ]
+      ],
+      "demographic": {
+        "ageMin": 17
+      }
     },
     {
       "biomarkerId": "ast-alt-ratio",
@@ -3065,9 +3460,9 @@
       "bands": [],
       "sourceRefs": [
         {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
+          "label": "Catalog search 2026-08-23 — no named interval",
+          "citation": "Shown when present in an upload. The De Ritis (AST/ALT) pattern is a teaching observation, not a catalog reference interval. Quest and Mayo publish AST and ALT, not this ratio. Grade AST and ALT instead.",
+          "verifiedAt": "2026-08-23"
         }
       ]
     },
@@ -3083,9 +3478,9 @@
       "bands": [],
       "sourceRefs": [
         {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
+          "label": "Catalog search 2026-08-23 — no named interval",
+          "citation": "Shown when present in an upload. No Mayo/Quest/Labcorp interval. Assays differ; wellness cutoffs are not interchangeable. Grade free T3 and free T4 instead.",
+          "verifiedAt": "2026-08-23"
         }
       ]
     },
@@ -3101,9 +3496,9 @@
       "bands": [],
       "sourceRefs": [
         {
-          "label": "Panel catalog placeholder — range not yet sourced",
-          "citation": "Shown when present in an upload. Optimization bands require a cited source before grading.",
-          "verifiedAt": null
+          "label": "Catalog search 2026-08-23 — no named interval",
+          "citation": "Shown when present in an upload. No Mayo/Quest/Labcorp interval. The denominator (total vs free T4) is not standardized in this product. Grade TSH and free T4 instead.",
+          "verifiedAt": "2026-08-23"
         }
       ]
     },

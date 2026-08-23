@@ -24,9 +24,8 @@ A web platform where a user uploads a blood test (PDF/image/CSV), and gets a
 visual, sectioned report: each biomarker shown against its reference range
 (attention / fair / good / optimal), plotted against the population average
 for the user's demographic (age + sex), with click-to-expand explanations
-and recommended actions for out-of-range results. Visual style reference:
-SiPhox (see `/design/reference-screenshots`). Product branding is **Blood Analyzer**
-— SiPhox is a visual reference only; do not copy their branding or product copy.
+and recommended actions for out-of-range results. Product branding is
+**Blood Analyzer**.
 
 ## Non-negotiables
 
@@ -85,7 +84,7 @@ SiPhox (see `/design/reference-screenshots`). Product branding is **Blood Analyz
   inline hex codes per component. Visual reference also uses dual badges:
   Lab in/out-of-range + optimization grade.
 - Cards use a **vertical** segmented range gauge; detail panels use a
-  **horizontal** gauge (see SiPhox screenshots).
+  **horizontal** gauge.
 - All charts (position-in-range, population comparison) use one charting
   library (**Recharts**), wrapped in shared UI (`BiomarkerChart` /
   `RangeBar` / `PopulationComparisonView`) — don't mix chart libraries.

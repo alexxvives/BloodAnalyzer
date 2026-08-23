@@ -61,7 +61,7 @@ export function resolveBandsForDisplay(
   };
 }
 
-/** 0 at bottom (low values), 1 at top (high values) — SiPhox-style vertical gauge */
+/** 0 at bottom (low values), 1 at top (high values) — vertical card gauge */
 export function valueToVerticalRatio(
   value: number,
   spanMin: number,

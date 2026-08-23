@@ -38,11 +38,6 @@ npm run preview
 npm run deploy
 ```
 
-## Design reference
-
-Curated SiPhox UI screenshots: [`design/reference-screenshots/`](./design/reference-screenshots/) (`ref-01.png` … `ref-12.png`).
-Visual language only — do not copy branding or product copy.
-
 ## Deploy / Cloudflare URL
 
 **Live:** https://blood-analyzer.alexxvives.workers.dev  

@@ -14,7 +14,7 @@ type SectionScoreRingProps = {
 };
 
 /**
- * Circular % gauge for section summaries (SiPhox-style ring with center %).
+ * Circular % gauge for section summaries (ring with center %).
  */
 export function SectionScoreRing({
   percent,

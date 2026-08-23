@@ -7,7 +7,7 @@ versioned and cited. **Do not ship invented numbers to real users.**
 
 | Dataset | Location | Citation status |
 |---|---|---|
-| Reference ranges v1.3.4 | `/data/reference-ranges/v1/markers.json` | **Mixed** — Mayo/ADA/ACC/KDIGO/Harris/AHA plus Quest TC:HDL and LDL:HDL, ADA/ADAG eAG; 14 CBC/chem rows still awaiting clinician review; remaining calculated ratios and female cycle-phase hormones stay unsourced |
+| Reference ranges v1.3.5 | `/data/reference-ranges/v1/markers.json` | **Mixed** — Mayo/ADA/ACC/KDIGO/Harris/AHA plus Quest VLDL, BUN:creatinine, TC:HDL, LDL:HDL; Labcorp FAI and UIBC; ADA/ADAG eAG; 13 CBC/chem rows still awaiting clinician review; remaining calculated ratios and female cycle-phase hormones stay unsourced |
 | Population stats v1.8.1 | `/data/population-stats/v1/stats.json` | **Partial NHANES load** — see below |
 
 Until an entry is marked `sourced: true` **and** reviewed for production, treat
@@ -130,18 +130,25 @@ Still no NHANES demographic median for this ratio — the UI keeps
 
 Still cannot grade without inventing or mixing disagreeing papers:
 
-- **`tg-hdl-ratio`** — McLaughlin-style insulin-resistance cutpoints disagree (~3.0 vs ~3.5 in mg/dL, and they differ by sex and SI vs conventional units). Shown with an explanation; not graded.
-- **`ldl-apo-b-ratio`** — particle-size research proxy; no Mayo/Quest/ACC interval.
-- **`bun-creatinine-ratio`**, **`ast-alt-ratio`** — teaching patterns, not catalog reference intervals. Grade BUN, creatinine, AST, and ALT instead.
-- **Hormone/thyroid calculated ratios** (FAI, % free T, T:C, cortisol:DHEA-S, free T3:T4, TSH:T4) — no named catalog interval; units and draw time are not standardized in this product.
-- **`vldl-cholesterol`**, **`uibc`** — still no matching Mayo page in this pass.
+- **`tg-hdl-ratio`** — Quest 37848 prints See Laboratory Report, not a cutpoint. McLaughlin-style papers disagree (~3.0 vs ~3.5 in mg/dL, and they differ by sex and SI vs conventional units). Shown with an explanation; not graded.
+- **`ldl-apo-b-ratio`** — particle-size research proxy; no Mayo/Quest/ACC interval. Grade ApoB instead.
+- **`ast-alt-ratio`** — De Ritis teaching pattern, not a catalog reference interval. Grade AST and ALT instead.
+- **Remaining hormone/thyroid calculated ratios** (% free T, T:C, cortisol:DHEA-S, free T3:T4, TSH:T4) — no named catalog interval; Mayo TGRP / Quest 18944 publish free testosterone as a concentration, not a percent.
+- Female cycle-phase estradiol / FSH / LH and female PSA stay unsourced (need cycle day / N/A).
 
-Female cycle-phase estradiol / FSH / LH and female PSA stay unsourced (need cycle day / N/A).
+## VLDL, UIBC, FAI, BUN:creatinine, transferrin (v1.3.5)
+
+Named lab catalogs found on a dedicated search pass. Reference-interval rows only — no invented interiors.
+
+| biomarkerId | Interval / cutpoints | Source |
+|---|---|---|
+| `vldl-cholesterol` | adults <30 mg/dL good / ≥30 attention (calc) | [Quest 319](https://testdirectory.questdiagnostics.com/test/test-detail/319/vldl-cholesterol?p=r&cc=MASTER) Cholesterol, VLDL <30 mg/dL (calc). [Mayo LMPP](https://www.mayocliniclabs.com/test-catalog/overview/83673/lipoprotein-metabolism-profile-serum) same upper flag (measured fractions). |
+| `uibc` | men 18–60: 111–343 ug/dL; women 18–60: 131–425 ug/dL | [Labcorp Pediatric Testing Reference Ranges](https://www.labcorp.com/content/dam/labcorp/drupal/178250_DX_TL_PediatricTestRef_Final.pdf) result 001348. Not graded after age 60. |
+| `fai` | Labcorp 146688 sex/age index | [Labcorp 146688](https://www.labcorp.com/tests/146688/free-androgen-index-fai). Men 18–29: 30–128; 30–39: 24–122; 40–49: 14–126; ≥50: 18–82. Women 18–49: 0.4–8.4; ≥50: 0.4–6.6. Grades a printed FAI, not a recalculation. |
+| `bun-creatinine-ratio` | ages ≥17: 6–22 (calc) | [Quest 296](https://testdirectory.questdiagnostics.com/test/test-detail/296/buncreatinine-ratio?cc=MASTER). Pediatric rows on that page are not applied here. |
+| `transferrin` | 200–360 mg/dL | [Mayo TRSF](https://www.mayocliniclabs.com/test-catalog/overview/34623). Quest 891 (188–341) cited as disagreement only — not a fair tier. |
 
 ## TSH, morning cortisol, folate, hs-CRP, Lp(a) (v1.3.3)
-
-These rows were `sourced: true` with "NEEDS CLINICIAN REVIEW" citations.
-They now use named pages; invented interiors were removed.
 
 | biomarkerId | Interval / cutpoints | Source |
 |---|---|---|

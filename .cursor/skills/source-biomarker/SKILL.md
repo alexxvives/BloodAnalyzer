@@ -31,7 +31,7 @@ sourceable rows.
 - Reference interval (two endpoints only) → `attention` / `good` / `attention`.
   No invented interior.
 - Secondary papers corroborate; they do not invent extra tiers.
-- SiPhox / consumer "optimal" pages are visual references only.
+- Consumer “optimal” pages are visual references only; never copy unpublished wellness interiors.
 
 ## Required on every sourced row
 

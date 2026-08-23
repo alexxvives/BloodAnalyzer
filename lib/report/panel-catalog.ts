@@ -1,7 +1,6 @@
 /**
  * Expected wellness-panel markers shown on reports even when absent from an
- * upload. Inspired by common at-home panels (SiPhox-style coverage) — used only
- * as gray "not tested" slots, never as invented values.
+ * upload. Used only as gray "not tested" slots, never as invented values.
  */
 export const PANEL_CATALOG: Array<{
   biomarkerId: string;

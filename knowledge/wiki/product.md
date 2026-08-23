@@ -5,8 +5,7 @@ extracted values, then see a sectioned report. Each biomarker is shown against
 a **sourced** reference range, with population comparison when a cited
 demographic average exists, plus click-to-expand educational copy.
 
-Visual style reference: SiPhox screenshots in `/design/reference-screenshots`.
-Branding is **Blood Analyzer** — do not copy SiPhox names or product copy.
+Visual style: dual lab + optimization badges, vertical gauges on cards, horizontal gauges in detail. Branding is **Blood Analyzer**.
 
 Stack: Next.js on Cloudflare Workers, D1, R2, Better Auth–compatible sessions.
 D1 has no RLS — every query is `user_id`-scoped in application code.

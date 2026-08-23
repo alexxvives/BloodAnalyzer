@@ -839,7 +839,7 @@ export const BIOMARKER_EXPLANATIONS: Record<string, BiomarkerExplanation> = {
     whyItMatters:
       "Transferrin often rises in iron deficiency and falls with inflammation or malnutrition. It helps distinguish iron patterns when paired with ferritin and serum iron.",
     understandingLevels:
-      "High transferrin + low ferritin commonly fits iron deficiency; low transferrin + high ferritin can fit anemia of inflammation — clinicians integrate the pattern.",
+      "Mayo TRSF grades 200-360 mg/dL as the lab interval (attention / good / attention at those ends). Quest 891 prints 188-341 mg/dL; that disagreement is not a separate fair band. There is no sourced interior optimum.",
     influencingFactors: [
       "Iron stores",
       "Inflammation",
@@ -1261,7 +1261,13 @@ export const BIOMARKER_EXPLANATIONS: Record<string, BiomarkerExplanation> = {
     whyItMatters:
       "It moves with triglycerides. The triglyceride result is usually the more useful number for discussion with a clinician.",
     understandingLevels:
-      "Optimization bands are not sourced yet, so the value is shown without a grade.",
+      "Quest 319 (and Mayo LMPP) flag calculated VLDL cholesterol at <30 mg/dL. This catalog grades <30 as good and ≥30 as attention. No interior optimum is claimed.",
+    learnMore: [
+      {
+        label: "Quest Diagnostics — VLDL Cholesterol (319)",
+        url: "https://testdirectory.questdiagnostics.com/test/test-detail/319/vldl-cholesterol?p=r&cc=MASTER",
+      },
+    ],
     influencingFactors: ["Recent meals", "Triglyceride level", "Alcohol and refined carbohydrate intake"],
   }),
 
@@ -1297,7 +1303,13 @@ export const BIOMARKER_EXPLANATIONS: Record<string, BiomarkerExplanation> = {
     whyItMatters:
       "It is part of the same iron-status set as serum iron, TIBC, saturation, and ferritin.",
     understandingLevels:
-      "Optimization bands are not sourced yet, so the value is shown without a grade.",
+      "Labcorp’s adult table (ages 18–60) grades men at 111-343 ug/dL and women at 131-425 ug/dL (attention / good / attention). This product does not grade UIBC after age 60 — that table stops there.",
+    learnMore: [
+      {
+        label: "Labcorp — Pediatric Testing Reference Ranges (UIBC table)",
+        url: "https://www.labcorp.com/content/dam/labcorp/drupal/178250_DX_TL_PediatricTestRef_Final.pdf",
+      },
+    ],
     influencingFactors: ["Iron stores", "Inflammation", "The paired serum-iron result"],
   }),
 
@@ -1732,7 +1744,7 @@ export const BIOMARKER_EXPLANATIONS: Record<string, BiomarkerExplanation> = {
     whatItMeasures:
       "A calculated ratio sometimes used in research as a rough particle-size clue (higher often means more cholesterol per particle).",
     whyItMatters:
-      "No Mayo, Quest, or ACC/AHA catalog interval is attached here, so the value is shown without an optimization grade.",
+      "No Mayo, Quest, or ACC/AHA catalog interval is attached here, so the value is shown without an optimization grade. Particle-size papers are not a named lab catalog.",
     understandingLevels:
       "Range not available until a named lab catalog or guideline publishes cutpoints we can cite. ApoB itself is usually the more useful number.",
     influencingFactors: [
@@ -1750,7 +1762,7 @@ export const BIOMARKER_EXPLANATIONS: Record<string, BiomarkerExplanation> = {
     whatItMeasures:
       "A calculated ratio. Units must match (both mg/dL, or both mmol/L) or the number is not comparable to published papers.",
     whyItMatters:
-      "Research papers have used this ratio as a rough insulin-resistance marker, but cutpoints disagree (about 3.0 vs 3.5 in mg/dL, and they differ by sex and units). No guideline or named lab catalog is attached here.",
+      "Quest 37848 (Lipid Panel with Triglycerides/HDL-Cholesterol) prints See Laboratory Report, not a cutpoint. McLaughlin-style papers disagree (~3.0 vs ~3.5 in mg/dL, and they differ by sex and units). No guideline or named lab catalog is attached here.",
     understandingLevels:
       "Range not available — we do not invent a cutpoint where papers disagree. Triglycerides and HDL are graded separately when sourced.",
     influencingFactors: [
@@ -1766,9 +1778,15 @@ export const BIOMARKER_EXPLANATIONS: Record<string, BiomarkerExplanation> = {
     whatItMeasures:
       "A calculated ratio used as a teaching pattern (often discussed around 10–20), not a standalone kidney diagnosis.",
     whyItMatters:
-      "Textbooks use it when thinking about hydration versus intrinsic kidney issues. Mayo catalogs BUN and creatinine separately and does not publish this ratio as a reference interval in the pages we cite.",
+      "Quest 296 publishes an adult calculated interval of 6–22 for ages ≥17. Textbooks often discuss ~10–20 as a teaching pattern; this catalog uses the Quest interval, not the textbook shorthand. Still read BUN and creatinine on their own sourced rows.",
     understandingLevels:
-      "Range not available as an optimization grade. Read urea (BUN) and creatinine (and eGFR) on their own sourced rows.",
+      "Quest 296: ages ≥17, 6–22 (calc). Values inside that interval cap at good; outside are attention. No interior optimum. Not graded under 17 here (Quest prints different pediatric rows).",
+    learnMore: [
+      {
+        label: "Quest Diagnostics — BUN/Creatinine Ratio (296)",
+        url: "https://testdirectory.questdiagnostics.com/test/test-detail/296/buncreatinine-ratio?cc=MASTER",
+      },
+    ],
     influencingFactors: [
       "Hydration and protein intake",
       "The separate BUN and creatinine results",
@@ -1782,7 +1800,7 @@ export const BIOMARKER_EXPLANATIONS: Record<string, BiomarkerExplanation> = {
     whatItMeasures:
       "A calculated enzyme ratio. Pattern recognition is not the same as a healthy-person reference interval.",
     whyItMatters:
-      "Clinicians sometimes glance at this ratio alongside the absolute AST and ALT values. It is not graded here because Mayo publishes the enzymes, not a ratio interval.",
+      "Clinicians sometimes glance at this ratio alongside the absolute AST and ALT values. It is not graded here because Mayo and Quest publish the enzymes, not a De Ritis catalog interval.",
     understandingLevels:
       "Range not available. Use the sourced AST and ALT rows; discuss unexpected pairs with a clinician rather than treating the ratio as a diagnosis.",
     influencingFactors: [
@@ -1830,9 +1848,15 @@ export const BIOMARKER_EXPLANATIONS: Record<string, BiomarkerExplanation> = {
     whatItMeasures:
       "A calculated index, not a measured free-hormone assay. Units of testosterone and SHBG must match the lab’s formula.",
     whyItMatters:
-      "Some labs print FAI in androgen workups. No named catalog interval is attached here, so it is not graded.",
+      "Some labs print FAI in androgen workups. Labcorp 146688 publishes sex- and age-specific intervals for the printed index (total testosterone / SHBG) × 100.",
     understandingLevels:
-      "Range not available. Free testosterone by a stated method plus SHBG is usually clearer than FAI alone.",
+      "Labcorp 146688: adult men 18-29 30-128, 30-39 24-122, 40-49 14-126, ≥50 18-82; adult women 18-49 0.4-8.4, ≥50 0.4-6.6. Bands are attention / good / attention. This grades a lab-printed FAI, not a recalculation from testosterone and SHBG in this app.",
+    learnMore: [
+      {
+        label: "Labcorp — Free Androgen Index (146688)",
+        url: "https://www.labcorp.com/tests/146688/free-androgen-index-fai",
+      },
+    ],
     influencingFactors: [
       "Total testosterone and SHBG",
       "The lab’s unit convention",
@@ -1846,7 +1870,7 @@ export const BIOMARKER_EXPLANATIONS: Record<string, BiomarkerExplanation> = {
     whatItMeasures:
       "A calculated percentage. It moves when SHBG moves, even if production is unchanged.",
     whyItMatters:
-      "No named lab catalog interval is attached, so the value is shown without a grade. The free and total testosterone rows carry the sourced intervals.",
+      "Mayo TGRP and Quest 18944 publish free testosterone as a concentration (ng/dL or pg/mL), not a percent-of-total interval. The free and total testosterone rows carry the sourced intervals.",
     understandingLevels:
       "Range not available. Prefer free testosterone (with method named) and SHBG.",
     influencingFactors: [

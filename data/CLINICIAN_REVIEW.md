@@ -22,12 +22,15 @@ See also: [`SOURCES.md`](./SOURCES.md), `reference-data.test.ts`.
 Sodium, potassium, chloride, calcium, magnesium, phosphorus, bicarbonate,
 LDH, reticulocytes, MPV — see SOURCES.md.
 Total protein and direct bilirubin now have Mayo-cited intervals. Still
-unsourced: remaining calculated ratios (LDL:ApoB, TG:HDL, and
-hormone/thyroid ratios), VLDL, UIBC, and female cycle-phase estradiol /
-FSH / LH (Mayo intervals require cycle day or menopausal status). ApoB:ApoA1
-is Mayo APOAB-sourced (v1.3.2). TSH, morning cortisol, folate, hs-CRP, and
-Lp(a) are sourced as of v1.3.3. TC:HDL (Quest 7600), LDL:HDL (Quest 19543),
-and eAG (ADA/ADAG) are sourced as of v1.3.4.
+unsourced: remaining calculated ratios (LDL:ApoB, TG:HDL, AST:ALT, and
+hormone/thyroid ratios except FAI), and female cycle-phase estradiol /
+FSH / LH (Mayo intervals require cycle day or menopausal status). VLDL
+(Quest 319 / Mayo LMPP), UIBC (Labcorp 18–60), FAI (Labcorp 146688),
+BUN:creatinine (Quest 296 adults), and transferrin (Mayo TRSF) are sourced
+as of v1.3.5. ApoB:ApoA1 is Mayo APOAB-sourced (v1.3.2). TSH, morning
+cortisol, folate, hs-CRP, and Lp(a) are sourced as of v1.3.3. TC:HDL
+(Quest 7600), LDL:HDL (Quest 19543), and eAG (ADA/ADAG) are sourced as of
+v1.3.4.
 
 ## Population benchmarks
 

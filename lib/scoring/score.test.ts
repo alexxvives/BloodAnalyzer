@@ -431,4 +431,87 @@ describe("scoreBiomarker", () => {
       }).rangeAvailable,
     ).toBe(false);
   });
+
+  it("grades VLDL, UIBC, FAI, BUN:creatinine, and Mayo transferrin from named catalogs", () => {
+    expect(scoreBiomarker({ biomarkerId: "vldl-cholesterol", value: 22 }).status).toBe(
+      "good",
+    );
+    expect(scoreBiomarker({ biomarkerId: "vldl-cholesterol", value: 35 }).status).toBe(
+      "attention",
+    );
+
+    expect(
+      scoreBiomarker({
+        biomarkerId: "uibc",
+        value: 200,
+        demographic: { sex: "male", ageYears: 40 },
+      }).status,
+    ).toBe("good");
+    expect(
+      scoreBiomarker({
+        biomarkerId: "uibc",
+        value: 90,
+        demographic: { sex: "male", ageYears: 40 },
+      }).status,
+    ).toBe("attention");
+    expect(
+      scoreBiomarker({
+        biomarkerId: "uibc",
+        value: 200,
+        demographic: { sex: "male", ageYears: 70 },
+      }).rangeAvailable,
+    ).toBe(false);
+
+    expect(
+      scoreBiomarker({
+        biomarkerId: "fai",
+        value: 50,
+        demographic: { sex: "male", ageYears: 25 },
+      }).status,
+    ).toBe("good");
+    expect(
+      scoreBiomarker({
+        biomarkerId: "fai",
+        value: 4,
+        demographic: { sex: "female", ageYears: 30 },
+      }).status,
+    ).toBe("good");
+    expect(
+      scoreBiomarker({
+        biomarkerId: "fai",
+        value: 12,
+        demographic: { sex: "female", ageYears: 30 },
+      }).status,
+    ).toBe("attention");
+
+    expect(
+      scoreBiomarker({
+        biomarkerId: "bun-creatinine-ratio",
+        value: 14,
+        demographic: { sex: "male", ageYears: 40 },
+      }).status,
+    ).toBe("good");
+    expect(
+      scoreBiomarker({
+        biomarkerId: "bun-creatinine-ratio",
+        value: 28,
+        demographic: { sex: "female", ageYears: 40 },
+      }).status,
+    ).toBe("attention");
+
+    const transferrin = scoreBiomarker({ biomarkerId: "transferrin", value: 250 });
+    expect(transferrin.rangeAvailable).toBe(true);
+    expect(transferrin.status).toBe("good");
+    expect(transferrin.range?.sourceRefs[0]?.url).toMatch(/34623/);
+
+    expect(
+      scoreBiomarker({ biomarkerId: "tg-hdl-ratio", value: 2 }).rangeAvailable,
+    ).toBe(false);
+    expect(
+      scoreBiomarker({ biomarkerId: "ldl-apo-b-ratio", value: 1.2 }).rangeAvailable,
+    ).toBe(false);
+    expect(
+      scoreBiomarker({ biomarkerId: "ast-alt-ratio", value: 1.1 }).rangeAvailable,
+    ).toBe(false);
+  });
 });

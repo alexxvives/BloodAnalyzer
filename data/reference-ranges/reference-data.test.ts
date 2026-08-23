@@ -38,7 +38,6 @@ const AWAITING_CLINICIAN_REVIEW = new Set([
   "myelocytes",
   "neutrophils",
   "pdw",
-  "transferrin",
 ]);
 
 function describeRow(range: ReferenceRange): string {
@@ -229,8 +228,13 @@ describe("reference-range data integrity", () => {
     "tsh",
     "urea",
     "uric-acid",
+    "uibc",
     "vitamin-b12",
+    "vldl-cholesterol",
     "wbc",
+    "fai",
+    "bun-creatinine-ratio",
+    "transferrin",
   ]);
 
   it("uses only attention/good bands for reference-interval markers", () => {
@@ -302,6 +306,31 @@ describe("reference-range data integrity", () => {
     const lpa = getReferenceRange("lp-a", { sex: "female", ageYears: 40 });
     expect(lpa?.labHigh).toBe(50);
     expect(lpa?.sourceRefs[0]?.label).toMatch(/AHA\/ACC/);
+  });
+
+  it("grades VLDL, UIBC, FAI, and BUN:creatinine on named catalog intervals", () => {
+    const vldl = getReferenceRange("vldl-cholesterol", {
+      sex: "male",
+      ageYears: 40,
+    });
+    expect(vldl?.sourced).toBe(true);
+    expect(vldl?.labHigh).toBe(30);
+    expect(vldl?.sourceRefs[0]?.url).toMatch(/319/);
+
+    const uibcF = getReferenceRange("uibc", { sex: "female", ageYears: 35 });
+    expect(uibcF?.labLow).toBe(131);
+    expect(uibcF?.labHigh).toBe(425);
+
+    const faiM = getReferenceRange("fai", { sex: "male", ageYears: 42 });
+    expect(faiM?.labLow).toBe(14);
+    expect(faiM?.labHigh).toBe(126);
+
+    const bunCr = getReferenceRange("bun-creatinine-ratio", {
+      sex: "female",
+      ageYears: 40,
+    });
+    expect(bunCr?.labLow).toBe(6);
+    expect(bunCr?.labHigh).toBe(22);
   });
 });
 
