@@ -12,6 +12,7 @@ What does belong:
 - Pattern notes and product-memory sources that are not code
 - Pointers to durable URLs (guidelines, lab catalogs, architecture posts)
 - Quotes we might compile into `/knowledge/wiki`
+- Historical notes that used to sit at repo root (`AUDIT.md`, `LEARNINGS.md`)
 
 Agents compile `raw/` + `data/` into wiki pages. The wiki is allowed to
 change; raw notes and `data/` citations should stay stable.

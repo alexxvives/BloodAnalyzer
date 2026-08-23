@@ -4,6 +4,7 @@ Append-only. Newest at the top. Do not rewrite old entries.
 
 ## 2026-08-23
 
+- Deep-clean: emptied leftover `app/api/auth/login` and `signup` dirs; removed local `.firecrawl` dump; moved `AUDIT.md` and `LEARNINGS.md` into `knowledge/raw` (historical, not app code). Root stays app / components / lib / data / knowledge plus deploy configs. Did not touch `.env` / `.dev.vars`.
 - Sourced TG:HDL (McLaughlin 2005 ≥3.5 mg/dL convention — the later, more-cited paper vs 2003 ~3.0), LDL-C:ApoB (Taneva 2024 PMC11460969 <1.2 sdLDL estimator; SiPhox cites the same 1.2, extra interiors not copied), and % free testosterone (Labcorp 081786 adult % intervals). Removed AST:ALT and female PSA. Still ungraded: T:C, cortisol:DHEA-S, free T3:T4, TSH:T4 (no named catalog; SiPhox numbers contradict or are unpublished wellness interiors), female cycle-phase estradiol/FSH/LH.
 - Catalog search for previously ungraded calculated markers. Sourced VLDL (Quest 319 / Mayo LMPP <30 mg/dL), UIBC (Labcorp 18–60 sex-specific), FAI (Labcorp 146688 sex/age), BUN:creatinine (Quest 296 adults 6–22), and transferrin (Mayo TRSF 200–360). Still ungraded after named-page search: TG:HDL (Quest 37848 is See Laboratory Report; papers disagree), LDL:ApoB, AST:ALT, % free T, remaining hormone/thyroid ratios, female cycle-phase estradiol/FSH/LH.
 - Removed SiPhox screenshot dump (`design/reference-screenshots`), one-off marker patch scripts, debug extract scripts, and review prompt files. Repo layout is app / components / lib / data / knowledge.

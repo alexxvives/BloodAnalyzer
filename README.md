@@ -4,8 +4,8 @@ Web platform for visualizing blood test results against sourced reference ranges
 Educational tooling — **not medical advice**.
 
 See [AGENTS.md](./AGENTS.md) for architecture and non-negotiables.  
-See [AUDIT.md](./AUDIT.md) for cleanup status and remaining decisions.  
-See [DEPLOY.md](./DEPLOY.md) for Cloudflare Workers deploy.
+See [DEPLOY.md](./DEPLOY.md) for Cloudflare Workers deploy.  
+See [`knowledge/`](./knowledge/index.md) for product memory (wiki, log, archived audit).
 
 ## Stack
 

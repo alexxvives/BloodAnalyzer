@@ -73,7 +73,7 @@ and recommended actions for out-of-range results. Product branding is
 - `/data/population-stats` — same rule: sourced, versioned, cited
 - Cloudflare: D1 for structured data, R2 for uploads, credential sessions on
   D1 today (Better Auth–compatible schema; library migration is opt-in — see
-  `lib/auth/README.md` and `AUDIT.md` sign-off queue)
+  `lib/auth/README.md` and `knowledge/raw/AUDIT.md` sign-off queue)
 
 ## Conventions
 

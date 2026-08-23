@@ -102,7 +102,7 @@ Extractors in production pipeline: CSV, PDF text (`unpdf`), image stub (empty).
 | D1/R2 scoping | `lib/db/d1-report-repository.ts`, `lib/storage/uploads.ts` |
 | Empty copy | “range not available” / “benchmark data not yet available” |
 | Citations | `data/SOURCES.md` |
-| Auth UX | `/?auth=login\|signup` (see `LEARNINGS.md`) |
+| Auth UX | `/?auth=login\|signup` (see `LEARNINGS.md` in this folder) |
 
 ---
 

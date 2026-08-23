@@ -32,6 +32,8 @@ Agents maintain these from raw sources. Do not paste medical cutpoints here — 
 |---|---|
 | [`raw/README.md`](raw/README.md) | What belongs in raw vs `data/` |
 | [`raw/oxygen-pattern.md`](raw/oxygen-pattern.md) | The second-brain layout this repo adapted |
+| [`raw/AUDIT.md`](raw/AUDIT.md) | 2026-08-08 security/integrity history and sign-off queue |
+| [`raw/LEARNINGS.md`](raw/LEARNINGS.md) | Pre-log product/UX notes. Prefer appending to `log.md` now. |
 
 Medical numbers live in `/data/reference-ranges` and `/data/population-stats`, not in `raw/`.
 
@@ -46,7 +48,5 @@ Medical numbers live in `/data/reference-ranges` and `/data/population-stats`, n
 
 | File | When |
 |---|---|
-| [`LEARNINGS.md`](../LEARNINGS.md) | Older product/UX notes (pre-log). Prefer appending to `log.md` now. |
-| [`AUDIT.md`](../AUDIT.md) | Security/integrity history and the sign-off queue |
 | [`lib/auth/README.md`](../lib/auth/README.md) | Auth stack honesty |
 | [`DEPLOY.md`](../DEPLOY.md) | How live Worker deploys (push is not enough) |

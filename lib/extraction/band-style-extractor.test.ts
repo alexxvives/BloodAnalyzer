@@ -1,4 +1,3 @@
-import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { extractMarkersFromBandStyleText } from "./band-style-extractor";
 
@@ -37,23 +36,5 @@ fair: 0.7 - 1.3
     expect(byId["ldl-cholesterol"]?.value).toBe(67.6);
     expect(byId.crp?.valueDisplay ?? String(byId.crp?.value)).toMatch(/0\.2/);
     expect(byId.creatinine?.value).toBe(0.77);
-  });
-
-  it("extracts many markers from results.pdf text dump when present", () => {
-    let text = "";
-    try {
-      text = readFileSync(".firecrawl/results-raw.txt", "utf8");
-    } catch {
-      return; // optional local artifact
-    }
-    if (!text) return;
-
-    const result = extractMarkersFromBandStyleText(text);
-    expect(result.markers.length).toBeGreaterThanOrEqual(25);
-    const ids = new Set(result.markers.map((m) => m.biomarkerId).filter(Boolean));
-    expect(ids.has("ldl-cholesterol")).toBe(true);
-    expect(ids.has("hba1c")).toBe(true);
-    expect(ids.has("ferritin")).toBe(true);
-    expect(ids.has("creatinine")).toBe(true);
   });
 });

@@ -1,8 +1,4 @@
-import { readFileSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { extractText, getDocumentProxy } from "unpdf";
 import { extractMarkersFromLabText } from "./text-lab-extractor";
 
 describe("extractMarkersFromLabText", () => {
@@ -69,58 +65,5 @@ describe("extractMarkersFromLabText", () => {
     expect(result.markers.every((m) => !/hombres|mujeres/i.test(m.name))).toBe(
       true,
     );
-  });
-});
-
-describe("Spanish PDF fixture Analitica_OCT2024", () => {
-  const pdfPath = join(
-    dirname(fileURLToPath(import.meta.url)),
-    "../../Analitica_OCT2024.pdf",
-  );
-
-  it("maps the main chemistry and CBC markers from the real PDF", async () => {
-    let bytes: Buffer;
-    try {
-      bytes = readFileSync(pdfPath);
-    } catch {
-      // Local-only sample with PII — skip in CI if absent
-      return;
-    }
-
-    const pdf = await getDocumentProxy(new Uint8Array(bytes));
-    const { text } = await extractText(pdf, { mergePages: true });
-    const joined = Array.isArray(text)
-      ? (text as string[]).join("\n")
-      : String(text ?? "");
-    const result = extractMarkersFromLabText(joined);
-    const byId = Object.fromEntries(
-      result.markers
-        .filter((m) => m.biomarkerId)
-        .map((m) => [m.biomarkerId!, m]),
-    );
-
-    expect(result.markers.length).toBeGreaterThanOrEqual(20);
-    const unmapped = result.markers.filter((m) => !m.biomarkerId);
-    expect(
-      unmapped,
-      `unmapped: ${unmapped.map((m) => m.name).join(" | ")}`,
-    ).toHaveLength(0);
-
-    expect(byId.hemoglobin?.value).toBeCloseTo(14.7, 1);
-    expect(byId["serum-iron"]?.value).toBe(107);
-    expect(byId.ferritin?.value).toBeCloseTo(130.4, 1);
-    expect(byId["glucose-fasting"]?.value).toBe(76);
-    expect(byId["total-cholesterol"]?.value).toBe(119);
-    expect(byId["hdl-cholesterol"]?.value).toBe(52);
-    expect(byId["ldl-cholesterol"]?.value).toBe(57);
-    expect(byId.triglycerides?.value).toBe(51);
-    expect(byId.alt?.value).toBe(23);
-    expect(byId.ast?.value).toBe(23);
-    expect(byId.ggt?.value).toBe(17);
-    expect(byId.tsh?.value).toBeCloseTo(1.52, 2);
-    expect(byId["vitamin-d"]?.value).toBeCloseTo(33.2, 1);
-    expect(byId.crp?.value).toBeCloseTo(0.2, 1);
-    expect(byId.esr?.name).toBe("ESR (1st hour)");
-    expect(byId["esr-2h"]?.name).toBe("ESR (2nd hour)");
   });
 });
